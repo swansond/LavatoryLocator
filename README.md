@@ -1,7 +1,7 @@
 LavatoryLocator
 ===============
 
-CSE 403 Project
+CSE 403 Project Spring 2013
 
 Group members:
 David Jung
