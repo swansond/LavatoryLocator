@@ -17,7 +17,3 @@ http://lavlocdb.herokuapp.com/
 put query in text box for testing
 
 post request as string name="query" to http://lavlocdb.herokuapp.com/test.php
-
-#################################
-###don't forget the semicolon.###
-#################################
