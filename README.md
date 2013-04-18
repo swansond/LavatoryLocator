@@ -11,5 +11,13 @@ Chris Rovillos
 Wil Sunseri
 David Swanson
 
+database is hosted at: 
+http://lavlocdb.herokuapp.com/
 
-Here is a short series of sentences describing the project. This project is cool. It will be the best project we do in this class. I am having so much fun!
+put query in text box for testing
+
+post request as string name="query" to http://lavlocdb.herokuapp.com/test.php
+
+#################################
+###don't forget the semicolon.###
+#################################
