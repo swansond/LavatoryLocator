@@ -17,3 +17,7 @@ http://lavlocdb.herokuapp.com/
 put query in text box for testing
 
 post request as string name="query" to http://lavlocdb.herokuapp.com/test.php
+
+Remeber to use single quotes around strings.
+
+The default team table is of the form firstname varchar(255), lastname varchar(255). 
