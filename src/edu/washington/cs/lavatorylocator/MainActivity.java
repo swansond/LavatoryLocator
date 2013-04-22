@@ -109,6 +109,7 @@ public class MainActivity extends Activity {
 				text.setText(display);
 				
 			} catch (Exception e) {
+				e.printStackTrace();
 				Toast.makeText(getApplicationContext(), "lol you goofed", Toast.LENGTH_LONG).show();
 			}
 		}
