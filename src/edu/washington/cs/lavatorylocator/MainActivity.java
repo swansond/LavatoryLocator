@@ -36,23 +36,23 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        query = (Button) findViewById(R.id.query);
-        text = (TextView) findViewById(R.id.text);
-        
-        query.setOnClickListener(new View.OnClickListener(){
-        	public void onClick(View view){
-        		text.setText("");
-        		try {
-        			query();
-        		} catch (ClientProtocolException e) {
-        			// TODO Auto-generated catch block
-        			e.printStackTrace();
-        		} catch (IOException e) {
-        			// TODO Auto-generated catch block
-        			e.printStackTrace();
-        		}
-        	}
-        });
+//        query = (Button) findViewById(R.id.query);
+//        text = (TextView) findViewById(R.id.text);
+//        
+//        query.setOnClickListener(new View.OnClickListener(){
+//        	public void onClick(View view){
+//        		text.setText("");
+//        		try {
+//        			query();
+//        		} catch (ClientProtocolException e) {
+//        			// TODO Auto-generated catch block
+//        			e.printStackTrace();
+//        		} catch (IOException e) {
+//        			// TODO Auto-generated catch block
+//        			e.printStackTrace();
+//        		}
+//        	}
+//        });
     }
 
     @Override
