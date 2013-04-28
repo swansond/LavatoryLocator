@@ -76,6 +76,43 @@ public class MainActivity extends Activity {
     }
     
     private class DatabaseQueryTask extends AsyncTask<HttpPost, Integer, HttpResponse>{
+    	
+		protected HttpResponse doInBackground(HttpPost... hp) {
+			HttpClient client = new DefaultHttpClient();
+	    	
+			//Maybe we should make the catch block look nicer. Or not. Whatever.
+	    	try {
+	    		return client.execute(hp[0]);
+			} catch (Exception e) {
+				return null;
+			}
+		}
+		
+		protected void onPostExecute(HttpResponse hr) {
+			//hr should contain the data received from the database server
+			//processing it is up to you
+			HttpEntity entity = hr.getEntity();
+			try{
+				String response = EntityUtils.toString(entity);
+				JSONArray js = new JSONArray(response);
+				
+				String display = "";
+				int i = 0;
+				while(!js.isNull(i)){
+					JSONArray name = js.getJSONArray(i);
+					for(int j = 0; j < name.length(); j++)
+						display += name.getString(j) + " ";
+					i++;
+					display += "\n";
+				}
+				
+				text.setText(display);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				Toast.makeText(getApplicationContext(), "lol you goofed", Toast.LENGTH_LONG).show();
+			}
+		}
         
         protected HttpResponse doInBackground(HttpPost... hp) {
             HttpClient client = new DefaultHttpClient();
