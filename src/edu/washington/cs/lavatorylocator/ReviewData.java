@@ -11,11 +11,11 @@ package edu.washington.cs.lavatorylocator;
  *
  */
 public class ReviewData {
-	private int reviewID;
-	private int authorID;
-	private int bathroomID;
-	private int rating;
-	private String review;
+	private final int reviewID;
+	private final int authorID;
+	private final int bathroomID;
+	private final int rating;
+	private final String review;
 	
 	
 	public ReviewData(int reviewID, int authorID, int bathroomID, int rating,

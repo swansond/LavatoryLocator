@@ -11,17 +11,17 @@ package edu.washington.cs.lavatorylocator;
  *
  */
 public class BathroomData {
-	private int bathroomID;
-	private char bathroomGender;
+	private final int bathroomID;
+	private final char bathroomGender;
 	
-	private String building;
-	private String floor;
-	private float longitude;
-	private float latitude;
+	private final String building;
+	private final String floor;
+	private final float longitude;
+	private final float latitude;
 	
-	private int numReviews;
-	private double avgRating;
-	
+	private final int numReviews;
+	private final double avgRating;
+
 	/**
 	 * Constructs a new BathroomData object.
 	 * 

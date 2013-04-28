@@ -8,8 +8,8 @@ package edu.washington.cs.lavatorylocator;
  *
  */
 class Coordinates {
-	private double longitude;
-	private double latitude;
+	private final double longitude;
+	private final double latitude;
 	
 	/**
 	 * Constructs a new Coordinates object at longitude x and latitude y.
