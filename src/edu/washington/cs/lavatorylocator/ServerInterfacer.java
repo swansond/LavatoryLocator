@@ -9,43 +9,43 @@ package edu.washington.cs.lavatorylocator;
  *
  */
 class ServerInterfacer {
-	//TODO: implement
-	static void bathroomSearch(String bldgName, String bathroomName,
-				int floor, Coordinates userLocation,
-				Coordinates searchLocation, int maxDist) {
-		
-	}
-	
-	//TODO: implement
-	static void getReviews(int bathroomID, int pageNo,
-				String category) {
-		
-	}
-	
-	//TODO: implement
-	static void requestAdd(Bathroom bathroom, int userID) {
-		
-	}
-	
-	//TODO: implement
-	static void requestUpdate(int bathroomID,
-				Bathroom newBathroom, int userID) {
-		
-	}
-	
-	//TODO: implement
-	static void requestDelete(int bathroomID, int userID) {
-		
-	}
-	
-	//TODO: implement
-	static void updateReview(int userID, int bathroomID, int rating,
-				String review) {
-		
-	}
-	
-	//TODO: implement
-	static void markAsHelpful(int userID, int reviewID) {
-		
-	}
+    //TODO: implement
+    static void bathroomSearch(String bldgName, String bathroomName,
+                                int floor, Coordinates userLocation,
+                                Coordinates searchLocation, int maxDist) {
+        
+    }
+    
+    //TODO: implement
+    static void getReviews(int bathroomID, int pageNo,
+                            String category) {
+        
+    }
+    
+    //TODO: implement
+    static void requestAdd(Bathroom bathroom, int userID) {
+        
+    }
+    
+    //TODO: implement
+    static void requestUpdate(int bathroomID,
+                                Bathroom newBathroom, int userID) {
+        
+    }
+    
+    //TODO: implement
+    static void requestDelete(int bathroomID, int userID) {
+        
+    }
+    
+    //TODO: implement
+    static void updateReview(int userID, int bathroomID, int rating,
+                            String review) {
+        
+    }
+    
+    //TODO: implement
+    static void markAsHelpful(int userID, int reviewID) {
+        
+    }
 }

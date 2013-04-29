@@ -11,68 +11,68 @@ package edu.washington.cs.lavatorylocator;
  *
  */
 public class Review {
-	private final int reviewID;
-	private final int authorID;
-	private final int bathroomID;
-	private final int rating;
-	private final String review;
-	
-	
-	public Review(int reviewID, int authorID, int bathroomID, int rating,
-					  String review) {
-		this.reviewID = reviewID;
-		this.authorID = authorID;
-		this.bathroomID = bathroomID;
-		this.rating = rating;
-		this.review = review;
-	}
-	
-	/**
-	 * Gets the database ID number of this review.
-	 * 
-	 * @return the the ID of this review in the database
-	 */
-	public int getReviewID() {
-		return reviewID;
-	}
-	
-	/**
-	 * Gets the database ID number of the user who wrote this review.
-	 * 
-	 * @return the the database ID number of the user who wrote this review
-	 */
-	public int getUserID() {
-		return authorID;
-	}
-	
-	/**
-	 * Gets the database ID number of the reviewed lavatory.
-	 * 
-	 * @return the the database ID number of the reviewed lavatory
-	 */
-	public int getBathroomID() {
-		return bathroomID;
-	}
+    private final int reviewID;
+    private final int authorID;
+    private final int bathroomID;
+    private final int rating;
+    private final String review;
+    
+    
+    public Review(int reviewID, int authorID, int bathroomID, int rating,
+                      String review) {
+        this.reviewID = reviewID;
+        this.authorID = authorID;
+        this.bathroomID = bathroomID;
+        this.rating = rating;
+        this.review = review;
+    }
+    
+    /**
+     * Gets the database ID number of this review.
+     * 
+     * @return the the ID of this review in the database
+     */
+    public int getReviewID() {
+        return reviewID;
+    }
+    
+    /**
+     * Gets the database ID number of the user who wrote this review.
+     * 
+     * @return the the database ID number of the user who wrote this review
+     */
+    public int getUserID() {
+        return authorID;
+    }
+    
+    /**
+     * Gets the database ID number of the reviewed lavatory.
+     * 
+     * @return the the database ID number of the reviewed lavatory
+     */
+    public int getBathroomID() {
+        return bathroomID;
+    }
 
-	/**
-	 * Gets the rating this review gives.
-	 * 
-	 * @return the rating this review gives
-	 */
-	public int getRating() {
-		return rating;
-	}	
-	
-	/**
-	 * Gets this review's review text.
-	 * 
-	 * @return this review's review text
-	 */
-	public String getReview() {
-		return review;
-	}
-	
-	public void markAsHelpful(int userID) {
-		ServerInterfacer.markAsHelpful(userID, reviewID);
-	}
+    /**
+     * Gets the rating this review gives.
+     * 
+     * @return the rating this review gives
+     */
+    public int getRating() {
+        return rating;
+    }    
+    
+    /**
+     * Gets this review's review text.
+     * 
+     * @return this review's review text
+     */
+    public String getReview() {
+        return review;
+    }
+    
+    public void markAsHelpful(int userID) {
+        ServerInterfacer.markAsHelpful(userID, reviewID);
+    }
 }
