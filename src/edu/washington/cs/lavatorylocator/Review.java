@@ -19,7 +19,7 @@ public class Review {
     
     
     public Review(int reviewID, int authorID, int bathroomID, int rating,
-                      String review) {
+            String review) {
         this.reviewID = reviewID;
         this.authorID = authorID;
         this.bathroomID = bathroomID;

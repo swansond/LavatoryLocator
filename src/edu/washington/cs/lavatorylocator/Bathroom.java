@@ -33,7 +33,7 @@ public class Bathroom {
      * @param numRev the number of reviews the bathroom has
      */
     public Bathroom(int id, char gender, String build, String flr,
-                        Coordinates loc, int numRev, double rating) {
+            Coordinates loc, int numRev, double rating) {
         bathroomID = id;
         bathroomGender = gender;
         building = build;

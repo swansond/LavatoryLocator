@@ -11,14 +11,14 @@ package edu.washington.cs.lavatorylocator;
 class ServerInterfacer {
     //TODO: implement
     static void bathroomSearch(String bldgName, String bathroomName,
-                                int floor, Coordinates userLocation,
-                                Coordinates searchLocation, int maxDist) {
+            int floor, Coordinates userLocation,
+            Coordinates searchLocation, int maxDist) {
         
     }
     
     //TODO: implement
     static void getReviews(int bathroomID, int pageNo,
-                            String category) {
+            String category) {
         
     }
     
@@ -29,7 +29,7 @@ class ServerInterfacer {
     
     //TODO: implement
     static void requestUpdate(int bathroomID,
-                                Bathroom newBathroom, int userID) {
+            Bathroom newBathroom, int userID) {
         
     }
     
@@ -40,7 +40,7 @@ class ServerInterfacer {
     
     //TODO: implement
     static void updateReview(int userID, int bathroomID, int rating,
-                            String review) {
+            String review) {
         
     }
     
