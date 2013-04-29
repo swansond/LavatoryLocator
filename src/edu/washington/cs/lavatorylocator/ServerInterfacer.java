@@ -23,13 +23,13 @@ class ServerInterfacer {
 	}
 	
 	//TODO: implement
-	static void requestAdd(BathroomData bathroom, int userID) {
+	static void requestAdd(Bathroom bathroom, int userID) {
 		
 	}
 	
 	//TODO: implement
 	static void requestUpdate(int bathroomID,
-										BathroomData newBathroom, int userID) {
+										Bathroom newBathroom, int userID) {
 		
 	}
 	
