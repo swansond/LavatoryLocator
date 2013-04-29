@@ -16,8 +16,7 @@ public class Bathroom {
 	
 	private final String building;
 	private final String floor;
-	private final float longitude;
-	private final float latitude;
+	private final Coordinates location;
 	
 	private final int numReviews;
 	private final double avgRating;
@@ -34,13 +33,12 @@ public class Bathroom {
 	 * @param numRev the number of reviews the bathroom has
 	 */
 	public Bathroom(int id, char gender, String build, String flr,
-						float lon, float lat, int numRev, double rating) {
+						Coordinates loc, int numRev, double rating) {
 		bathroomID = id;
 		bathroomGender = gender;
 		building = build;
 		floor = flr;
-		longitude = lon;
-		latitude = lat;
+		location = loc;
 		numReviews = numRev;
 		avgRating = rating;
 	}
@@ -89,7 +87,7 @@ public class Bathroom {
 	 * @return the longitude of this bathroom
 	 */
 	public float getLongitude() {
-		return longitude;
+		return location.getLongitude();
 	}
 
 	/**
@@ -98,7 +96,7 @@ public class Bathroom {
 	 * @return the latitude of this bathroom
 	 */
 	public float getLatitude() {
-		return latitude;
+		return location.getLatitude();
 	}
 
 	/**
