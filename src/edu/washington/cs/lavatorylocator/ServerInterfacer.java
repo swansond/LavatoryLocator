@@ -12,7 +12,7 @@ class ServerInterfacer {
     //TODO: implement
     static void bathroomSearch(String bldgName, String bathroomName,
             int floor, Coordinates userLocation,
-            Coordinates searchLocation, int maxDist) {
+            Coordinates searchLocation, int maxDist, String category) {
         
     }
     
