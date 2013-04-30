@@ -11,7 +11,7 @@ package edu.washington.cs.lavatorylocator;
 class ServerInterfacer {
     //TODO: implement
     static void bathroomSearch(String bldgName, String bathroomName,
-            int floor, Coordinates userLocation,
+            String floor, Coordinates userLocation,
             Coordinates searchLocation, int maxDist, String category) {
         
     }

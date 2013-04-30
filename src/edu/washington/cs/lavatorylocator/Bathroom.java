@@ -86,7 +86,7 @@ public class Bathroom {
      * 
      * @return the longitude of this bathroom
      */
-    public float getLongitude() {
+    public double getLongitude() {
         return location.getLongitude();
     }
 
@@ -95,7 +95,7 @@ public class Bathroom {
      * 
      * @return the latitude of this bathroom
      */
-    public float getLatitude() {
+    public double getLatitude() {
         return location.getLatitude();
     }
 
