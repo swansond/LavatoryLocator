@@ -44,12 +44,20 @@
             android:value="AIzaSyB9ZBl72fsmGyL5BKZ8En2Hio2dpQm9sjA" />
 
         <activity
-            android:name="edu.washington.cs.lavatorylocator.LavatoryDetail"
+            android:name="edu.washington.cs.lavatorylocator.LavatoryDetailActivity"
             android:label="@string/title_activity_lavatory_detail"
             android:parentActivityName="edu.washington.cs.lavatorylocator.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.washington.cs.lavatorylocator.MainActivity" />
+        </activity>
+        <activity
+            android:name="edu.washington.cs.lavatorylocator.AddReviewActivity"
+            android:label="@string/title_activity_add_review"
+            android:parentActivityName="edu.washington.cs.lavatorylocator.LavatoryDetailActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.washington.cs.lavatorylocator.LavatoryDetail" />
         </activity>
     </application>
 

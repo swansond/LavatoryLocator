@@ -6,12 +6,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
-public class LavatoryDetail extends Activity {
+public class AddReviewActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_lavatory_detail);
+		setContentView(R.layout.activity_add_review);
 		// Show the Up button in the action bar.
 		setupActionBar();
 	}
@@ -28,7 +28,7 @@ public class LavatoryDetail extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.lavatory_detail, menu);
+		getMenuInflater().inflate(R.menu.add_review, menu);
 		return true;
 	}
 
