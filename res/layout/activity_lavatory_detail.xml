@@ -25,9 +25,10 @@
 
     <RatingBar
         android:id="@+id/lavatory_detail_rating"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:numStars="@integer/num_review_stars" />
+        android:numStars="@integer/num_review_stars"
+        style="?android:attr/ratingBarStyleIndicator" />
 
     <TextView
         android:id="@+id/add_review_user_name"
@@ -35,6 +36,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/location" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/lavatory_detail_reviews_section_header"

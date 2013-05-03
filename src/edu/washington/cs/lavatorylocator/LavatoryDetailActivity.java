@@ -18,6 +18,8 @@ public class LavatoryDetailActivity extends Activity {
 	 */
 	public void addReview(MenuItem item) {
         //TODO
+		Intent intent = new Intent(this, AddReviewActivity.class);
+        startActivity(intent);
     }
 	
 	@Override

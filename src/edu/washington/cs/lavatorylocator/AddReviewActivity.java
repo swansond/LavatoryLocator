@@ -8,6 +8,14 @@ import android.support.v4.app.NavUtils;
 
 public class AddReviewActivity extends Activity {
 
+	public void addReview(MenuItem item) {
+		
+	}
+	
+	public void cancel(MenuItem item) {
+		
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

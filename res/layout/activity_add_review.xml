@@ -13,17 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <QuickContactBadge
-            android:id="@+id/add_review_user_contact_badge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="@dimen/activity_horizontal_margin" />
-
         <TextView
             android:id="@+id/add_review_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Large Text"
+            android:text="@string/you"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
     </LinearLayout>
@@ -39,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="@string/review_text"
         android:inputType="textMultiLine" >
 
         <requestFocus />

@@ -55,6 +55,7 @@
         <activity
             android:name="edu.washington.cs.lavatorylocator.AddReviewActivity"
             android:label="@string/title_activity_add_review"
+            android:windowSoftInputMode="stateAlwaysVisible"
             android:parentActivityName="edu.washington.cs.lavatorylocator.LavatoryDetailActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
