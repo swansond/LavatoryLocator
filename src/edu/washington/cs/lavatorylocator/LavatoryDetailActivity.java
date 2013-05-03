@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
 public class LavatoryDetailActivity extends Activity {
@@ -18,6 +19,12 @@ public class LavatoryDetailActivity extends Activity {
 		
 		//Intent intent = getIntent();
 		//Bathroom bathroom = intent.getParcelableExtra(MainActivity.BATHROOM);
+		Bathroom bathroom = new Bathroom(0, '0', "test", "test", new Coordinates(1,1), 0, 0);
+		
+		TextView lavatoryNameView = (TextView) findViewById(R.id.lavatoryName);
+		String lavatoryName = bathroom.getBuilding() + ", floor: " + bathroom.getFloor();
+		lavatoryNameView.setText(lavatoryName);
+		
 		
 	}
 
