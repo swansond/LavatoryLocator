@@ -10,16 +10,14 @@ import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
 public class LavatoryDetailActivity extends Activity {
-	
 	/**
 	 * Goes to the AddReviewActivity, giving it information about the bathroom
 	 * being displayed.
 	 * 
-	 * @param view the view that triggered this action
+	 * @param item the MenuItem that was clicked
 	 */
-	public void addReview(View view) {
-        Intent intent = new Intent(this, LavatoryDetailActivity.class);
-        startActivity(intent);
+	public void addReview(MenuItem item) {
+        //TODO
     }
 	
 	@Override
@@ -33,7 +31,7 @@ public class LavatoryDetailActivity extends Activity {
 		//Bathroom bathroom = intent.getParcelableExtra(MainActivity.BATHROOM);
 		Bathroom bathroom = new Bathroom(0, '0', "test", "test", new Coordinates(1,1), 0, 0);
 		
-		TextView lavatoryNameView = (TextView) findViewById(R.id.lavatoryName);
+		TextView lavatoryNameView = (TextView) findViewById(R.id.lavatory_detail_name_text);
 		String lavatoryName = bathroom.getBuilding() + ", floor: " + bathroom.getFloor();
 		lavatoryNameView.setText(lavatoryName);
 		
@@ -49,7 +47,6 @@ public class LavatoryDetailActivity extends Activity {
 
 	}
 	
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

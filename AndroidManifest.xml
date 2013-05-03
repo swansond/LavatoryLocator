@@ -46,6 +46,7 @@
         <activity
             android:name="edu.washington.cs.lavatorylocator.LavatoryDetailActivity"
             android:label="@string/title_activity_lavatory_detail"
+            uiOptions="splitActionBarWhenNarrow"
             android:parentActivityName="edu.washington.cs.lavatorylocator.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

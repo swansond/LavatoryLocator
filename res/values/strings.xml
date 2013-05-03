@@ -9,5 +9,7 @@
     <string name="got2go">Got2Go</string>
     <string name="title_activity_add_review">AddReviewActivity</string>
     <string name="edit_lavatory_detail">Edit Lavatory Detail</string>
+    <string name="location">Location</string>
+    <string name="reviews">Reviews</string>
 
 </resources>
