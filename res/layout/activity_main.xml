@@ -14,8 +14,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:onClick="goToLavatoryDetailActivity"
-        android:text="Go to Lavatory Detail screen" />
+        android:onClick="goToSearchResultsListActivity"
+        android:text="Go to list of search results" />
 
     <ListView
         android:id="@+id/lavatory_detail_reviews_list"

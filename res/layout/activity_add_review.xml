@@ -1,17 +1,17 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".AddReviewActivity" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin" >
 
         <TextView
             android:id="@+id/add_review_user_name"
@@ -20,23 +20,22 @@
             android:text="@string/you"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
+        <RatingBar
+            android:id="@+id/add_review_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="@integer/num_review_stars" />
+
+        <EditText
+            android:id="@+id/add_review_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/review_text"
+            android:inputType="textMultiLine" >
+
+            <requestFocus />
+        </EditText>
     </LinearLayout>
 
-    <RatingBar
-        android:id="@+id/add_review_rating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:numStars="@integer/num_review_stars" />
-
-    <EditText
-        android:id="@+id/add_review_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/review_text"
-        android:inputType="textMultiLine" >
-
-        <requestFocus />
-    </EditText>
-
-</LinearLayout>
+</ScrollView>
