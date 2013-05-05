@@ -2,10 +2,8 @@ package edu.washington.cs.lavatorylocator;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Context;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 
 /**
@@ -15,29 +13,24 @@ import android.support.v4.app.NavUtils;
  * 
  */
 public class AddLavatoryActivity extends Activity {
-
+    
+    /**
+     * Starts submitting the new lavatory to the LavatoryLocator service.
+     * 
+     * @param item
+     *            the <code>MenuItem</code> that was selected
+     */
+    public void addLavatory(MenuItem item) {
+        // TODO: implement
+    }
+    
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_lavatory);
         // Show the Up button in the action bar.
         setupActionBar();
-    }
-
-    /**
-     * Goes to the <code>SettingsActivity</code>.
-     * 
-     * @param item
-     *            the <code>MenuItem</code> that was selected
-     */
-    public void goToSettingsActivity(MenuItem item) {
-        // TODO: implement; remove stub message
-        Context context = getApplicationContext();
-        CharSequence notImplementedMessage = "Settings are not implemented yet!";
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, notImplementedMessage, duration);
-        toast.show();
     }
 
     /**

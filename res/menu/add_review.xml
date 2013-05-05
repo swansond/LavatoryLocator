@@ -1,4 +1,10 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" ><item android:id="@+id/action_add_review" android:showAsAction="always" android:title="@string/title_activity_add_review" android:icon="@drawable/ic_action_new"></item>
-    
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_add_review"
+        android:icon="@drawable/ic_action_new"
+        android:showAsAction="always"
+        android:title="@string/title_activity_add_review">
+    </item>
 
 </menu>
