@@ -14,10 +14,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 
 /**
- * Activity for viewing information about a specific lavatory.
+ * <code>Activity</code> for viewing information about a specific lavatory.
  * 
  * @author Chris Rovillos
  * 
@@ -25,15 +26,50 @@ import android.support.v4.app.NavUtils;
 public class LavatoryDetailActivity extends ListActivity {
 
     /**
-     * Goes to the AddReviewActivity, giving it information about the bathroom
-     * being displayed.
+     * Goes to the <code>AddReviewActivity</code> to allow the user to add a
+     * review about the current lavatory.
      * 
-     * @param item the MenuItem that was clicked
+     * @param item
+     *            the <code>MenuItem</code> that was selected
      */
-    public void addReview(MenuItem item) {
-        // TODO: pass current Bathroom object to AddReviewActivity; Bathroom needs to be made Parcelable first
+    public void goToAddReviewActivity(MenuItem item) {
+        // TODO: pass current Bathroom object to AddReviewActivity; Bathroom
+        // needs to be made Parcelable first
         Intent intent = new Intent(this, AddReviewActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * Goes to the <code>EditLavatoryDetailActivity</code> to allow the user to
+     * edit the current lavatory's information.
+     * 
+     * @param item
+     *            the <code>MenuItem</code> that was selected
+     */
+    public void goToEditLavatoryDetailActivity(MenuItem item) {
+        // TODO: implement; remove stub message
+        Context context = getApplicationContext();
+        CharSequence notImplementedMessage = "Edit Lavatory Detail is not implemented yet!";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, notImplementedMessage, duration);
+        toast.show();
+    }
+
+    /**
+     * Goes to the <code>SettingsActivity</code>.
+     * 
+     * @param item
+     *            the <code>MenuItem</code> that was selected
+     */
+    public void goToSettingsActivity(MenuItem item) {
+        // TODO: implement; remove stub message
+        Context context = getApplicationContext();
+        CharSequence notImplementedMessage = "Settings are not implemented yet!";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, notImplementedMessage, duration);
+        toast.show();
     }
 
     @Override
@@ -55,15 +91,21 @@ public class LavatoryDetailActivity extends ListActivity {
                         new Review(2, 2, 97, 3, "OK."),
                         new Review(3, 3, 48, 5, "Amazing!"),
                         new Review(4, 4, 2, 4, "Good!"),
-                        new Review(5, 5, 106, 5,
-                                "Amazing! Amazing! Amazing! Amazing! Amazing! " +
-                                "Amazing! Amazing! Amazing! Amazing! Amazing! " +
-                                "Amazing! Amazing! Amazing! Amazing! Amazing! "));
-        
-        getListView().setFocusable(false); // TODO: remove when ReviewDetailActivity is implemented
-        
+                        new Review(
+                                5,
+                                5,
+                                106,
+                                5,
+                                "Amazing! Amazing! Amazing! Amazing! Amazing! "
+                                        + "Amazing! Amazing! Amazing! Amazing! Amazing! "
+                                        + "Amazing! Amazing! Amazing! Amazing! Amazing! "));
+
+        getListView().setFocusable(false); // TODO: remove when
+                                           // ReviewDetailActivity is
+                                           // implemented
+
         setTitle("Lavatory " + bathroom.getBathroomID());
-        
+
         View headerView = getLayoutInflater().inflate(
                 R.layout.activity_lavatory_detail_header, null);
         ((TextView) headerView.findViewById(R.id.lavatory_detail_name_text))
@@ -112,7 +154,9 @@ public class LavatoryDetailActivity extends ListActivity {
     }
 
     /**
-     * Adapter for displaying an array of Review objects.
+     * Custom <code>Adapter</code> for displaying an array of
+     * <code>Review</code>s. Creates a custom <code>View</code> for each review
+     * row.
      * 
      * @author Chris Rovillos
      * 
@@ -121,11 +165,26 @@ public class LavatoryDetailActivity extends ListActivity {
 
         private List<Review> reviews;
 
-        // TODO: comments
-        public LavatoryDetailAdapter(Context context, int resource,
-                int textViewResourceId, List<Review> objects) {
-            super(context, resource, textViewResourceId, objects);
-            this.reviews = objects;
+        /**
+         * Constructs a new <code>LavatoryDetailAdapter</code> with given
+         * <code>List</code> of <code>Review</code>s.
+         * 
+         * @param context
+         *            the current context
+         * @param reviewRowResource
+         *            the resource ID for a layout file containing the review
+         *            row layout to use when instantiating views
+         * @param reviewAuthorTextViewResourceId
+         *            the id of the <code>TextView</code> for displaying the
+         *            reviewer's name in each row
+         * @param reviews
+         *            a <code>List</code> of <code>Review</code>s to display
+         */
+        public LavatoryDetailAdapter(Context context, int reviewRowResource,
+                int reviewAuthorTextViewResourceId, List<Review> reviews) {
+            super(context, reviewRowResource, reviewAuthorTextViewResourceId,
+                    reviews);
+            this.reviews = reviews;
         }
 
         @Override
