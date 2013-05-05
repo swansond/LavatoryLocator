@@ -26,4 +26,13 @@ public class ReviewData {
         this.rating = rating;
         this.review = review;
     }
+    
+    @Override
+    public String toString() {
+        return "Review ID: " + reviewID + "\n\t" +
+            "Author ID: " + authorID + "\n\t" +
+            "Bathroom ID: " + bathroomID + "\n\t" +
+            "Rating: " + rating + "\n\t" +
+            "Review Text: " + review;
+    }
 }
