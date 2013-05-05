@@ -31,7 +31,7 @@ public class LavatoryDetailActivity extends ListActivity {
      * @param item the MenuItem that was clicked
      */
     public void addReview(MenuItem item) {
-        // TODO
+        // TODO: pass current Bathroom object to AddReviewActivity; Bathroom needs to be made Parcelable first
         Intent intent = new Intent(this, AddReviewActivity.class);
         startActivity(intent);
     }
