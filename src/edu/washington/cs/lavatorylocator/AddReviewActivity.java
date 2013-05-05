@@ -2,10 +2,8 @@ package edu.washington.cs.lavatorylocator;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Context;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 
 /**
@@ -24,22 +22,6 @@ public class AddReviewActivity extends Activity {
      */
     public void addReview(MenuItem item) {
         // TODO: implement
-    }
-
-    /**
-     * Goes to the <code>SettingsActivity</code>.
-     * 
-     * @param item
-     *            the <code>MenuItem</code> that was selected
-     */
-    public void goToSettingsActivity(MenuItem item) {
-        // TODO: implement; remove stub message
-        Context context = getApplicationContext();
-        CharSequence notImplementedMessage = "Settings are not implemented yet!";
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, notImplementedMessage, duration);
-        toast.show();
     }
 
     @Override
