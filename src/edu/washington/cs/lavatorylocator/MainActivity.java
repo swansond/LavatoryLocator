@@ -57,9 +57,9 @@ public class MainActivity extends Activity {
 //        });
     }
     
-    //TODO: for testing before the results list is implement; remove when it is
-    public void goToLavatoryDetailActivity(View view) {
-        Intent intent = new Intent(this, LavatoryDetailActivity.class);
+    //TODO: for testing before the results list is implemented; remove when it is
+    public void goToSearchResultsListActivity(View view) {
+        Intent intent = new Intent(this, ListViewActivity.class);
         startActivity(intent);
     }
 

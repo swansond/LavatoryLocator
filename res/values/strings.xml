@@ -14,5 +14,7 @@
     <string name="you">You</string>
     <string name="review_text">Review Text</string>
     <string name="title_activity_add_lavatory">AddLavatoryActivity</string>
+    <string name="title_activity_list_view">ListViewActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
