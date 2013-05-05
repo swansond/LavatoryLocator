@@ -1,33 +1,26 @@
 package edu.washington.cs.lavatorylocator;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import java.io.UnsupportedEncodingException;
+import java.util.LinkedList;
 import java.util.List;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity 
+        implements LoaderManager.LoaderCallbacks<List<LavatoryData>>{
     
     Button query;
     TextView text;
@@ -69,7 +62,102 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-            
+    
+    @Override
+    public Loader<List<LavatoryData>> onCreateLoader(int id, Bundle args) {
+        return new LavSearchLoader(getApplicationContext(), args);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<LavatoryData>> loader,
+            List<LavatoryData> lavatories) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<LavatoryData>> loader) {
+        // TODO Auto-generated method stub
+        
+    }
+        
+    //queries the server for lavatories that meet the passed parameters
+    private void lavatorySearch(String bldgName, String lavaName, 
+            String floor, String roomNumber, String locationLong, 
+            String locationLat, String maxDist, String minRating,
+            String lavaType) {
+        Bundle args = new Bundle(9);
+
+        //set up the request
+        if (!bldgName.equals("")) {
+            args.putString("bldgName", bldgName);
+        }
+        if (!lavaName.equals("")) {
+            args.putString("lavaName", lavaName);
+        }
+        if (!floor.equals("")) {
+            args.putString("floor", floor);
+        }
+        if (!roomNumber.equals("")) {
+            args.putString("roomNumber", roomNumber);
+        }
+        if (!locationLong.equals("")) {
+            args.putString("locationLong", locationLong);
+        }
+        if (!locationLat.equals("")) {
+            args.putString("locationLat", locationLat);
+        }
+        if (!maxDist.equals("")) {
+            args.putString("maxDist", maxDist);
+        }
+        if (!minRating.equals("")) {
+            args.putString("minRating", minRating);
+        }
+        if (!lavaType.equals("")) {
+            args.putString("lavaType", lavaType);
+        }
+
+        //and finally pass it to the loader to be sent to the server
+        getLoaderManager().initLoader(0, args, 
+                (LoaderCallbacks<List<ReviewData>>) this);
+    }
+    
+    //TODO: put this in the AddLavatoryActivity once it exists
+    //sends the information about the bathroom to be added to the server
+    private void requestAddLavatory(String uid, String buildingName,
+            String roomNumber, String floor, String lavaType, String longitude,
+            String latitude) throws UnsupportedEncodingException {
+        //set up the request
+        String URL = "http://lavlocdb.herokuapp.com/addlava.php";
+        HttpPost hp = new HttpPost(URL);
+        List<NameValuePair> paramList = new LinkedList<NameValuePair>();
+        if (!uid.equals("")) {
+            paramList.add(new BasicNameValuePair("uid", uid));
+        }
+        if (!buildingName.equals("")) {
+            paramList.add(new BasicNameValuePair("buildingName", buildingName));
+        }
+        if (!roomNumber.equals("")) {
+            paramList.add(new BasicNameValuePair("roomNumber", roomNumber));
+        }
+        if (!floor.equals("")) {
+            paramList.add(new BasicNameValuePair("floor", floor));
+        }
+        if (!lavaType.equals("")) {
+            paramList.add(new BasicNameValuePair("lavaType", lavaType));
+        }
+        if (!longitude.equals("")) {
+            paramList.add(new BasicNameValuePair("longitude", longitude));
+        }
+        if (!latitude.equals("")) {
+            paramList.add(new BasicNameValuePair("latitude", latitude));
+        }
+        hp.setEntity(new UrlEncodedFormEntity(paramList, "UTF-8"));
+        
+        //and finally pass it another string to be send to the server
+        new RequestAddLavTask().execute(hp);
+    }
+    /*
     private void query() throws ClientProtocolException, IOException {
         //sets up httpPost to be executed by another string
         HttpPost httpPost = new HttpPost("http://lavlocdb.herokuapp.com/test.php");
@@ -77,7 +165,6 @@ public class MainActivity extends Activity {
         //adds the parameters
         List<NameValuePair> paramList = new ArrayList<NameValuePair>();
         paramList.add(new BasicNameValuePair("query", "select * from team"));
-//        paramList.add(new BasicNameValuePair("query", "insert into team values ('Scotch', 'Pilgrim')"));
         httpPost.setEntity(new UrlEncodedFormEntity(paramList, "UTF-8"));
         
         new DatabaseQueryTask().execute(httpPost);
@@ -121,7 +208,9 @@ public class MainActivity extends Activity {
 				Toast.makeText(getApplicationContext(), "lol you goofed", Toast.LENGTH_LONG).show();
 			}
 		}
-    }
+    } */
+
+
 }
 
 

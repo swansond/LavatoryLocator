@@ -1,5 +1,14 @@
 package edu.washington.cs.lavatorylocator;
 
+import java.io.UnsupportedEncodingException;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.message.BasicNameValuePair;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -55,6 +64,29 @@ public class AddReviewActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	//sends a new review to the server
+	private void updateReview(String uid, String lid, String rating,
+	        String review) throws UnsupportedEncodingException {
+	    //set up the request
+	    String URL = "http://lavlocdb.herokuapp.com/submitreview.php";
+        HttpPost hp = new HttpPost(URL);
+        List<NameValuePair> paramList = new LinkedList<NameValuePair>();
+        if (!uid.equals("")) {
+            paramList.add(new BasicNameValuePair("uid", uid));
+        }
+        if (!lid.equals("")) {
+            paramList.add(new BasicNameValuePair("lid", lid));
+        }
+        if (!rating.equals("")) {
+            paramList.add(new BasicNameValuePair("rating", rating));
+        }
+        
+        hp.setEntity(new UrlEncodedFormEntity(paramList, "UTF-8"));
+        
+        //and finally pass it another string to be send to the server
+        new UpdateReviewTask().execute(hp);
 	}
 
 }
