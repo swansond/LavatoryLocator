@@ -14,5 +14,6 @@
     <string name="cancel">Cancel</string>
     <string name="you">You</string>
     <string name="review_text">Review Text</string>
+    <string name="title_activity_add_lavatory">AddLavatoryActivity</string>
 
 </resources>

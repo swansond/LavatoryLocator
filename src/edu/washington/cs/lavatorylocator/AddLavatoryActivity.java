@@ -6,16 +6,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
-public class AddReviewActivity extends Activity {
+public class AddLavatoryActivity extends Activity {
 
-	public void addReview(MenuItem item) {
-		
-	}
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_add_review);
+		setContentView(R.layout.activity_add_lavatory);
 		// Show the Up button in the action bar.
 		setupActionBar();
 	}
@@ -32,7 +28,7 @@ public class AddReviewActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.add_review, menu);
+		getMenuInflater().inflate(R.menu.add_lavatory, menu);
 		return true;
 	}
 
@@ -47,9 +43,6 @@ public class AddReviewActivity extends Activity {
 			//
 			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
 			//
-			
-			//TODO: save entered review as a draft when user navigates away
-			
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}
