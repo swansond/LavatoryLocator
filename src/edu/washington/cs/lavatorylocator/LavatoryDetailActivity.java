@@ -60,7 +60,7 @@ public class LavatoryDetailActivity extends ListActivity {
                                 "Amazing! Amazing! Amazing! Amazing! Amazing! " +
                                 "Amazing! Amazing! Amazing! Amazing! Amazing! "));
         
-        getListView().setClickable(false); // TODO: remove when ReviewDetailActivity is implemented
+        getListView().setFocusable(false); // TODO: remove when ReviewDetailActivity is implemented
         
         setTitle("Lavatory " + bathroom.getBathroomID());
         
