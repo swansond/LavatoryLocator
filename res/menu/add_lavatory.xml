@@ -1,10 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_add_review"
+        android:id="@+id/action_add_lavatory"
         android:icon="@drawable/ic_action_new"
         android:showAsAction="always"
-        android:title="@string/title_activity_add_review">
+        android:title="@string/title_activity_add_lavatory" android:onClick="addLavatory">
     </item>
 
 </menu>

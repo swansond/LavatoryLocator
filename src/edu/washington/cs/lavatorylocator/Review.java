@@ -75,4 +75,13 @@ public class Review {
     public void markAsHelpful(int userID) {
         ServerInterfacer.markAsHelpful(userID, reviewID);
     }
+    
+    @Override
+    public String toString() {
+        return "Review ID: " + reviewID + "\n\t" +
+            "Author ID: " + authorID + "\n\t" +
+            "Bathroom ID: " + bathroomID + "\n\t" +
+            "Rating: " + rating + "\n\t" +
+            "Review Text: " + review;
+    }
 }
