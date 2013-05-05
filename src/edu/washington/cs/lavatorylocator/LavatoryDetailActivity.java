@@ -1,21 +1,34 @@
 package edu.washington.cs.lavatorylocator;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.List;
 
 import android.os.Bundle;
-import android.app.Activity;
+import android.app.ListActivity;
+import android.content.Context;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
-public class LavatoryDetailActivity extends Activity 
-implements LoaderManager.LoaderCallbacks<List<ReviewData>> {
+/**
+ * Activity for viewing information about a specific lavatory.
+ * 
+ * @author Chris Rovillos
+ * 
+ */
+public class LavatoryDetailActivity extends ListActivity 
+        implements LoaderManager.LoaderCallbacks<List<ReviewData>> {
+
     /**
      * Goes to the AddReviewActivity, giving it information about the bathroom
      * being displayed.
@@ -23,7 +36,7 @@ implements LoaderManager.LoaderCallbacks<List<ReviewData>> {
      * @param item the MenuItem that was clicked
      */
     public void addReview(MenuItem item) {
-        //TODO
+        // TODO: pass current Bathroom object to AddReviewActivity; Bathroom needs to be made Parcelable first
         Intent intent = new Intent(this, AddReviewActivity.class);
         startActivity(intent);
     }
@@ -37,13 +50,38 @@ implements LoaderManager.LoaderCallbacks<List<ReviewData>> {
 
         //Intent intent = getIntent();
         //Bathroom bathroom = intent.getParcelableExtra(MainActivity.BATHROOM);
-        LavatoryData testLav 
-        = new LavatoryData(0, '0', "test", "test", "test", 1, 1, 0, 0);
+        LavatoryData testLav = new LavatoryData(1, 'M', "Mary Gates Hall", 
+                "3", "rmNo", 1, 2, 5, 2.5);
 
-        TextView lavatoryNameView 
-        = (TextView) findViewById(R.id.lavatory_detail_name_text);
-        String lavatoryName = testLav.building + ", floor: " + testLav.floor;
-        lavatoryNameView.setText(lavatoryName);
+        List<ReviewData> reviews = Arrays
+                .asList(new ReviewData(0, 0, 0, 5, "lavatory 1"),
+                new ReviewData(1, 1, 26, 1, "Bad!"),
+                new ReviewData(2, 2, 97, 3, "OK."),
+                new ReviewData(3, 3, 48, 5, "Amazing!"),
+                new ReviewData(4, 4, 2, 4, "Good!"),
+                new ReviewData(5, 5, 106, 5,
+                        "Amazing! Amazing! Amazing! Amazing! Amazing! " +
+                        "Amazing! Amazing! Amazing! Amazing! Amazing! " +
+                        "Amazing! Amazing! Amazing! Amazing! Amazing! "));
+        
+        getListView().setFocusable(false); // TODO: remove when ReviewDetailActivity is implemented
+        
+        setTitle("Lavatory " + testLav.lavatoryID);
+        
+        View headerView = getLayoutInflater().inflate(
+                R.layout.activity_lavatory_detail_header, null);
+        ((TextView) headerView.findViewById(R.id.lavatory_detail_name_text))
+                .setText("Lavatory " + testLav.lavatoryID);
+        ((TextView) headerView.findViewById(R.id.lavatory_detail_building_text))
+                .setText(testLav.building);
+        ((RatingBar) headerView.findViewById(R.id.lavatory_detail_rating))
+                .setRating((float) testLav.avgRating);
+        getListView().addHeaderView(headerView, null, false);
+
+        LavatoryDetailAdapter adapter = new LavatoryDetailAdapter(this,
+                R.layout.review_row, R.id.review_author, reviews);
+
+        getListView().setAdapter(adapter);
 
     }
 
@@ -51,9 +89,7 @@ implements LoaderManager.LoaderCallbacks<List<ReviewData>> {
      * Set up the {@link android.app.ActionBar}.
      */
     private void setupActionBar() {
-
         getActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     @Override
@@ -138,6 +174,42 @@ implements LoaderManager.LoaderCallbacks<List<ReviewData>> {
         //and finally pass it to the loader to be sent to the server
         getLoaderManager().initLoader(2, args, 
                 (LoaderCallbacks<List<ReviewData>>) this);
+    }
+    
+    /**
+     * Adapter for displaying an array of Review objects.
+     * 
+     * @author Chris Rovillos
+     * 
+     */
+    private class LavatoryDetailAdapter extends ArrayAdapter<ReviewData> {
+
+        private List<ReviewData> reviews;
+
+        // TODO: comments
+        public LavatoryDetailAdapter(Context context, int resource,
+                int textViewResourceId, List<ReviewData> objects) {
+            super(context, resource, textViewResourceId, objects);
+            this.reviews = objects;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = getLayoutInflater().inflate(R.layout.review_row,
+                        parent, false);
+            }
+
+            ((RatingBar) convertView.findViewById(R.id.review_stars))
+                    .setRating(reviews.get(position).rating);
+            ((TextView) convertView.findViewById(R.id.review_author))
+                    .setText("User " + reviews.get(position).authorID);
+            ((TextView) convertView.findViewById(R.id.review_text))
+                    .setText(reviews.get(position).review);
+
+            return convertView;
+        }
+
     }
 
 }

@@ -122,41 +122,7 @@ public class MainActivity extends Activity
                 (LoaderCallbacks<List<ReviewData>>) this);
     }
     
-    //TODO: put this in the AddLavatoryActivity once it exists
-    //sends the information about the bathroom to be added to the server
-    private void requestAddLavatory(String uid, String buildingName,
-            String roomNumber, String floor, String lavaType, String longitude,
-            String latitude) throws UnsupportedEncodingException {
-        //set up the request
-        String URL = "http://lavlocdb.herokuapp.com/addlava.php";
-        HttpPost hp = new HttpPost(URL);
-        List<NameValuePair> paramList = new LinkedList<NameValuePair>();
-        if (!uid.equals("")) {
-            paramList.add(new BasicNameValuePair("uid", uid));
-        }
-        if (!buildingName.equals("")) {
-            paramList.add(new BasicNameValuePair("buildingName", buildingName));
-        }
-        if (!roomNumber.equals("")) {
-            paramList.add(new BasicNameValuePair("roomNumber", roomNumber));
-        }
-        if (!floor.equals("")) {
-            paramList.add(new BasicNameValuePair("floor", floor));
-        }
-        if (!lavaType.equals("")) {
-            paramList.add(new BasicNameValuePair("lavaType", lavaType));
-        }
-        if (!longitude.equals("")) {
-            paramList.add(new BasicNameValuePair("longitude", longitude));
-        }
-        if (!latitude.equals("")) {
-            paramList.add(new BasicNameValuePair("latitude", latitude));
-        }
-        hp.setEntity(new UrlEncodedFormEntity(paramList, "UTF-8"));
-        
-        //and finally pass it another string to be send to the server
-        new RequestAddLavTask().execute(hp);
-    }
+
     /*
     private void query() throws ClientProtocolException, IOException {
         //sets up httpPost to be executed by another string
