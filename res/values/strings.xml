@@ -3,5 +3,16 @@
 
     <string name="app_name">LavatoryLocator</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_lavatory_detail">Lavatory Detail</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="search_button">Search</string>
+    <string name="got2go">Got2Go</string>
+    <string name="title_activity_add_review">Add Review</string>
+    <string name="edit_lavatory_detail">Edit Lavatory Detail</string>
+    <string name="location">Location</string>
+    <string name="reviews">Reviews</string>
+    <string name="cancel">Cancel</string>
+    <string name="you">You</string>
+    <string name="review_text">Review Text</string>
 
 </resources>
