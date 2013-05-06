@@ -6,10 +6,12 @@ import java.util.List;
 import android.os.Bundle;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Loader;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +21,7 @@ import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v4.app.NavUtils;
+import android.app.LoaderManager;
 
 /**
  * <code>Activity</code> for viewing information about a specific lavatory.
@@ -27,7 +29,8 @@ import android.support.v4.app.NavUtils;
  * @author Chris Rovillos
  * 
  */
-public class LavatoryDetailActivity extends ListActivity {
+public class LavatoryDetailActivity extends ListActivity 
+        implements LoaderManager.LoaderCallbacks<List<ReviewData>> {
 
     private PopupWindow popup;
     
@@ -117,48 +120,56 @@ public class LavatoryDetailActivity extends ListActivity {
         // Show the Up button in the action bar.
         setupActionBar();
 
-        // Intent intent = getIntent();
-        // Bathroom bathroom = intent.getParcelableExtra(MainActivity.BATHROOM);
-
-        // TODO: for testing only; remove when networking code works
-        Bathroom bathroom = new Bathroom(1, 'M', "Mary Gates Hall", "3",
-                new Coordinates(1.0, 2.0), 5, 2.5);
-
-        List<Review> reviews = Arrays
-                .asList(new Review(0, 0, 0, 5, "lavatory 1"),
-                        new Review(1, 1, 26, 1, "Bad!"),
-                        new Review(2, 2, 97, 3, "OK."),
-                        new Review(3, 3, 48, 5, "Amazing!"),
-                        new Review(4, 4, 2, 4, "Good!"),
-                        new Review(
-                                5,
-                                5,
-                                106,
-                                5,
-                                "Amazing! Amazing! Amazing! Amazing! Amazing! "
-                                        + "Amazing! Amazing! Amazing! Amazing! Amazing! "
-                                        + "Amazing! Amazing! Amazing! Amazing! Amazing! "));
-
-        getListView().setFocusable(false); // TODO: remove when
-                                           // ReviewDetailActivity is
-                                           // implemented
-
-        setTitle("Lavatory " + bathroom.getBathroomID());
+        //Example method calls for testing
+        //TODO: move calls to the right part of the activity and delete these
+        //getUserReview("1", "2");
+        //getReviews("3", "4", "5", "6");
         
+        //Intent intent = getIntent();
+        //Bathroom bathroom = intent.getParcelableExtra(MainActivity.BATHROOM);
+        
+        LavatoryData testLav = new LavatoryData(1, 'M', "Mary Gates Hall", 
+                "3", "rmNo", 1, 2, 5, 2.5);
+
+        List<ReviewData> reviews = Arrays
+                .asList(new ReviewData(0, 0, 0, 5, "lavatory 1"),
+                new ReviewData(1, 1, 26, 1, "Bad!"),
+                new ReviewData(2, 2, 97, 3, "OK."),
+                new ReviewData(3, 3, 48, 5, "Amazing!"),
+                new ReviewData(4, 4, 2, 4, "Good!"),
+                new ReviewData(5, 5, 106, 5,
+                        "Amazing! Amazing! Amazing! Amazing! Amazing! " +
+                        "Amazing! Amazing! Amazing! Amazing! Amazing! " +
+                        "Amazing! Amazing! Amazing! Amazing! Amazing! "));
+        
+        getListView().setFocusable(false); // TODO: remove when 
+                                           //ReviewDetailActivity 
+                                           //is implemented
+        
+        setTitle("Lavatory " + testLav.lavatoryID);
+
         View headerView = getLayoutInflater().inflate(
                 R.layout.activity_lavatory_detail_header, null);
         ((TextView) headerView.findViewById(R.id.lavatory_detail_name_text))
-                .setText("Lavatory " + bathroom.getBathroomID());
+                .setText("Lavatory " + testLav.lavatoryID);
         ((TextView) headerView.findViewById(R.id.lavatory_detail_building_text))
-                .setText(bathroom.getBuilding());
+                .setText(testLav.building);
         ((RatingBar) headerView.findViewById(R.id.lavatory_detail_rating))
-                .setRating((float) bathroom.getAverageRating());
+                .setRating((float) testLav.avgRating);
         getListView().addHeaderView(headerView, null, false);
 
         LavatoryDetailAdapter adapter = new LavatoryDetailAdapter(this,
                 R.layout.review_item, R.id.review_author, reviews);
 
         getListView().setAdapter(adapter);
+
+    }
+
+    /**
+     * Set up the {@link android.app.ActionBar}.
+     */
+    private void setupActionBar() {
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -186,12 +197,108 @@ public class LavatoryDetailActivity extends ListActivity {
     }
 
     /**
-     * Set up the {@link android.app.ActionBar}.
+     * Returns a new GetReviewsLoader or GetUserReviewLoader its respective
+     * LoaderManager in this activity.
+     * NOTE: We never need to call this directly as it is done automatically.
+     * 
+     * @author Wilkes Sunseri
+     * 
+     * @param id the id of the LoaderManager (1 for getReviews and 2 for 
+     *      getUserReview)
+     * @param args the Bundle of arguments to be passed to the GetReviewsLoader
+     *      or GetUserReviewLoader
+     * 
+     * @return A LavSearchLoader
      */
-    private void setupActionBar() {
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+    public Loader<List<ReviewData>> onCreateLoader(int id, Bundle args) {
+        if (id == 1) {
+            return new GetReviewsLoader(getApplicationContext(), args);
+        } else {
+            return new GetUserReviewLoader(getApplicationContext(), args);
+        }
     }
 
+    /**
+     * Anything that needs to be done to process a successful load's data is to
+     * be done here.
+     * This is called automatically when the load finishes.
+     * 
+     * @author Wilkes Sunseri
+     * 
+     * @param loader the Loader doing the loading
+     * @param reviews List of ReviewData objects to be processed
+     */
+    public void onLoadFinished(Loader<List<ReviewData>> loader,
+            List<ReviewData> reviews) {
+        //TODO: process data
+    }
+
+    /**
+     * Anything that needs to be done to nullify a reset Loader's data is to be
+     * done here.
+     * NOTE: This is called automatically when the Loader is reset.
+     * 
+     * @author Wilkes Sunseri
+     * 
+     * @param loader the Loader being reset
+     */
+    public void onLoaderReset(Loader<List<ReviewData>> loader) {
+        //TODO: nullify the loader's data
+    }
+
+    /**
+     * Gets a page of (10) reviews for the lavatory.
+     * 
+     * @author Wilkes Sunseri
+     * 
+     * @param lid the ID number for the lavatory
+     * @param pageNo the page of reviews to get
+     * @param sortparam the manner by which reviews are sorted
+     * @param direction ascending or descending
+     */
+    private void getReviews(String lid, String pageNo, String sortparam,
+            String direction) {
+        //set up the request
+        Bundle args = new Bundle(4);
+        if (!lid.equals("")) {
+            args.putString("lid", lid);
+        }
+        if (!pageNo.equals("")) {
+            args.putString("pageNo", pageNo);
+        }
+        if (!sortparam.equals("")) {
+            args.putString("sortparam", sortparam);
+        }
+        if (!direction.equals("")) {
+            args.putString("direction", direction);
+        }
+
+        //and finally pass it to the loader to be sent to the server
+        getLoaderManager().initLoader(1, args, this);
+    }
+
+    /**
+     * Gets the user's review for this lavatory if one exists.
+     * 
+     * @author Wilkes Sunseri
+     * 
+     * @param uid ID number of the user whose reviews we're getting
+     * @param lid ID number of the lavatory the review is for
+     */
+    private void getUserReview(String uid, String lid) {
+        //set up the request
+        Bundle args = new Bundle(2);
+        if (!uid.equals("")) {
+            args.putString("uid", uid);
+        }
+        if (!lid.equals("")) {
+            args.putString("lid", lid);
+        }
+        
+        //and finally pass it to the loader to be sent to the server
+        getLoaderManager().initLoader(2, args, this);
+    }
+    
     /**
      * Custom <code>Adapter</code> for displaying an array of
      * <code>Review</code>s. Creates a custom <code>View</code> for each review
@@ -200,9 +307,9 @@ public class LavatoryDetailActivity extends ListActivity {
      * @author Chris Rovillos
      * 
      */
-    private class LavatoryDetailAdapter extends ArrayAdapter<Review> {
+    private class LavatoryDetailAdapter extends ArrayAdapter<ReviewData> {
 
-        private List<Review> reviews;
+        private List<ReviewData> reviews;
 
         /**
          * Constructs a new <code>LavatoryDetailAdapter</code> with given
@@ -220,7 +327,7 @@ public class LavatoryDetailActivity extends ListActivity {
          *            a <code>List</code> of <code>Review</code>s to display
          */
         public LavatoryDetailAdapter(Context context, int reviewRowResource,
-                int reviewAuthorTextViewResourceId, List<Review> reviews) {
+                int reviewAuthorTextViewResourceId, List<ReviewData> reviews) {
             super(context, reviewRowResource, reviewAuthorTextViewResourceId,
                     reviews);
             this.reviews = reviews;
@@ -234,11 +341,11 @@ public class LavatoryDetailActivity extends ListActivity {
             }
 
             ((RatingBar) convertView.findViewById(R.id.review_stars))
-                    .setRating(reviews.get(position).getRating());
+                    .setRating(reviews.get(position).rating);
             ((TextView) convertView.findViewById(R.id.review_author))
-                    .setText("User " + reviews.get(position).getUserID());
+                    .setText("User " + reviews.get(position).authorID);
             ((TextView) convertView.findViewById(R.id.review_text))
-                    .setText(reviews.get(position).getReview());
+                    .setText(reviews.get(position).review);
 
             return convertView;
         }
