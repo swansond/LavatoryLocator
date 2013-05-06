@@ -1,5 +1,8 @@
 package edu.washington.cs.lavatorylocator;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * The LavatoryData class is an immutable representation of the data related to
  * any particular lavatory. This includes its id number in the database, the 
@@ -8,9 +11,9 @@ package edu.washington.cs.lavatorylocator;
  * lavatory, and its average rating.
  * 
  * @author Wilkes Sunseri
- *
+ * @author David Swanson
  */
-public class LavatoryData {
+public class LavatoryData implements Parcelable {
     public final int lavatoryID;
     public final char lavatoryGender;
     
@@ -22,6 +25,28 @@ public class LavatoryData {
     
     public final int numReviews;
     public final double avgRating;
+    
+    /**
+     * The CREATOR is a static field that allows for serialization of Bathrooms.  
+     */
+    public static final Creator<LavatoryData> CREATOR = new Creator<LavatoryData>() {
+
+        /**
+         * createFromParcel is used to create a new Bathroom object when needed.
+         */
+        @Override
+        public LavatoryData createFromParcel(Parcel source) {
+            return new LavatoryData(source);
+        }
+
+        /**
+         * This is an unused method for when making a Bathroom array is necessary.
+         */
+        @Override
+        public LavatoryData[] newArray(int size) {
+            return new LavatoryData[size];
+        }
+    };
 
     /**
      * Constructs a new LavatoryData object .
@@ -47,5 +72,51 @@ public class LavatoryData {
         latitude = lat;        
         numReviews = numRev;
         avgRating = rating;
+    }
+    
+    /**
+     * Constructs a new LavatoryData object.
+     * @param in the Parcel that represents a LavatoryData object
+     */
+    public LavatoryData(Parcel in) {
+        lavatoryID = in.readInt();
+        lavatoryGender = (char)in.readInt();
+        building = in.readString();
+        floor = in.readString();
+        roomNumber = in.readString();
+        longitude = in.readDouble();
+        latitude = in.readDouble();        
+        numReviews = in.readInt();
+        avgRating = in.readDouble();
+    }
+    
+    /**
+     * This method is unused, but required for the Parcelable interface. 
+     * If this class is subclassed, the value will need to be increased.
+     */
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    
+    /**
+     * Takes the fields of the Bathroom objects and writes them into the Parcel.
+     * It is imperative that the order here matches the order in the constructor.
+     * 
+     * @param out the destination Parcel
+     * @param flags unused flags for special cases
+     * {@link #LavatoryData(Parcel)}
+     */
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(lavatoryID);
+        out.writeInt(lavatoryGender);
+        out.writeString(building);
+        out.writeString(floor);
+        out.writeString(roomNumber);
+        out.writeDouble(longitude);
+        out.writeDouble(latitude);
+        out.writeInt(numReviews);
+        out.writeDouble(avgRating);
     }
 }

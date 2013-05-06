@@ -125,8 +125,8 @@ public class LavatoryDetailActivity extends ListActivity
         //getUserReview("1", "2");
         //getReviews("3", "4", "5", "6");
         
-        //Intent intent = getIntent();
-        //Bathroom bathroom = intent.getParcelableExtra(MainActivity.BATHROOM);
+        Intent intent = getIntent();
+        LavatoryData bathroom = intent.getParcelableExtra(MainActivity.LAVATORY);
         
         LavatoryData testLav = new LavatoryData(1, 'M', "Mary Gates Hall", 
                 "3", "rmNo", 1, 2, 5, 2.5);

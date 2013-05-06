@@ -34,6 +34,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity
         implements LoaderManager.LoaderCallbacks<List<LavatoryData>>{
 
+    public static final String LAVATORY = "LAVATORY";
     private ListView listView;
     private PopupWindow popup;
 
@@ -121,6 +122,7 @@ public class MainActivity extends Activity
 
         setContentView(R.layout.activity_main);
 
+
         //Example method call for testing
         //TODO: move call to the right part of the activity and delete this
         //lavatorySearch("1", "2", "3", "4", "5", "6", "7", "8", "9");
@@ -162,12 +164,11 @@ public class MainActivity extends Activity
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
-                final LavatoryData LavatoryData = (LavatoryData) parent
+                final LavatoryData lavatoryData = (LavatoryData) parent
                         .getItemAtPosition(position);
                 Intent intent = new Intent(parent.getContext(),
                         LavatoryDetailActivity.class);
-                // TODO: Once LavatoryData is Parcelable, pass it in to
-                // LavatoryDetail
+                intent.putExtra(LAVATORY, lavatoryData);
                 startActivity(intent);
             }
         });
