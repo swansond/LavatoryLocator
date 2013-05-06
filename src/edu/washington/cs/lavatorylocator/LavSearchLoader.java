@@ -1,8 +1,6 @@
 package edu.washington.cs.lavatorylocator;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,10 +12,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONTokener;
-
+import org.json.JSONObject;
 import android.content.Context;
 import android.os.Bundle;
 import android.content.AsyncTaskLoader;
@@ -66,7 +62,7 @@ public class LavSearchLoader extends AsyncTaskLoader<List<LavatoryData>> {
         HttpGet hp = new HttpGet(URL);
      
         //Send the request and receive JSONs
-        String finalResult = null;
+        JSONObject finalResult = null;
         try {
             HttpResponse resp = client.execute(hp);
             finalResult = Parse.readJSON(resp);

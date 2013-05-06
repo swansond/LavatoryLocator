@@ -13,6 +13,8 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.content.AsyncTaskLoader;
@@ -59,7 +61,7 @@ public class GetUserReviewLoader extends AsyncTaskLoader<List<ReviewData>>{
         URL += paramString;
         HttpGet hp = new HttpGet(URL);
 
-        String finalResult = null;
+        JSONObject finalResult = null;
         //Send the request and receive JSONs
         try {
             HttpResponse resp = client.execute(hp);

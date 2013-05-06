@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.RatingBar;
 import android.support.v4.app.NavUtils;
 
 /**

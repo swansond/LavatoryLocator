@@ -1,10 +1,8 @@
 package edu.washington.cs.lavatorylocator;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +12,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+/**
+ * 
+ * @author David Swanson
+ *
+ *
+ * The Parse class contains the JSON parsing logic for the application.
+ */
 public final class Parse {
     
     /*
@@ -29,18 +34,18 @@ public final class Parse {
      * @return a list of reviews
      * @throws JSONException if one of the operations fails
      */
-    public static List<ReviewData> reviewList(String json) throws JSONException {
-        JSONTokener tokener = new JSONTokener(json);
-        JSONArray resultArray = new JSONArray(tokener);
+    public static List<ReviewData> reviewList(JSONObject result) throws JSONException {
         List<ReviewData> output = new ArrayList<ReviewData>();
+        JSONArray resultArray = result.getJSONArray("reviews");
         for (int i = 0; i < resultArray.length(); i++) {
             JSONObject obj = resultArray.getJSONObject(i);
             
-            int review_id = 1;
-            int lavatory_id = 1;
-            int user_id = 1;
-            String reviewText = "This bathroom has great atmosphere.";
-            int rating = 5;
+            int review_id = obj.getInt("rid");
+            int lavatory_id = obj.getInt("lid");
+            int user_id = obj.getInt("uid");
+            String reviewText = obj.getString("review");
+            int rating = obj.getInt("rating");
+            // TODO add the missing fields from the JSON to the ReviewData object.
             
             ReviewData review = new ReviewData(review_id, user_id, lavatory_id, rating, reviewText);
             output.add(review);
@@ -54,21 +59,19 @@ public final class Parse {
      * @return a list of lavatories
      * @throws JSONException if one of the operations fails
      */
-    public static List<LavatoryData> lavatoryList(String json) throws JSONException {
-        JSONTokener tokener = new JSONTokener(json);
-        JSONObject finalResult = new JSONObject(tokener);
+    public static List<LavatoryData> lavatoryList(JSONObject result) throws JSONException {
         List<LavatoryData> output = new ArrayList<LavatoryData>();
-        JSONArray resultArray = finalResult.getJSONArray("lavatories");
+        JSONArray resultArray = result.getJSONArray("lavatories");
         for (int i = 0; i < resultArray.length(); i++) {
             JSONObject obj = resultArray.getJSONObject(i);
 
             int lav_id = obj.getInt("lid");
-            char lav_gender = (char)obj.getString("type").charAt(0);
+            char lav_gender = obj.getString("type").charAt(0);
             String building = obj.getString("building");
-            String floor = "1";
+            String floor = "1"; // TODO add this to the JSON
             String roomNum = obj.getString("room");
-            double longitude = 0;
-            double latitude = 0;
+            double longitude = obj.getDouble("longitude");
+            double latitude = obj.getDouble("latitude");
             int numReviews = obj.getInt("reviews");
             double rating = obj.getDouble("avgRating");
             
@@ -84,9 +87,12 @@ public final class Parse {
      * @return a JSON string with the data
      * @throws IOException if the reading fails
      */
-    public static String readJSON(HttpResponse resp) throws IOException, JSONException {
+    public static JSONObject readJSON(HttpResponse resp) throws IOException, JSONException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent(), "UTF-8"));
-        return reader.readLine();
+        String json = reader.readLine();
+        JSONTokener tokener = new JSONTokener(json);
+        return new JSONObject(tokener);
+        
     }
     
 }
