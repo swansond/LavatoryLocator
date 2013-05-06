@@ -1,6 +1,8 @@
 package edu.washington.cs.lavatorylocator;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,6 +14,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONTokener;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.content.AsyncTaskLoader;
@@ -60,19 +66,28 @@ public class LavSearchLoader extends AsyncTaskLoader<List<LavatoryData>> {
         HttpGet hp = new HttpGet(URL);
      
         //Send the request and receive JSONs
+        JSONArray finalResult = null;
         try {
             HttpResponse resp = client.execute(hp);
-
-            } catch (ClientProtocolException e) {
+            finalResult = Parse.readJSON(resp);
+        } catch (ClientProtocolException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         
         
-        //TODO: process JSON in resp into list of reviews and return it
+        try {
+            return Parse.lavatoryList(finalResult);
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return null;
     }
     

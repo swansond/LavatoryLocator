@@ -1,6 +1,9 @@
 package edu.washington.cs.lavatorylocator;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,6 +15,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
@@ -22,6 +29,7 @@ import android.os.Bundle;
  * server if they exist.
  * 
  * @author Wil
+ * @author David Swanson
  *
  */
 public class GetReviewsLoader extends AsyncTaskLoader<List<ReviewData>> {
@@ -61,20 +69,27 @@ public class GetReviewsLoader extends AsyncTaskLoader<List<ReviewData>> {
         String paramString = URLEncodedUtils.format(paramList, "UTF-8");
         URL += paramString;
         HttpGet hp = new HttpGet(URL);
-
+        JSONArray finalResult = null;
         //Send the request and receive JSONs
         try {
             HttpResponse resp = client.execute(hp);
+            finalResult = Parse.readJSON(resp);
         } catch (ClientProtocolException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-
-        
-        //TODO: process JSON in resp into list of reviews and return it
+        try {
+            return Parse.reviewList(finalResult);
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return null;
     }
 
