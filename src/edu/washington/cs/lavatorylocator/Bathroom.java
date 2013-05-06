@@ -1,5 +1,8 @@
 package edu.washington.cs.lavatorylocator;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * The Bathroom class is an immutable representation of the data related to
  * any particular bathroom. This includes its id number in the database, the 
@@ -8,9 +11,10 @@ package edu.washington.cs.lavatorylocator;
  * that bathroom.
  * 
  * @author Wil
+ * @author David Swanson
  *
  */
-public class Bathroom {
+public class Bathroom implements Parcelable {
     private final int bathroomID;
     private final char bathroomGender;
     
@@ -41,6 +45,74 @@ public class Bathroom {
         location = loc;
         numReviews = numRev;
         avgRating = rating;
+    }
+    
+    /**
+     * Constructs a new Bathroom object from a Parcel.
+     * This needs to match the order that the fields are written.
+     * 
+     * @param in the parcel representing the bathroom
+     * {@link #writeToParcel(Parcel, int)} 
+     */
+    public Bathroom(Parcel in) {
+        bathroomID = in.readInt();
+        bathroomGender = (char)in.readInt();
+        building = in.readString();
+        floor = in.readString();
+        location = new Coordinates(in.readDouble(), in.readDouble());
+        numReviews = in.readInt();
+        avgRating = in.readDouble();      
+    }
+    
+    /**
+     * The CREATOR is a static field that allows for serialization of Bathrooms.  
+     */
+    public static final Creator<Bathroom> CREATOR = new Creator<Bathroom>() {
+
+        /**
+         * createFromParcel is used to create a new Bathroom object when needed.
+         */
+        @Override
+        public Bathroom createFromParcel(Parcel source) {
+            return new Bathroom(source);
+        }
+
+        /**
+         * This is an unused method for when making a Bathroom array is necessary.
+         */
+        @Override
+        public Bathroom[] newArray(int size) {
+            return new Bathroom[size];
+        }
+    };
+    
+    /**
+     * This method is unused, but required for the Parcelable interface. 
+     * If this class is subclassed, the value will need to be increased.
+     */
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    /**
+     * Takes the fields of the Bathroom objects and writes them into the Parcel.
+     * It is imperative that the order here matches the order in the constructor.
+     * 
+     * @param out the destination Parcel
+     * @param flags unused flags for special cases
+     * {@link #Bathroom(Parcel)}
+     */
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(bathroomID);
+        out.writeInt(bathroomGender);
+        out.writeString(building);
+        out.writeString(floor);
+        out.writeDouble(location.getLongitude());
+        out.writeDouble(location.getLatitude());
+        out.writeInt(numReviews);
+        out.writeDouble(avgRating);        
     }
     
     /**

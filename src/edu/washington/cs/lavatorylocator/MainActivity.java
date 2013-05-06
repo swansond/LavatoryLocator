@@ -61,6 +61,52 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        listView = (ListView) findViewById(R.id.activity_main_search_results);
+
+        // create dummy list of search results
+        // TODO: replace with actual search results once networking stuff gets
+        // finalized
+        Bathroom[] results = new Bathroom[] {
+                new Bathroom(1, 'M', "Mary Gates Hall", "3", new Coordinates(
+                        1.0, 2.0), 5, 2.5),
+                new Bathroom(2, 'F', "Mary Gates Hall", "3", new Coordinates(
+                        1.0, 2.0), 20, 3),
+                new Bathroom(
+                        3,
+                        'M',
+                        "Paul G. Allen Center for Computer Science and Engineering",
+                        "B1", new Coordinates(1.0, 2.0), 1, 5),
+                new Bathroom(
+                        4,
+                        'F',
+                        "Paul G. Allen Center for Computer Science and Engineering",
+                        "B1", new Coordinates(1.0, 2.0), 1, 4.5),
+                new Bathroom(
+                        5,
+                        'M',
+                        "Paul G. Allen Center for Computer Science and Engineering",
+                        "6", new Coordinates(1.0, 2.0), 16, 4) };
+        List<Bathroom> resultsAsList = Arrays.asList(results);
+
+        SearchResultsAdapter adapter = new SearchResultsAdapter(this,
+                R.layout.search_result_item, R.id.search_result_item_lavatory_name, resultsAsList);
+
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+                final Bathroom bathroom = (Bathroom) parent
+                        .getItemAtPosition(position);
+                Intent intent = new Intent(parent.getContext(),
+                        LavatoryDetailActivity.class);
+                intent.putExtra("lavatory", bathroom);
+                startActivity(intent);
+            }
+        });
     }
 
     // TODO: for testing before the results list is implemented; remove when it
