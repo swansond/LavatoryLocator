@@ -1,6 +1,5 @@
 package edu.washington.cs.lavatorylocator;
 
-import java.util.Arrays;
 import java.util.List;
 
 import android.os.Bundle;
