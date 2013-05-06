@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 
 /**
@@ -148,12 +149,14 @@ public class AddReviewActivity extends Activity {
                 return null;
             } catch (IOException e) {
                 e.printStackTrace();
+                System.err.println(e);
                 return null;
             }
         }
         
         //executes when it finishes the server communication
         protected void onPostExecute(HttpResponse hr) {
+            Toast.makeText(AddReviewActivity.this, "test", Toast.LENGTH_SHORT);
             finishActivity(0);
         }
     }
