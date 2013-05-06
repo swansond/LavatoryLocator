@@ -126,42 +126,37 @@ public class LavatoryDetailActivity extends ListActivity
         //getReviews("3", "4", "5", "6");
         
         Intent intent = getIntent();
-        LavatoryData bathroom = intent.getParcelableExtra(MainActivity.LAVATORY);
+        LavatoryData lav = intent.getParcelableExtra(MainActivity.LAVATORY);
         
-        LavatoryData testLav = new LavatoryData(1, 'M', "Mary Gates Hall", 
-                "3", "rmNo", 1, 2, 5, 2.5);
-
-        List<ReviewData> reviews = Arrays
-                .asList(new ReviewData(0, 0, 0, 5, "lavatory 1"),
-                new ReviewData(1, 1, 26, 1, "Bad!"),
-                new ReviewData(2, 2, 97, 3, "OK."),
-                new ReviewData(3, 3, 48, 5, "Amazing!"),
-                new ReviewData(4, 4, 2, 4, "Good!"),
-                new ReviewData(5, 5, 106, 5,
-                        "Amazing! Amazing! Amazing! Amazing! Amazing! " +
-                        "Amazing! Amazing! Amazing! Amazing! Amazing! " +
-                        "Amazing! Amazing! Amazing! Amazing! Amazing! "));
-        
+//        LavatoryData testLav = new LavatoryData(1, 'M', "Mary Gates Hall", 
+//                "3", "rmNo", 1, 2, 5, 2.5);
+//
+//        List<ReviewData> reviews = Arrays
+//                .asList(new ReviewData(0, 0, 0, 5, "lavatory 1"),
+//                new ReviewData(1, 1, 26, 1, "Bad!"),
+//                new ReviewData(2, 2, 97, 3, "OK."),
+//                new ReviewData(3, 3, 48, 5, "Amazing!"),
+//                new ReviewData(4, 4, 2, 4, "Good!"),
+//                new ReviewData(5, 5, 106, 5,
+//                        "Amazing! Amazing! Amazing! Amazing! Amazing! " +
+//                        "Amazing! Amazing! Amazing! Amazing! Amazing! " +
+//                        "Amazing! Amazing! Amazing! Amazing! Amazing! "));
+//        
         getListView().setFocusable(false); // TODO: remove when 
                                            //ReviewDetailActivity 
                                            //is implemented
         
-        setTitle("Lavatory " + testLav.lavatoryID);
+        setTitle("Lavatory " + lav.lavatoryID);
 
         View headerView = getLayoutInflater().inflate(
                 R.layout.activity_lavatory_detail_header, null);
         ((TextView) headerView.findViewById(R.id.lavatory_detail_name_text))
-                .setText("Lavatory " + testLav.lavatoryID);
+                .setText("Lavatory " + lav.lavatoryID);
         ((TextView) headerView.findViewById(R.id.lavatory_detail_building_text))
-                .setText(testLav.building);
+                .setText(lav.building);
         ((RatingBar) headerView.findViewById(R.id.lavatory_detail_rating))
-                .setRating((float) testLav.avgRating);
+                .setRating((float) lav.avgRating);
         getListView().addHeaderView(headerView, null, false);
-
-        LavatoryDetailAdapter adapter = new LavatoryDetailAdapter(this,
-                R.layout.review_item, R.id.review_author, reviews);
-
-        getListView().setAdapter(adapter);
 
     }
 
@@ -231,6 +226,10 @@ public class LavatoryDetailActivity extends ListActivity
     public void onLoadFinished(Loader<List<ReviewData>> loader,
             List<ReviewData> reviews) {
         //TODO: process data
+        LavatoryDetailAdapter adapter = new LavatoryDetailAdapter(this,
+                R.layout.review_item, R.id.review_author, reviews);
+
+        getListView().setAdapter(adapter);
     }
 
     /**
