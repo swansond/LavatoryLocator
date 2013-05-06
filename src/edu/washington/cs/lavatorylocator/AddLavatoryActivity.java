@@ -13,6 +13,9 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.RatingBar;
 import android.support.v4.app.NavUtils;
 
 /**
@@ -30,9 +33,43 @@ public class AddLavatoryActivity extends Activity {
      *            the <code>MenuItem</code> that was selected
      */
     public void addLavatory(MenuItem item) {
-        // TODO: implement
+        String buildingName = ((EditText) findViewById(R.id.activity_add_lavatory_building_name)).toString();
+        String floor = ((EditText) findViewById(R.id.activity_add_lavatory_floor)).toString();
+        int lavaType = ((RadioGroup) findViewById(R.id.activity_add_lavatory_type)).getCheckedRadioButtonId();
+        
+        String lavaTypeString = "";
+        
+        switch (lavaType) {
+            case R.id.activity_add_lavatory_male:
+                lavaTypeString = "M";
+                break;
+            case R.id.activity_add_lavatory_female:
+                lavaTypeString = "F";
+                break;
+        }
+        
+        String longitude = ((EditText) findViewById(R.id.activity_add_lavatory_longitude)).toString();
+        String latitude = ((EditText) findViewById(R.id.activity_add_lavatory_latitude)).toString();
+        
+        
+        requestAddLavatory(Integer.toString(1), buildingName, floor, lavaTypeString, longitude, latitude);
+        
+        NavUtils.navigateUpFromSameTask(this);
     }
     
+    
+    /**
+     * Sends the request to add a new lavatory to the server.
+     * 
+     * @author Wilkes Sunseri
+     * 
+     * @param uid the user's ID number
+     * @param buildingName the name of the building the new lavatory is in
+     * @param floor the floor the new lavatory is on
+     * @param lavaType the gender of the new lavatory
+     * @param longitude the new lavatory's longitude
+     * @param latitude the new lavatory's latitude
+     */
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
