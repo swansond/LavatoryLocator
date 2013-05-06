@@ -122,56 +122,8 @@ public class MainActivity extends Activity
 
         setContentView(R.layout.activity_main);
 
-
-        //Example method call for testing
-        //TODO: move call to the right part of the activity and delete this
-        //lavatorySearch("1", "2", "3", "4", "5", "6", "7", "8", "9");
-
         listView = (ListView) findViewById(R.id.activity_main_search_results);
-
-        // create dummy list of search results
-        // TODO: replace with actual search results once networking stuff gets
-        // finalized
-        LavatoryData[] results = new LavatoryData[] {
-                new LavatoryData(1, 'M', "Mary Gates Hall", "3", "test", 1.0,
-                        2.0, 5, 2.5),
-                new LavatoryData(2, 'F', "Mary Gates Hall", "3", "test", 1.0, 
-                        2.0, 20, 3),
-                new LavatoryData(
-                        3,
-                        'M',
-                        "Paul G. Allen Center for Computer Science and Engineering",
-                        "B1", "test", 1.0, 2.0, 1, 5),
-                new LavatoryData(
-                        4,
-                        'F',
-                        "Paul G. Allen Center for Computer Science and Engineering",
-                        "B1", "test", 1.0, 2.0, 1, 4.5),
-                new LavatoryData(
-                        5,
-                        'M',
-                        "Paul G. Allen Center for Computer Science and Engineering",
-                        "6", "test", 1.0, 2.0, 16, 4) };
-        List<LavatoryData> resultsAsList = Arrays.asList(results);
-
-        SearchResultsAdapter adapter = new SearchResultsAdapter(this,
-                R.layout.search_result_item, R.id.search_result_item_lavatory_name, resultsAsList);
-
-        listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-                final LavatoryData lavatoryData = (LavatoryData) parent
-                        .getItemAtPosition(position);
-                Intent intent = new Intent(parent.getContext(),
-                        LavatoryDetailActivity.class);
-                intent.putExtra(LAVATORY, lavatoryData);
-                startActivity(intent);
-            }
-        });
+        lavatorySearch("CSE", "1", "", "-122.305599", "47.653305", "50", "", "");
     }
 
     @Override
@@ -181,7 +133,7 @@ public class MainActivity extends Activity
         return true;
     }
     
-        /**
+    /**
      * Shows the search action view.
      * 
      * @param view
@@ -286,7 +238,24 @@ public class MainActivity extends Activity
     @Override
     public void onLoadFinished(Loader<List<LavatoryData>> loader,
             List<LavatoryData> lavatories) {
-        // TODO: process data
+        SearchResultsAdapter adapter = new SearchResultsAdapter(this,
+                R.layout.search_result_item, R.id.search_result_item_lavatory_name, lavatories);
+
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+                final LavatoryData selectedLavatory = (LavatoryData) parent
+                        .getItemAtPosition(position);
+                Intent intent = new Intent(parent.getContext(),
+                        LavatoryDetailActivity.class);
+                intent.putExtra(LAVATORY, selectedLavatory);
+                startActivity(intent);
+            }
+        });
     }
 
     /**
