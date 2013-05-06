@@ -1,7 +1,6 @@
 package edu.washington.cs.lavatorylocator;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,14 +8,13 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.content.AsyncTaskLoader;
+import android.content.AsyncTaskLoader;
 
 /**
  * The LavSearchLoader class loads from the server all the lavatories that meet
@@ -50,25 +48,22 @@ public class LavSearchLoader extends AsyncTaskLoader<List<LavatoryData>> {
      */
     public List<LavatoryData> loadInBackground() {
         HttpClient client = new DefaultHttpClient();
-        String URL = "http://lavlocdb.herokuapp.com/lavasearch.php";
-        HttpPost hp = new HttpPost(URL);
+        String URL = "http://lavlocdb.herokuapp.com/lavasearch.php?";
         List<NameValuePair> paramList = new LinkedList<NameValuePair>();
        
-        //add each search parameter to the list of parameters for the request
+        //add the search parameters to the request
         for (String key : params.keySet()) {
             paramList.add(new BasicNameValuePair(key, params.getString(key)));
         }
-        try {
-            hp.setEntity(new UrlEncodedFormEntity(paramList, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
+        String paramString = URLEncodedUtils.format(paramList, "UTF-8");
+        URL += paramString;
+        HttpGet hp = new HttpGet(URL);
+     
         //Send the request and receive JSONs
         try {
             HttpResponse resp = client.execute(hp);
-        } catch (ClientProtocolException e) {
+
+            } catch (ClientProtocolException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {

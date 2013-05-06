@@ -1,7 +1,6 @@
 package edu.washington.cs.lavatorylocator;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,14 +8,14 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.content.AsyncTaskLoader;
 
 /**
  * The GetReviewsLoader class loads a page of a lavatory's reviews from the
@@ -51,20 +50,17 @@ public class GetReviewsLoader extends AsyncTaskLoader<List<ReviewData>> {
     @Override
     public List<ReviewData> loadInBackground() {
         HttpClient client = new DefaultHttpClient();
-        String URL = "http://lavlocdb.herokuapp.com/fetchreviews.php";
-        HttpPost hp = new HttpPost(URL);
+        String URL = "http://lavlocdb.herokuapp.com/fetchreviews.php?";
+//        HttpPost hp = new HttpPost(URL);
         List<NameValuePair> paramList = new LinkedList<NameValuePair>();
 
         //add each search parameter to the list of parameters for the request
         for (String key : params.keySet()) {
             paramList.add(new BasicNameValuePair(key, params.getString(key)));
         }
-        try {
-            hp.setEntity(new UrlEncodedFormEntity(paramList, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        String paramString = URLEncodedUtils.format(paramList, "UTF-8");
+        URL += paramString;
+        HttpGet hp = new HttpGet(URL);
 
         //Send the request and receive JSONs
         try {
@@ -77,7 +73,7 @@ public class GetReviewsLoader extends AsyncTaskLoader<List<ReviewData>> {
             e.printStackTrace();
         }
 
-
+        
         //TODO: process JSON in resp into list of reviews and return it
         return null;
     }

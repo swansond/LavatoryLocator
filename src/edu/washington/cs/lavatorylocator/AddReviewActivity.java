@@ -27,6 +27,11 @@ public class AddReviewActivity extends Activity {
         setContentView(R.layout.activity_add_review);
         // Show the Up button in the action bar.
         setupActionBar();
+        
+        //Example method call for testing
+        //TODO: move calls to the right part of the activity and delete this
+        //updateReview("1", "2", "3", "4");
+
     }
 
     /**
@@ -41,6 +46,7 @@ public class AddReviewActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        
         getMenuInflater().inflate(R.menu.add_review, menu);
         return true;
     }
@@ -67,9 +73,10 @@ public class AddReviewActivity extends Activity {
 
     //sends a new review to the server
     private void updateReview(String uid, String lid, String rating,
-            String review) throws UnsupportedEncodingException {
+            String review) {
         //set up the request
         String URL = "http://lavlocdb.herokuapp.com/submitreview.php";
+        
         HttpPost hp = new HttpPost(URL);
         List<NameValuePair> paramList = new LinkedList<NameValuePair>();
         if (!uid.equals("")) {
@@ -82,7 +89,12 @@ public class AddReviewActivity extends Activity {
             paramList.add(new BasicNameValuePair("rating", rating));
         }
 
-        hp.setEntity(new UrlEncodedFormEntity(paramList, "UTF-8"));
+        try {
+            hp.setEntity(new UrlEncodedFormEntity(paramList, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         //and finally pass it another string to be send to the server
         new UpdateReviewTask().execute(hp);

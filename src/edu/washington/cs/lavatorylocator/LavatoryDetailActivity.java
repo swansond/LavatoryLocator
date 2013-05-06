@@ -1,14 +1,16 @@
 package edu.washington.cs.lavatorylocator;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
 
 import android.os.Bundle;
 import android.app.ListActivity;
+import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.content.Loader;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,9 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
+import android.app.LoaderManager;
 
 /**
  * Activity for viewing information about a specific lavatory.
@@ -37,6 +37,8 @@ public class LavatoryDetailActivity extends ListActivity
      */
     public void addReview(MenuItem item) {
         // TODO: pass current Bathroom object to AddReviewActivity; Bathroom needs to be made Parcelable first
+        
+        
         Intent intent = new Intent(this, AddReviewActivity.class);
         startActivity(intent);
     }
@@ -47,6 +49,11 @@ public class LavatoryDetailActivity extends ListActivity
         // Show the Up button in the action bar.
         setupActionBar();
 
+        //Example method calls for testing
+        //TODO: move calls to the right part of the activity and delete these
+        //getUserReview("1", "2");
+        //getReviews("3", "4", "5", "6");
+        
         //Intent intent = getIntent();
         //Bathroom bathroom = intent.getParcelableExtra(MainActivity.BATHROOM);
         LavatoryData testLav = new LavatoryData(1, 'M', "Mary Gates Hall", 
@@ -116,6 +123,7 @@ public class LavatoryDetailActivity extends ListActivity
     }
 
     public Loader<List<ReviewData>> onCreateLoader(int id, Bundle args) {
+        
         if (id == 1) {
             return new GetReviewsLoader(getApplicationContext(), args);
         } else {
@@ -125,6 +133,7 @@ public class LavatoryDetailActivity extends ListActivity
 
     public void onLoadFinished(Loader<List<ReviewData>> loader,
             List<ReviewData> reviews) {
+
         //TODO: process data
     }
 
@@ -134,7 +143,7 @@ public class LavatoryDetailActivity extends ListActivity
 
     //gets a page of (10) reviews for the lavatory
     private void getReviews(String lid, String pageNo, String sortparam,
-            String direction) throws UnsupportedEncodingException {
+            String direction) {
 
         Bundle args = new Bundle(4);
 
@@ -144,22 +153,22 @@ public class LavatoryDetailActivity extends ListActivity
             args.putString("lid", lid);
         }
         if (!pageNo.equals("")) {
-            args.putString("lid", lid);
+            args.putString("pageNo", pageNo);
         }
         if (!sortparam.equals("")) {
-            args.putString("lid", lid);
+            args.putString("sortparam", sortparam);
         }
         if (!direction.equals("")) {
-            args.putString("lid", lid);
+            args.putString("direction", direction);
         }
 
         //and finally pass it to the loader to be sent to the server
-        getLoaderManager().initLoader(1, args, 
-                (LoaderCallbacks<List<ReviewData>>) this);
+        getLoaderManager().initLoader(1, args, this);
     }
 
     //gets the user's review if one exists
     private void getUserReview(String uid, String lid) {
+
         Bundle args = new Bundle(2);
 
         //set up the request
@@ -169,10 +178,9 @@ public class LavatoryDetailActivity extends ListActivity
         if (!lid.equals("")) {
             args.putString("lid", lid);
         }
-
+        
         //and finally pass it to the loader to be sent to the server
-        getLoaderManager().initLoader(2, args, 
-                (LoaderCallbacks<List<ReviewData>>) this);
+        getLoaderManager().initLoader(2, args, this);
     }
     
     /**
