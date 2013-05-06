@@ -66,7 +66,7 @@ public class LavSearchLoader extends AsyncTaskLoader<List<LavatoryData>> {
         HttpGet hp = new HttpGet(URL);
      
         //Send the request and receive JSONs
-        JSONArray finalResult = null;
+        String finalResult = null;
         try {
             HttpResponse resp = client.execute(hp);
             finalResult = Parse.readJSON(resp);

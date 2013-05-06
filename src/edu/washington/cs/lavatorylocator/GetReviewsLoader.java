@@ -69,7 +69,7 @@ public class GetReviewsLoader extends AsyncTaskLoader<List<ReviewData>> {
         String paramString = URLEncodedUtils.format(paramList, "UTF-8");
         URL += paramString;
         HttpGet hp = new HttpGet(URL);
-        JSONArray finalResult = null;
+        String finalResult = null;
         //Send the request and receive JSONs
         try {
             HttpResponse resp = client.execute(hp);

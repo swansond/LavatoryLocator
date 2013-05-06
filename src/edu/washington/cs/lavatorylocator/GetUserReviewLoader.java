@@ -1,9 +1,6 @@
 package edu.washington.cs.lavatorylocator;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,11 +12,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.content.AsyncTaskLoader;
@@ -66,7 +59,7 @@ public class GetUserReviewLoader extends AsyncTaskLoader<List<ReviewData>>{
         URL += paramString;
         HttpGet hp = new HttpGet(URL);
 
-        JSONArray finalResult = null;
+        String finalResult = null;
         //Send the request and receive JSONs
         try {
             HttpResponse resp = client.execute(hp);
