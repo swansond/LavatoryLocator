@@ -33,6 +33,7 @@ public class LavatoryDetailActivity extends ListActivity
         implements LoaderManager.LoaderCallbacks<List<ReviewData>> {
 
     private PopupWindow popup;
+    private LavatoryData lav;
     
     /**
      * Goes to the <code>AddReviewActivity</code> to allow the user to add a
@@ -57,6 +58,7 @@ public class LavatoryDetailActivity extends ListActivity
             popup.showAtLocation(layout, Gravity.CENTER, 0, 0);
         } else {
             Intent intent = new Intent(this, AddReviewActivity.class);
+            intent.putExtra("LAVATORY", lav);
             startActivity(intent);
         }
     }
@@ -126,7 +128,7 @@ public class LavatoryDetailActivity extends ListActivity
         //getReviews("3", "4", "5", "6");
         
         Intent intent = getIntent();
-        LavatoryData lav = intent.getParcelableExtra(MainActivity.LAVATORY);
+        lav = intent.getParcelableExtra(MainActivity.LAVATORY);
         
 //        LavatoryData testLav = new LavatoryData(1, 'M', "Mary Gates Hall", 
 //                "3", "rmNo", 1, 2, 5, 2.5);
