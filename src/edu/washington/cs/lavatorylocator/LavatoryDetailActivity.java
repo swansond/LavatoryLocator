@@ -103,7 +103,9 @@ public class LavatoryDetailActivity extends ListActivity
                         "Amazing! Amazing! Amazing! Amazing! Amazing! " +
                         "Amazing! Amazing! Amazing! Amazing! Amazing! "));
         
-        getListView().setFocusable(false); // TODO: remove when ReviewDetailActivity is implemented
+        getListView().setFocusable(false); // TODO: remove when 
+                                           //ReviewDetailActivity 
+                                           //is implemented
         
         setTitle("Lavatory " + testLav.lavatoryID);
 
@@ -118,7 +120,7 @@ public class LavatoryDetailActivity extends ListActivity
         getListView().addHeaderView(headerView, null, false);
 
         LavatoryDetailAdapter adapter = new LavatoryDetailAdapter(this,
-                R.layout.review_row, R.id.review_author, reviews);
+                R.layout.review_item, R.id.review_author, reviews);
 
         getListView().setAdapter(adapter);
 
@@ -295,7 +297,7 @@ public class LavatoryDetailActivity extends ListActivity
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.review_row,
+                convertView = getLayoutInflater().inflate(R.layout.review_item,
                         parent, false);
             }
 

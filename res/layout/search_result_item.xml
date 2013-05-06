@@ -3,32 +3,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_vertical_margin"
-    android:paddingTop="@dimen/activity_horizontal_margin" >
+    android:paddingBottom="@dimen/list_item_vertical_margin"
+    android:paddingLeft="@dimen/list_item_horizontal_margin"
+    android:paddingRight="@dimen/list_item_horizontal_margin"
+    android:paddingTop="@dimen/list_item_vertical_margin" >
     
     <TextView
         android:id="@+id/search_result_item_lavatory_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lavatory"
+        android:text="Lavatory Name"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
     <TextView
         android:id="@+id/search_result_item_floor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="floor"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:text="Floor"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
     
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin" >
+        android:orientation="horizontal" >
         
 	    <RatingBar
 	        android:id="@+id/search_result_item_average_review"
@@ -42,7 +39,8 @@
 	        android:id="@+id/search_result_item_review_count"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="Number of Reviews"
+	        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+	        android:text="Review Count"
 	        android:textAppearance="?android:attr/textAppearanceSmall" />
 	    
     </LinearLayout>
