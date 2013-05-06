@@ -18,7 +18,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ems="10"
-            android:hint="@string/building_name" >
+            android:hint="@string/building_name"
+            android:imeOptions="actionNext"
+            android:inputType="textCapWords"
+            android:singleLine="true" >
 
             <requestFocus />
         </EditText>
@@ -28,33 +31,40 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/floor" />
+            android:hint="@string/floor"
+            android:imeOptions="actionNext"
+            android:singleLine="true" />
 
         <EditText
             android:id="@+id/activity_add_lavatory_room_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/room_number" />
+            android:hint="@string/room_number"
+            android:imeOptions="actionNext"
+            android:singleLine="true" />
 
-        <LinearLayout
+        <RadioGroup
+            android:id="@+id/activity_add_lavatory_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
             <RadioButton
                 android:id="@+id/activity_add_lavatory_male"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/male" />
 
             <RadioButton
                 android:id="@+id/activity_add_review_female"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/female" />
 
-        </LinearLayout>
+        </RadioGroup>
 
         <EditText
             android:id="@+id/activity_add_lavatory_latitude"
@@ -62,6 +72,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/latitude"
+            android:imeOptions="actionNext"
             android:inputType="numberDecimal" />
 
         <EditText
