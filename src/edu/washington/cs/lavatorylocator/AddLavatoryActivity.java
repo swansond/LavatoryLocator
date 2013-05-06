@@ -54,7 +54,7 @@ public class AddLavatoryActivity extends Activity {
         
         requestAddLavatory(Integer.toString(1), buildingName, floor, lavaTypeString, longitude, latitude);
         
-        NavUtils.navigateUpFromSameTask(this);
+        finishActivity(0);
     }
     
     

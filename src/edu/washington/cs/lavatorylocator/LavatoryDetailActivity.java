@@ -59,7 +59,7 @@ public class LavatoryDetailActivity extends ListActivity
         } else {
             Intent intent = new Intent(this, AddReviewActivity.class);
             intent.putExtra("LAVATORY", lav);
-            startActivity(intent);
+            startActivityForResult(intent, 0);
         }
     }
     
@@ -130,20 +130,6 @@ public class LavatoryDetailActivity extends ListActivity
         Intent intent = getIntent();
         lav = intent.getParcelableExtra(MainActivity.LAVATORY);
         
-//        LavatoryData testLav = new LavatoryData(1, 'M', "Mary Gates Hall", 
-//                "3", "rmNo", 1, 2, 5, 2.5);
-//
-//        List<ReviewData> reviews = Arrays
-//                .asList(new ReviewData(0, 0, 0, 5, "lavatory 1"),
-//                new ReviewData(1, 1, 26, 1, "Bad!"),
-//                new ReviewData(2, 2, 97, 3, "OK."),
-//                new ReviewData(3, 3, 48, 5, "Amazing!"),
-//                new ReviewData(4, 4, 2, 4, "Good!"),
-//                new ReviewData(5, 5, 106, 5,
-//                        "Amazing! Amazing! Amazing! Amazing! Amazing! " +
-//                        "Amazing! Amazing! Amazing! Amazing! Amazing! " +
-//                        "Amazing! Amazing! Amazing! Amazing! Amazing! "));
-//        
         getListView().setFocusable(false); // TODO: remove when 
                                            //ReviewDetailActivity 
                                            //is implemented
@@ -160,6 +146,7 @@ public class LavatoryDetailActivity extends ListActivity
                 .setRating((float) lav.avgRating);
         getListView().addHeaderView(headerView, null, false);
 
+        getReviews(Integer.toString(lav.lavatoryID), "", "", "");
     }
 
     /**
@@ -227,7 +214,6 @@ public class LavatoryDetailActivity extends ListActivity
      */
     public void onLoadFinished(Loader<List<ReviewData>> loader,
             List<ReviewData> reviews) {
-        //TODO: process data
         LavatoryDetailAdapter adapter = new LavatoryDetailAdapter(this,
                 R.layout.review_item, R.id.review_author, reviews);
 

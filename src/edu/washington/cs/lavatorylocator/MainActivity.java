@@ -76,7 +76,7 @@ public class MainActivity extends Activity
             popup.showAtLocation(layout, Gravity.CENTER, 0, 0);
         } else {
             Intent intent = new Intent(this, AddLavatoryActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, 0);
         }
     }
     

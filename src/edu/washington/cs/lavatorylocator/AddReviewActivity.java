@@ -154,7 +154,7 @@ public class AddReviewActivity extends Activity {
         
         //executes when it finishes the server communication
         protected void onPostExecute(HttpResponse hr) {
-            NavUtils.navigateUpFromSameTask(AddReviewActivity.this);
+            finishActivity(0);
         }
     }
     

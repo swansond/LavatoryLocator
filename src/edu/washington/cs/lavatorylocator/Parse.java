@@ -63,13 +63,13 @@ public final class Parse {
             JSONObject obj = resultArray.getJSONObject(i);
 
             int lav_id = obj.getInt("lid");
-            char lav_gender = (char)obj.getInt("type");
+            char lav_gender = (char)obj.getString("type").charAt(0);
             String building = obj.getString("building");
             String floor = "1";
             String roomNum = obj.getString("room");
             double longitude = 0;
             double latitude = 0;
-            int numReviews = obj.getInt("numReviews");
+            int numReviews = obj.getInt("reviews");
             double rating = obj.getDouble("avgRating");
             
             LavatoryData lav = new LavatoryData(lav_id, lav_gender, building, floor, roomNum, longitude, latitude, numReviews, rating);
