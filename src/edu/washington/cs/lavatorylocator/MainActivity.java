@@ -47,6 +47,18 @@ public class MainActivity extends Activity {
     }
 
     /**
+     * Goes to the <code>AddLavatoryActivity</code> to allow the user to request to add a
+     * lavatory to the LavatoryLocator service.
+     * 
+     * @param item
+     *            the <code>MenuItem</code> that was selected
+     */
+    public void goToAddLavatoryActivity(MenuItem item) {
+        Intent intent = new Intent(this, AddLavatoryActivity.class);
+        startActivity(intent);
+    }
+    
+    /**
      * Goes to the <code>SettingsActivity</code>.
      * 
      * @param item
