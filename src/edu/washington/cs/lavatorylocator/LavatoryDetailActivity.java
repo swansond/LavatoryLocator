@@ -7,11 +7,15 @@ import android.os.Bundle;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +29,8 @@ import android.support.v4.app.NavUtils;
  */
 public class LavatoryDetailActivity extends ListActivity {
 
+    private PopupWindow popup;
+    
     /**
      * Goes to the <code>AddReviewActivity</code> to allow the user to add a
      * review about the current lavatory.
@@ -35,10 +41,43 @@ public class LavatoryDetailActivity extends ListActivity {
     public void goToAddReviewActivity(MenuItem item) {
         // TODO: pass current Bathroom object to AddReviewActivity; Bathroom
         // needs to be made Parcelable first
-        Intent intent = new Intent(this, AddReviewActivity.class);
-        startActivity(intent);
+        SharedPreferences userDetails = getApplicationContext().getSharedPreferences("User", MODE_PRIVATE);
+        Boolean loggedIn = userDetails.getBoolean("isLoggedIn", false);
+        
+        if(!loggedIn){
+            LayoutInflater inflater = (LayoutInflater)
+                    this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View layout = inflater.inflate(R.layout.login_popup, 
+                    (ViewGroup) findViewById(R.id.login_popup_layout));
+            
+            popup = new PopupWindow(layout, 350, 250, true);
+            popup.showAtLocation(layout, Gravity.CENTER, 0, 0);
+        } else {
+            Intent intent = new Intent(this, AddReviewActivity.class);
+            startActivity(intent);
+        }
     }
-
+    
+    /**
+     * Logs the user in so that they can add missing lavatories
+     * 
+     * @param target
+     */
+    public void loginUser(View target){
+        SharedPreferences userDetails = getApplicationContext().getSharedPreferences("User", MODE_PRIVATE);
+        userDetails.edit().putBoolean("isLoggedIn", true).commit();
+        dismissLoginPrompt(target);
+    }
+    
+    /**
+     * Closes the popup window
+     * 
+     * @param target
+     */
+    public void dismissLoginPrompt(View target){
+        popup.dismiss();
+    }
+    
     /**
      * Goes to the <code>EditLavatoryDetailActivity</code> to allow the user to
      * edit the current lavatory's information.

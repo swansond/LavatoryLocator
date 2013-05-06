@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +32,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 
     private ListView listView;
+    private PopupWindow popup;
 
     /**
      * Activates the "Got2Go" feature, showing the user the nearest highly-rated
@@ -54,8 +59,41 @@ public class MainActivity extends Activity {
      *            the <code>MenuItem</code> that was selected
      */
     public void goToAddLavatoryActivity(MenuItem item) {
-        Intent intent = new Intent(this, AddLavatoryActivity.class);
-        startActivity(intent);
+        SharedPreferences userDetails = getApplicationContext().getSharedPreferences("User", MODE_PRIVATE);
+        Boolean loggedIn = userDetails.getBoolean("isLoggedIn", false);
+        
+        if(!loggedIn){
+            LayoutInflater inflater = (LayoutInflater)
+                    this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View layout = inflater.inflate(R.layout.login_popup, 
+                    (ViewGroup) findViewById(R.id.login_popup_layout));
+            
+            popup = new PopupWindow(layout, 350, 250, true);
+            popup.showAtLocation(layout, Gravity.CENTER, 0, 0);
+        } else {
+            Intent intent = new Intent(this, AddLavatoryActivity.class);
+            startActivity(intent);
+        }
+    }
+    
+    /**
+     * Logs the user in so that they can add missing lavatories
+     * 
+     * @param target
+     */
+    public void loginUser(View target){
+        SharedPreferences userDetails = getApplicationContext().getSharedPreferences("User", MODE_PRIVATE);
+        userDetails.edit().putBoolean("isLoggedIn", true).commit();
+        dismissLoginPrompt(target);
+    }
+    
+    /**
+     * Closes the popup window
+     * 
+     * @param target
+     */
+    public void dismissLoginPrompt(View target){
+        popup.dismiss();
     }
     
     /**
