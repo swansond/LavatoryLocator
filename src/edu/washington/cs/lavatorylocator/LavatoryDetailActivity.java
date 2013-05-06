@@ -5,10 +5,8 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.app.ListActivity;
-import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Loader;
-import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -18,10 +16,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.app.LoaderManager;
 
 /**
- * Activity for viewing information about a specific lavatory.
+ * <code>Activity</code> for viewing information about a specific lavatory.
  * 
  * @author Chris Rovillos
  * 
@@ -30,17 +29,50 @@ public class LavatoryDetailActivity extends ListActivity
         implements LoaderManager.LoaderCallbacks<List<ReviewData>> {
 
     /**
-     * Goes to the AddReviewActivity, giving it information about the bathroom
-     * being displayed.
+     * Goes to the <code>AddReviewActivity</code> to allow the user to add a
+     * review about the current lavatory.
      * 
-     * @param item the MenuItem that was clicked
+     * @param item
+     *            the <code>MenuItem</code> that was selected
      */
-    public void addReview(MenuItem item) {
-        // TODO: pass current Bathroom object to AddReviewActivity; Bathroom needs to be made Parcelable first
-        
-        
+    public void goToAddReviewActivity(MenuItem item) {
+        // TODO: pass current Bathroom object to AddReviewActivity; Bathroom
+        // needs to be made Parcelable first
         Intent intent = new Intent(this, AddReviewActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * Goes to the <code>EditLavatoryDetailActivity</code> to allow the user to
+     * edit the current lavatory's information.
+     * 
+     * @param item
+     *            the <code>MenuItem</code> that was selected
+     */
+    public void goToEditLavatoryDetailActivity(MenuItem item) {
+        // TODO: implement; remove stub message
+        Context context = getApplicationContext();
+        CharSequence notImplementedMessage = "Edit Lavatory Detail is not implemented yet!";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, notImplementedMessage, duration);
+        toast.show();
+    }
+
+    /**
+     * Goes to the <code>SettingsActivity</code>.
+     * 
+     * @param item
+     *            the <code>MenuItem</code> that was selected
+     */
+    public void goToSettingsActivity(MenuItem item) {
+        // TODO: implement; remove stub message
+        Context context = getApplicationContext();
+        CharSequence notImplementedMessage = "Settings are not implemented yet!";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, notImplementedMessage, duration);
+        toast.show();
     }
 
     @Override
@@ -56,6 +88,7 @@ public class LavatoryDetailActivity extends ListActivity
         
         //Intent intent = getIntent();
         //Bathroom bathroom = intent.getParcelableExtra(MainActivity.BATHROOM);
+        
         LavatoryData testLav = new LavatoryData(1, 'M', "Mary Gates Hall", 
                 "3", "rmNo", 1, 2, 5, 2.5);
 
@@ -73,7 +106,7 @@ public class LavatoryDetailActivity extends ListActivity
         getListView().setFocusable(false); // TODO: remove when ReviewDetailActivity is implemented
         
         setTitle("Lavatory " + testLav.lavatoryID);
-        
+
         View headerView = getLayoutInflater().inflate(
                 R.layout.activity_lavatory_detail_header, null);
         ((TextView) headerView.findViewById(R.id.lavatory_detail_name_text))
@@ -122,8 +155,21 @@ public class LavatoryDetailActivity extends ListActivity
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Returns a new GetReviewsLoader or GetUserReviewLoader its respective
+     * LoaderManager in this activity.
+     * NOTE: We never need to call this directly as it is done automatically.
+     * 
+     * @author Wilkes Sunseri
+     * 
+     * @param id the id of the LoaderManager (1 for getReviews and 2 for 
+     *      getUserReview)
+     * @param args the Bundle of arguments to be passed to the GetReviewsLoader
+     *      or GetUserReviewLoader
+     * 
+     * @return A LavSearchLoader
+     */
     public Loader<List<ReviewData>> onCreateLoader(int id, Bundle args) {
-        
         if (id == 1) {
             return new GetReviewsLoader(getApplicationContext(), args);
         } else {
@@ -131,24 +177,48 @@ public class LavatoryDetailActivity extends ListActivity
         }
     }
 
+    /**
+     * Anything that needs to be done to process a successful load's data is to
+     * be done here.
+     * This is called automatically when the load finishes.
+     * 
+     * @author Wilkes Sunseri
+     * 
+     * @param loader the Loader doing the loading
+     * @param reviews List of ReviewData objects to be processed
+     */
     public void onLoadFinished(Loader<List<ReviewData>> loader,
             List<ReviewData> reviews) {
-
         //TODO: process data
     }
 
+    /**
+     * Anything that needs to be done to nullify a reset Loader's data is to be
+     * done here.
+     * NOTE: This is called automatically when the Loader is reset.
+     * 
+     * @author Wilkes Sunseri
+     * 
+     * @param loader the Loader being reset
+     */
     public void onLoaderReset(Loader<List<ReviewData>> loader) {
         //TODO: nullify the loader's data
     }
 
-    //gets a page of (10) reviews for the lavatory
+    /**
+     * Gets a page of (10) reviews for the lavatory.
+     * 
+     * @author Wilkes Sunseri
+     * 
+     * @param lid the ID number for the lavatory
+     * @param pageNo the page of reviews to get
+     * @param sortparam the manner by which reviews are sorted
+     * @param direction ascending or descending
+     */
     private void getReviews(String lid, String pageNo, String sortparam,
             String direction) {
-
-        Bundle args = new Bundle(4);
-
         //set up the request
-
+        Bundle args = new Bundle(4);
         if (!lid.equals("")) {
             args.putString("lid", lid);
         }
@@ -166,12 +236,17 @@ public class LavatoryDetailActivity extends ListActivity
         getLoaderManager().initLoader(1, args, this);
     }
 
-    //gets the user's review if one exists
+    /**
+     * Gets the user's review for this lavatory if one exists.
+     * 
+     * @author Wilkes Sunseri
+     * 
+     * @param uid ID number of the user whose reviews we're getting
+     * @param lid ID number of the lavatory the review is for
+     */
     private void getUserReview(String uid, String lid) {
-
-        Bundle args = new Bundle(2);
-
         //set up the request
+        Bundle args = new Bundle(2);
         if (!uid.equals("")) {
             args.putString("uid", uid);
         }
@@ -184,7 +259,9 @@ public class LavatoryDetailActivity extends ListActivity
     }
     
     /**
-     * Adapter for displaying an array of Review objects.
+     * Custom <code>Adapter</code> for displaying an array of
+     * <code>Review</code>s. Creates a custom <code>View</code> for each review
+     * row.
      * 
      * @author Chris Rovillos
      * 
@@ -193,11 +270,26 @@ public class LavatoryDetailActivity extends ListActivity
 
         private List<ReviewData> reviews;
 
-        // TODO: comments
-        public LavatoryDetailAdapter(Context context, int resource,
-                int textViewResourceId, List<ReviewData> objects) {
-            super(context, resource, textViewResourceId, objects);
-            this.reviews = objects;
+        /**
+         * Constructs a new <code>LavatoryDetailAdapter</code> with given
+         * <code>List</code> of <code>Review</code>s.
+         * 
+         * @param context
+         *            the current context
+         * @param reviewRowResource
+         *            the resource ID for a layout file containing the review
+         *            row layout to use when instantiating views
+         * @param reviewAuthorTextViewResourceId
+         *            the id of the <code>TextView</code> for displaying the
+         *            reviewer's name in each row
+         * @param reviews
+         *            a <code>List</code> of <code>Review</code>s to display
+         */
+        public LavatoryDetailAdapter(Context context, int reviewRowResource,
+                int reviewAuthorTextViewResourceId, List<ReviewData> reviews) {
+            super(context, reviewRowResource, reviewAuthorTextViewResourceId,
+                    reviews);
+            this.reviews = reviews;
         }
 
         @Override

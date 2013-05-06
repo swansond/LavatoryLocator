@@ -15,23 +15,38 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
+/**
+ * <code>Activity</code> for adding a new lavatory into LavatoryLocator.
+ * 
+ * @author Chris Rovillos
+ * 
+ */
 public class AddLavatoryActivity extends Activity {
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_add_lavatory);
-		// Show the Up button in the action bar.
-		setupActionBar();
-	}
+    
+    /**
+     * Starts submitting the new lavatory to the LavatoryLocator service.
+     * 
+     * @param item
+     *            the <code>MenuItem</code> that was selected
+     */
+    public void addLavatory(MenuItem item) {
+        // TODO: implement
+    }
+    
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_lavatory);
+        // Show the Up button in the action bar.
+        setupActionBar();
+    }
 
 	/**
 	 * Set up the {@link android.app.ActionBar}.
 	 */
 	private void setupActionBar() {
-
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-
 	}
 
 	@Override
@@ -58,41 +73,53 @@ public class AddLavatoryActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	//TODO: uncomment this once the activity is reachable and this can be put in the right place
-	
-    //sends the information about the bathroom to be added to the server
-//    private void requestAddLavatory(String uid, String buildingName,
-//            String roomNumber, String floor, String lavaType, String longitude,
-//            String latitude) throws UnsupportedEncodingException {
-//        //set up the request
-//        String URL = "http://lavlocdb.herokuapp.com/addlava.php";
-//        HttpPost hp = new HttpPost(URL);
-//        List<NameValuePair> paramList = new LinkedList<NameValuePair>();
-//        if (!uid.equals("")) {
-//            paramList.add(new BasicNameValuePair("uid", uid));
-//        }
-//        if (!buildingName.equals("")) {
-//            paramList.add(new BasicNameValuePair("buildingName", buildingName));
-//        }
-//        if (!roomNumber.equals("")) {
-//            paramList.add(new BasicNameValuePair("roomNumber", roomNumber));
-//        }
-//        if (!floor.equals("")) {
-//            paramList.add(new BasicNameValuePair("floor", floor));
-//        }
-//        if (!lavaType.equals("")) {
-//            paramList.add(new BasicNameValuePair("lavaType", lavaType));
-//        }
-//        if (!longitude.equals("")) {
-//            paramList.add(new BasicNameValuePair("longitude", longitude));
-//        }
-//        if (!latitude.equals("")) {
-//            paramList.add(new BasicNameValuePair("latitude", latitude));
-//        }
-//        hp.setEntity(new UrlEncodedFormEntity(paramList, "UTF-8"));
-//        
-//        //and finally pass it another string to be send to the server
-//        new RequestAddLavTask().execute(hp);
-//    }
+	//TODO: figure out where this goes and put it there
+    /**
+     * Sends the request to add a new lavatory to the server.
+     * 
+     * @author Wilkes Sunseri
+     * 
+     * @param uid the user's ID number
+     * @param buildingName the name of the building the new lavatory is in
+     * @param floor the floor the new lavatory is on
+     * @param lavaType the gender of the new lavatory
+     * @param longitude the new lavatory's longitude
+     * @param latitude the new lavatory's latitude
+     */
+	private void requestAddLavatory(String uid, String buildingName,
+	        String floor, String lavaType, String longitude,
+	        String latitude) {
+	    //set up the request
+	    String URL = "http://lavlocdb.herokuapp.com/addlava.php";
+	    HttpPost hp = new HttpPost(URL);
+	    List<NameValuePair> paramList = new LinkedList<NameValuePair>();
+	    if (!uid.equals("")) {
+	        paramList.add(new BasicNameValuePair("uid", uid));
+	    }
+	    if (!buildingName.equals("")) {
+	        paramList.add(new BasicNameValuePair("buildingName", buildingName));
+	    }
+	    if (!floor.equals("")) {
+	        paramList.add(new BasicNameValuePair("floor", floor));
+	    }
+	    if (!lavaType.equals("")) {
+	        paramList.add(new BasicNameValuePair("lavaType", lavaType));
+	    }
+	    if (!longitude.equals("")) {
+	        paramList.add(new BasicNameValuePair("longitude", longitude));
+	    }
+	    if (!latitude.equals("")) {
+	        paramList.add(new BasicNameValuePair("latitude", latitude));
+	    }
+	    //encode the parameters into the request
+	    try {
+            hp.setEntity(new UrlEncodedFormEntity(paramList, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
+	    //and finally pass it another string to be send to the server
+	    new RequestAddLavTask().execute(hp);
+	}
 }

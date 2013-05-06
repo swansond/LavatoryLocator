@@ -15,10 +15,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
+/**
+ * <code>Activity</code> for adding a review on a lavatory.
+ * 
+ * @author Chris Rovillos
+ * 
+ */
 public class AddReviewActivity extends Activity {
 
+    /**
+     * Starts submitting the entered review to the LavatoryLocator service.
+     * 
+     * @param item
+     *            the <code>MenuItem</code> that was selected
+     */
     public void addReview(MenuItem item) {
-
+        // TODO: implement
     }
 
     @Override
@@ -29,7 +41,7 @@ public class AddReviewActivity extends Activity {
         setupActionBar();
         
         //Example method call for testing
-        //TODO: move calls to the right part of the activity and delete this
+        //TODO: move call to the right part of the activity and delete this
         //updateReview("1", "2", "3", "4");
 
     }
@@ -38,15 +50,12 @@ public class AddReviewActivity extends Activity {
      * Set up the {@link android.app.ActionBar}.
      */
     private void setupActionBar() {
-
         getActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        
         getMenuInflater().inflate(R.menu.add_review, menu);
         return true;
     }
@@ -71,12 +80,20 @@ public class AddReviewActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    //sends a new review to the server
+    /**
+     * Sends a new review to the server.
+     * 
+     * @author Wilkes Sunseri
+     * 
+     * @param uid the ID of the user making the review
+     * @param lid the ID of the lavatory being reviewed
+     * @param rating the rating the user is giving the lavatory
+     * @param review the review itself
+     */
     private void updateReview(String uid, String lid, String rating,
             String review) {
         //set up the request
         String URL = "http://lavlocdb.herokuapp.com/submitreview.php";
-        
         HttpPost hp = new HttpPost(URL);
         List<NameValuePair> paramList = new LinkedList<NameValuePair>();
         if (!uid.equals("")) {
@@ -88,7 +105,7 @@ public class AddReviewActivity extends Activity {
         if (!rating.equals("")) {
             paramList.add(new BasicNameValuePair("rating", rating));
         }
-
+        //encode the parameters into the request
         try {
             hp.setEntity(new UrlEncodedFormEntity(paramList, "UTF-8"));
         } catch (UnsupportedEncodingException e) {

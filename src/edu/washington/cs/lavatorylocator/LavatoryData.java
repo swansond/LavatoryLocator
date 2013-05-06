@@ -7,7 +7,7 @@ package edu.washington.cs.lavatorylocator;
  * its room number, its latitude and longitude, the number of reviews for that 
  * lavatory, and its average rating.
  * 
- * @author Wil
+ * @author Wilkes Sunseri
  *
  */
 public class LavatoryData {
