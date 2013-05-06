@@ -145,7 +145,7 @@ public class LavatoryDetailActivity extends ListActivity
                 .setRating((float) lav.avgRating);
         getListView().addHeaderView(headerView, null, false);
 
-        getReviews(Integer.toString(lav.lavatoryID), "", "", "");
+        getReviews(Integer.toString(lav.lavatoryID), "1", "helpfulness", "descending");
     }
 
     /**

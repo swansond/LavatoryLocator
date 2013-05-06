@@ -37,6 +37,7 @@ public final class Parse {
     public static List<ReviewData> reviewList(JSONObject result) throws JSONException {
         List<ReviewData> output = new ArrayList<ReviewData>();
         JSONArray resultArray = result.getJSONArray("reviews");
+        
         for (int i = 0; i < resultArray.length(); i++) {
             JSONObject obj = resultArray.getJSONObject(i);
             
