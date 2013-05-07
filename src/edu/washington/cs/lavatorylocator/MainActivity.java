@@ -1,9 +1,15 @@
 package edu.washington.cs.lavatorylocator;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,7 +37,7 @@ import android.widget.Toast;
  * 
  */
 public class MainActivity extends Activity
-        implements LoaderManager.LoaderCallbacks<List<LavatoryData>>{
+        implements LoaderCallbacks<RESTLoader.RESTResponse>{
 
     public static final String LAVATORY = "LAVATORY";
     private ListView listView;
@@ -220,8 +226,11 @@ public class MainActivity extends Activity
      * @return A LavSearchLoader
      */
     @Override
-    public Loader<List<LavatoryData>> onCreateLoader(int id, Bundle args) {
-        return new LavSearchLoader(getApplicationContext(), args);
+    public Loader<RESTLoader.RESTResponse> onCreateLoader(int id, Bundle args) {
+        Uri searchAddress = 
+                Uri.parse("http://lavlocdb.herokuapp.com/lavasearch.php");
+        return new RESTLoader(getApplicationContext(), searchAddress, 
+                RESTLoader.requestType.GET, args);
     }
 
     /**
@@ -235,26 +244,41 @@ public class MainActivity extends Activity
      * @param lavatories List of LavatoryData objects to be processed
      */
     @Override
-    public void onLoadFinished(Loader<List<LavatoryData>> loader,
-            List<LavatoryData> lavatories) {
-        SearchResultsAdapter adapter = new SearchResultsAdapter(this,
-                R.layout.search_result_item, R.id.search_result_item_lavatory_name, lavatories);
+    public void onLoadFinished(Loader<RESTLoader.RESTResponse> loader,
+            RESTLoader.RESTResponse response) {
+        
+        if (response.getCode() == 200 && !response.getData().equals("")) {
+            try {
+                JSONObject finalResult = Parse.readJSON(response);
+                List<LavatoryData> lavatories = Parse.lavatoryList(finalResult);
 
-        listView.setAdapter(adapter);
+                SearchResultsAdapter adapter = new SearchResultsAdapter(this,
+                        R.layout.search_result_item, 
+                        R.id.search_result_item_lavatory_name, lavatories);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                listView.setAdapter(adapter);
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-                final LavatoryData selectedLavatory = (LavatoryData) parent
-                        .getItemAtPosition(position);
-                Intent intent = new Intent(parent.getContext(),
-                        LavatoryDetailActivity.class);
-                intent.putExtra(LAVATORY, selectedLavatory);
-                startActivity(intent);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                            int position, long id) {
+                        final LavatoryData selectedLavatory = (LavatoryData) parent
+                                .getItemAtPosition(position);
+                        Intent intent = new Intent(parent.getContext(),
+                                LavatoryDetailActivity.class);
+                        intent.putExtra(LAVATORY, selectedLavatory);
+                        startActivity(intent);
+                    }
+                });
+            } catch (Exception e) {
+                Toast.makeText(this, "The data is ruined. I'm sorry.", 
+                        Toast.LENGTH_SHORT).show();
             }
-        });
+        } else {
+            Toast.makeText(this, "Connection failure. Try again later.", 
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -267,7 +291,7 @@ public class MainActivity extends Activity
      * @param loader the Loader being reset
      */
     @Override
-    public void onLoaderReset(Loader<List<LavatoryData>> loader) {
+    public void onLoaderReset(Loader<RESTLoader.RESTResponse> loader) {
         // TODO: nullify the loader's data for garbage collecting
     }
     
@@ -289,8 +313,8 @@ public class MainActivity extends Activity
     private void lavatorySearch(String bldgName, String floor, 
             String roomNumber, String locationLong, String locationLat, 
             String maxDist, String minRating, String lavaType) {
-        Bundle args = new Bundle(9);
-
+        Bundle args = new Bundle(10);
+        
         //set up the request
         if (!bldgName.equals("")) {
             args.putString("bldgName", bldgName);

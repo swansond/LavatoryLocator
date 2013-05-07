@@ -2,8 +2,14 @@ package edu.washington.cs.lavatorylocator;
 
 import java.util.List;
 
+import org.json.JSONObject;
+
+import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
+
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.ListActivity;
+import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Loader;
 import android.content.Intent;
@@ -29,7 +35,7 @@ import android.app.LoaderManager;
  * 
  */
 public class LavatoryDetailActivity extends ListActivity 
-        implements LoaderManager.LoaderCallbacks<List<ReviewData>> {
+        implements LoaderCallbacks<RESTLoader.RESTResponse> {
 
     private PopupWindow popup;
     private LavatoryData lav;
@@ -145,7 +151,7 @@ public class LavatoryDetailActivity extends ListActivity
                 .setRating((float) lav.avgRating);
         getListView().addHeaderView(headerView, null, false);
 
-        getReviews(Integer.toString(lav.lavatoryID), "1", "helpfulness", "descending");
+        getReviews(Integer.toString(lav.lavatoryID), "", "", "");
     }
 
     /**
@@ -193,12 +199,12 @@ public class LavatoryDetailActivity extends ListActivity
      * 
      * @return A LavSearchLoader
      */
-    public Loader<List<ReviewData>> onCreateLoader(int id, Bundle args) {
-        if (id == 1) {
-            return new GetReviewsLoader(getApplicationContext(), args);
-        } else {
-            return new GetUserReviewLoader(getApplicationContext(), args);
-        }
+    public Loader<RESTResponse> onCreateLoader(int id, Bundle args) {
+        Uri searchAddress = 
+                Uri.parse("http://lavlocdb.herokuapp.com/lavasearch.php");
+        
+        return new RESTLoader(getApplicationContext(), searchAddress, 
+                RESTLoader.requestType.GET, args);
     }
 
     /**
@@ -209,14 +215,29 @@ public class LavatoryDetailActivity extends ListActivity
      * @author Wilkes Sunseri
      * 
      * @param loader the Loader doing the loading
-     * @param reviews List of ReviewData objects to be processed
+     * @param response response from the Loader to be processed
      */
-    public void onLoadFinished(Loader<List<ReviewData>> loader,
-            List<ReviewData> reviews) {
-        LavatoryDetailAdapter adapter = new LavatoryDetailAdapter(this,
-                R.layout.review_item, R.id.review_author, reviews);
+    public void onLoadFinished(Loader<RESTLoader.RESTResponse> loader,
+            RESTLoader.RESTResponse response) {
+        
+        if (response.getCode() == 200 && !response.getData().equals("")) {
+            try {
+                JSONObject finalResult = Parse.readJSON(response);
+                List<ReviewData> reviews = Parse.reviewList(finalResult);
 
-        getListView().setAdapter(adapter);
+
+                LavatoryDetailAdapter adapter = new LavatoryDetailAdapter(this,
+                        R.layout.review_item, R.id.review_author, reviews);
+
+                getListView().setAdapter(adapter);
+            } catch (Exception e) {
+                Toast.makeText(this, "The data is ruined. I'm sorry.", 
+                        Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, "Connection failure. Try again later.", 
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -228,7 +249,7 @@ public class LavatoryDetailActivity extends ListActivity
      * 
      * @param loader the Loader being reset
      */
-    public void onLoaderReset(Loader<List<ReviewData>> loader) {
+    public void onLoaderReset(Loader<RESTLoader.RESTResponse> loader) {
         //TODO: nullify the loader's data
     }
 
