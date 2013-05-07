@@ -26,7 +26,6 @@ import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.app.LoaderManager;
 
 /**
  * <code>Activity</code> for viewing information about a specific lavatory.
@@ -93,7 +92,7 @@ public class LavatoryDetailActivity extends ListActivity
      * edit the current lavatory's information.
      * 
      * @param item
-     *            the <code>MenuItem</code> that was selected
+     * the <code>MenuItem</code> that was selected
      */
     public void goToEditLavatoryDetailActivity(MenuItem item) {
         // TODO: implement; remove stub message
@@ -109,7 +108,7 @@ public class LavatoryDetailActivity extends ListActivity
      * Goes to the <code>SettingsActivity</code>.
      * 
      * @param item
-     *            the <code>MenuItem</code> that was selected
+     * the <code>MenuItem</code> that was selected
      */
     public void goToSettingsActivity(MenuItem item) {
         // TODO: implement; remove stub message
@@ -151,7 +150,7 @@ public class LavatoryDetailActivity extends ListActivity
                 .setRating((float) lav.avgRating);
         getListView().addHeaderView(headerView, null, false);
 
-        getReviews(Integer.toString(lav.lavatoryID), "", "", "");
+        getReviews(Integer.toString(lav.lavatoryID), "1", "helpfulness", "descending");
     }
 
     /**

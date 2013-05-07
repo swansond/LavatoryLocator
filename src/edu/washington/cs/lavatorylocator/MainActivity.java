@@ -1,9 +1,7 @@
 package edu.washington.cs.lavatorylocator;
 
-import java.io.IOException;
 import java.util.List;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.net.Uri;
@@ -15,7 +13,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.app.LoaderManager;
 import android.content.Loader;
 import android.view.Menu;
 import android.view.MenuItem;
