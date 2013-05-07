@@ -25,6 +25,7 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
 
@@ -117,7 +118,9 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
                 if (request != null) {
                     HttpClient client = new DefaultHttpClient();
                     HttpResponse response = client.execute(request);
-
+                    
+                    Log.i("tag", response.getStatusLine().toString());
+                    
                     HttpEntity responseEntity = response.getEntity();
                     StatusLine responseStatus = response.getStatusLine();
                     int statusCode;

@@ -199,9 +199,12 @@ public class LavatoryDetailActivity extends ListActivity
      * @return A LavSearchLoader
      */
     public Loader<RESTResponse> onCreateLoader(int id, Bundle args) {
-        Uri searchAddress = 
-                Uri.parse("http://lavlocdb.herokuapp.com/lavasearch.php");
-        
+        Uri searchAddress;
+        if (id == 1) {
+            searchAddress = Uri.parse("http://lavlocdb.herokuapp.com/fetchreviews.php");
+        } else {
+            searchAddress = Uri.parse("http://lavlocdb.herokuapp.com/fetchuserreview.php");
+        }
         return new RESTLoader(getApplicationContext(), searchAddress, 
                 RESTLoader.requestType.GET, args);
     }
