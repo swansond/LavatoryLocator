@@ -6,11 +6,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
+import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
 
 /**
  * 
@@ -37,7 +38,6 @@ public final class Parse {
     public static List<ReviewData> reviewList(JSONObject result) throws JSONException {
         List<ReviewData> output = new ArrayList<ReviewData>();
         JSONArray resultArray = result.getJSONArray("reviews");
-        
         for (int i = 0; i < resultArray.length(); i++) {
             JSONObject obj = resultArray.getJSONObject(i);
             
@@ -88,8 +88,8 @@ public final class Parse {
      * @return a JSON string with the data
      * @throws IOException if the reading fails
      */
-    public static JSONObject readJSON(HttpResponse resp) throws IOException, JSONException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent(), "UTF-8"));
+    public static JSONObject readJSON(RESTResponse resp) throws IOException, JSONException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getData().getContent(), "UTF-8"));
         String json = reader.readLine();
         JSONTokener tokener = new JSONTokener(json);
         return new JSONObject(tokener);
