@@ -118,6 +118,9 @@ public class AddReviewActivity extends Activity {
         if (!rating.equals("")) {
             paramList.add(new BasicNameValuePair("rating", rating));
         }
+        if (!review.equals("")) {
+            paramList.add(new BasicNameValuePair("review", review));
+        }
         //encode the parameters into the request
         try {
             hp.setEntity(new UrlEncodedFormEntity(paramList, "UTF-8"));
@@ -157,7 +160,7 @@ public class AddReviewActivity extends Activity {
         //executes when it finishes the server communication
         protected void onPostExecute(HttpResponse hr) {
             Toast.makeText(AddReviewActivity.this, "test", Toast.LENGTH_SHORT);
-            finishActivity(0);
+            finish();
         }
     }
     
