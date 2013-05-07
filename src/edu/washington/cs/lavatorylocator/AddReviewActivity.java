@@ -148,6 +148,8 @@ public class AddReviewActivity extends Activity {
         protected HttpResponse doInBackground(HttpPost... hp) {
             HttpClient client = new DefaultHttpClient();
             try {
+                String test = EntityUtils.toString(hp[0].getEntity());
+                System.out.println(test);
                 return client.execute(hp[0]);
             } catch (ClientProtocolException e) {
                 e.printStackTrace();
@@ -163,6 +165,7 @@ public class AddReviewActivity extends Activity {
         protected void onPostExecute(HttpResponse hr) {
             try {
                 String responseBody = EntityUtils.toString(hr.getEntity());
+                System.out.println(responseBody);
             } catch (ParseException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

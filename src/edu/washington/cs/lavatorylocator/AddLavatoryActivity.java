@@ -53,7 +53,7 @@ public class AddLavatoryActivity extends Activity {
         
         requestAddLavatory(Integer.toString(1), buildingName, floor, lavaTypeString, longitude, latitude);
         
-        finishActivity(0);
+        finish();
     }
     
     
