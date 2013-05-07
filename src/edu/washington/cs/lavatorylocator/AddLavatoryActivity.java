@@ -32,8 +32,8 @@ public class AddLavatoryActivity extends Activity {
      *            the <code>MenuItem</code> that was selected
      */
     public void addLavatory(MenuItem item) {
-        String buildingName = ((EditText) findViewById(R.id.activity_add_lavatory_building_name)).toString();
-        String floor = ((EditText) findViewById(R.id.activity_add_lavatory_floor)).toString();
+        String buildingName = ((EditText) findViewById(R.id.activity_add_lavatory_building_name)).getText().toString();
+        String floor = ((EditText) findViewById(R.id.activity_add_lavatory_floor)).getText().toString();
         int lavaType = ((RadioGroup) findViewById(R.id.activity_add_lavatory_type)).getCheckedRadioButtonId();
         
         String lavaTypeString = "";
@@ -47,8 +47,8 @@ public class AddLavatoryActivity extends Activity {
                 break;
         }
         
-        String longitude = ((EditText) findViewById(R.id.activity_add_lavatory_longitude)).toString();
-        String latitude = ((EditText) findViewById(R.id.activity_add_lavatory_latitude)).toString();
+        String longitude = ((EditText) findViewById(R.id.activity_add_lavatory_longitude)).getText().toString();
+        String latitude = ((EditText) findViewById(R.id.activity_add_lavatory_latitude)).getText().toString();
         
         
         requestAddLavatory(Integer.toString(1), buildingName, floor, lavaTypeString, longitude, latitude);
