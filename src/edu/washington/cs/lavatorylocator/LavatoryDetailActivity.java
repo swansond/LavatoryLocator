@@ -132,7 +132,34 @@ public class LavatoryDetailActivity extends ListActivity
         //getReviews("3", "4", "5", "6");
         
         Intent intent = getIntent();
-        lav = intent.getParcelableExtra(MainActivity.LAVATORY);
+        
+        if(intent.hasExtra(MainActivity.LAVATORY)){
+            // called from the list of bathrooms, data is passed in
+            lav = intent.getParcelableExtra(MainActivity.LAVATORY);
+        } else if(savedInstanceState != null && 
+                savedInstanceState.containsKey(MainActivity.LAVATORY)){
+            // called from restore, get lav info from passed bundle
+            lav = savedInstanceState.getParcelable(MainActivity.LAVATORY);
+        } else if(getSharedPreferences("User", MODE_PRIVATE).contains("ID")){
+            // called after destruction and saveInstanceState did not get called
+            // have to build lavatory from data stored in onPause
+            SharedPreferences data = getSharedPreferences("User", MODE_PRIVATE);
+            int ID = data.getInt("ID", 0);
+            char gender = data.getString("Gender", "").charAt(0); // this should get changed
+            String bldg = data.getString("Building", "");
+            String flr = data.getString("Floor", "");
+            String rmNum = data.getString("RoomNumber", "");
+            double lng = data.getFloat("Long", 0);
+            double lat = data.getFloat("Lat", 0);
+            int numRev = data.getInt("NumReviews", 0);
+            double avg = data.getFloat("Average", 0);
+            
+            lav = new LavatoryData(ID, gender, bldg, flr, rmNum, lng, lat,
+                    numRev, avg);
+            
+        } else {
+            // Some bad state, do nothing and throw a null pointer exception
+        }
         
         getListView().setFocusable(false); // TODO: remove when 
                                            //ReviewDetailActivity 
@@ -183,7 +210,40 @@ public class LavatoryDetailActivity extends ListActivity
         }
         return super.onOptionsItemSelected(item);
     }
+    
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(MainActivity.LAVATORY, lav);   
+    }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onRestoreInstanceState(savedInstanceState);
+        lav = (LavatoryData) savedInstanceState.get(MainActivity.LAVATORY);
+    }
+    
+    @Override
+    protected void onPause(){
+        super.onPause();
+        
+        SharedPreferences settings = getSharedPreferences("User", MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        
+        // save the current lavatory data
+        editor.putInt("ID", lav.lavatoryID);
+        editor.putString("Gender", String.valueOf(lav.lavatoryGender));
+        editor.putString("Building", lav.building);
+        editor.putString("Floor", lav.floor);
+        editor.putString("RoomNumber", lav.roomNumber);
+        editor.putFloat("Long", (float)lav.longitude);
+        editor.putFloat("Lat", (float)lav.latitude);
+        editor.putInt("NumReviews", lav.numReviews);
+        editor.putFloat("Average", (float)lav.avgRating);
+        editor.commit();
+    }
+    
     /**
      * Returns a new GetReviewsLoader or GetUserReviewLoader its respective
      * LoaderManager in this activity.
