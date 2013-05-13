@@ -9,6 +9,7 @@ import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Loader;
@@ -38,6 +39,8 @@ public class LavatoryDetailActivity extends ListActivity
 
     private PopupWindow popup;
     private LavatoryData lav;
+    private ProgressDialog loadingScreen;
+
     
     /**
      * Goes to the <code>AddReviewActivity</code> to allow the user to add a
@@ -221,7 +224,7 @@ public class LavatoryDetailActivity extends ListActivity
      */
     public void onLoadFinished(Loader<RESTLoader.RESTResponse> loader,
             RESTLoader.RESTResponse response) {
-        
+        loadingScreen.dismiss();
         if (response.getCode() == 200 && !response.getData().equals("")) {
             try {
                 JSONObject finalResult = Parse.readJSON(response);
@@ -282,6 +285,8 @@ public class LavatoryDetailActivity extends ListActivity
             args.putString("direction", direction);
         }
 
+        loadingScreen = ProgressDialog.show(this, "Loading...",
+                "Getting data just for you!", true);
         //and finally pass it to the loader to be sent to the server
         getLoaderManager().initLoader(1, args, this);
     }
