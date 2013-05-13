@@ -56,6 +56,17 @@ public class MainActivity extends Activity
         Toast toast = Toast.makeText(context, notImplementedMessage, duration);
         toast.show();
     }
+    
+    /**
+     * Goes to the <code>AboutActivity</code>.
+     * 
+     * @param item
+     *            the <code>MenuItem</code> that was selected
+     */
+    public void goToAboutActivity(MenuItem item) {
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
+    }
 
     /**
      * Goes to the <code>AddLavatoryActivity</code> to allow the user to request to add a
