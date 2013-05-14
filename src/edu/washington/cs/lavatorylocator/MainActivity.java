@@ -1,13 +1,13 @@
 package edu.washington.cs.lavatorylocator;
 
 import java.util.List;
-
 import org.json.JSONObject;
 
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,11 +34,23 @@ import android.widget.Toast;
  * 
  */
 public class MainActivity extends Activity
-        implements LoaderCallbacks<RESTLoader.RESTResponse>{
+        implements LoaderCallbacks<RESTLoader.RESTResponse> {
 
     public static final String LAVATORY = "LAVATORY";
     private ListView listView;
     private PopupWindow popup;
+    private PopupWindow connectionPopup;
+    private ProgressDialog loadingScreen;
+
+    //fields to store the previous search parameters in so we can repeat it
+    private String lastBldg;
+    private String lastFlr;
+    private String lastRmNum;
+    private String lastLocLong;
+    private String lastLocLat;
+    private String lastMaxDist;
+    private String lastMinRating;
+    private String lastLavaType;
 
     /**
      * Activates the "Got2Go" feature, showing the user the nearest highly-rated
@@ -78,13 +90,13 @@ public class MainActivity extends Activity
     public void goToAddLavatoryActivity(MenuItem item) {
         SharedPreferences userDetails = getApplicationContext().getSharedPreferences("User", MODE_PRIVATE);
         Boolean loggedIn = userDetails.getBoolean("isLoggedIn", false);
-        
+
         if(!loggedIn){
             LayoutInflater inflater = (LayoutInflater)
                     this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View layout = inflater.inflate(R.layout.login_popup, 
                     (ViewGroup) findViewById(R.id.login_popup_layout));
-            
+
             popup = new PopupWindow(layout, 350, 250, true);
             popup.showAtLocation(layout, Gravity.CENTER, 0, 0);
         } else {
@@ -92,7 +104,7 @@ public class MainActivity extends Activity
             startActivityForResult(intent, 0);
         }
     }
-    
+
     /**
      * Logs the user in so that they can add missing lavatories
      * 
@@ -103,7 +115,7 @@ public class MainActivity extends Activity
         userDetails.edit().putBoolean("isLoggedIn", true).commit();
         dismissLoginPrompt(target);
     }
-    
+
     /**
      * Closes the popup window
      * 
@@ -112,7 +124,7 @@ public class MainActivity extends Activity
     public void dismissLoginPrompt(View target){
         popup.dismiss();
     }
-    
+
     /**
      * Goes to the <code>SettingsActivity</code>.
      * 
@@ -145,7 +157,7 @@ public class MainActivity extends Activity
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    
+
     /**
      * Shows the search action view.
      * 
@@ -173,7 +185,7 @@ public class MainActivity extends Activity
     private class SearchResultsAdapter extends ArrayAdapter<LavatoryData> {
 
         private List<LavatoryData> searchResults;
-        
+
         /**
          * Constructs a new <code>SearchResultsAdapter</code> with given
          * <code>List</code> of <code>LavatoryData</code>s.
@@ -204,16 +216,16 @@ public class MainActivity extends Activity
             }
 
             ((RatingBar) convertView.findViewById(R.id.search_result_item_average_review))
-                    .setRating((float) searchResults.get(position)
-                            .avgRating);
+            .setRating((float) searchResults.get(position)
+                    .avgRating);
 
             ((TextView) convertView.findViewById(R.id.search_result_item_lavatory_name))
-                    .setText(searchResults.get(position).building + " "
-                            + searchResults.get(position).lavatoryID + " "
-                            + searchResults.get(position).lavatoryGender);
+            .setText(searchResults.get(position).building + " "
+                    + searchResults.get(position).lavatoryID + " "
+                    + searchResults.get(position).lavatoryGender);
 
             ((TextView) convertView.findViewById(R.id.search_result_item_review_count))
-                    .setText("" + searchResults.get(position).numReviews);
+            .setText("" + searchResults.get(position).numReviews);
 
             ((TextView) convertView.findViewById(R.id.search_result_item_floor)).setText("Floor "
                     + searchResults.get(position).floor);
@@ -221,17 +233,17 @@ public class MainActivity extends Activity
             return convertView;
         }
     }
-    
+
     /**
-     * Returns a new LavSearchLoader to this activity's LoaderManager.
+     * Returns a new Loader to this activity's LoaderManager.
      * NOTE: We never need to call this directly as it is done automatically.
      * 
      * @author Wilkes Sunseri
      * 
      * @param id the id of the LoaderManager
-     * @param args the Bundle of arguments to be passed to the LavSearchLoader
+     * @param args the Bundle of arguments to be passed to the Loader
      * 
-     * @return A LavSearchLoader
+     * @return A Loader to search for lavatories
      */
     @Override
     public Loader<RESTLoader.RESTResponse> onCreateLoader(int id, Bundle args) {
@@ -242,22 +254,25 @@ public class MainActivity extends Activity
     }
 
     /**
-     * Anything that needs to be done to process a successful load's data is to
-     * be done here.
+     * Parses the response from the server if there is one and passes it off.
+     * If the app could not connect to the server properly, the user will be
+     * prompted to try again.
+     * 
      * This is called automatically when the load finishes.
      * 
      * @author Wilkes Sunseri
      * 
      * @param loader the Loader doing the loading
-     * @param lavatories List of LavatoryData objects to be processed
+     * @param response the server response to be processed
      */
     @Override
     public void onLoadFinished(Loader<RESTLoader.RESTResponse> loader,
             RESTLoader.RESTResponse response) {
-        
-        if (response.getCode() == 200 && !response.getData().equals("")) {
+        loadingScreen.dismiss();
+        if (response.getCode() == 200) {
             try {
                 JSONObject finalResult = Parse.readJSON(response);
+                getLoaderManager().destroyLoader(loader.getId());
                 List<LavatoryData> lavatories = Parse.lavatoryList(finalResult);
 
                 SearchResultsAdapter adapter = new SearchResultsAdapter(this,
@@ -280,12 +295,19 @@ public class MainActivity extends Activity
                     }
                 });
             } catch (Exception e) {
+                getLoaderManager().destroyLoader(loader.getId());
                 Toast.makeText(this, "The data is ruined. I'm sorry.", 
                         Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(this, "Connection failure. Try again later.", 
-                    Toast.LENGTH_SHORT).show();
+            getLoaderManager().destroyLoader(loader.getId());
+            LayoutInflater inflater = (LayoutInflater)
+                    this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View layout = inflater.inflate(R.layout.no_connection_popup, 
+                    (ViewGroup) findViewById(R.id.no_connection_layout));
+
+            connectionPopup = new PopupWindow(layout, 350, 250, true);
+            connectionPopup.showAtLocation(layout, Gravity.CENTER, 0, 0);
         }
     }
 
@@ -300,9 +322,9 @@ public class MainActivity extends Activity
      */
     @Override
     public void onLoaderReset(Loader<RESTLoader.RESTResponse> loader) {
-        // TODO: nullify the loader's data for garbage collecting
+        // TODO: nullify the loader's cached data for garbage collecting
     }
-    
+
     /**
      * Queries the server for lavatories that match the passed parameters
      * 
@@ -321,8 +343,19 @@ public class MainActivity extends Activity
     private void lavatorySearch(String bldgName, String floor, 
             String roomNumber, String locationLong, String locationLat, 
             String maxDist, String minRating, String lavaType) {
-        Bundle args = new Bundle(10);
-        
+
+        //save our search params for later in case we need to try again
+        lastBldg = bldgName;
+        lastFlr = floor;
+        lastRmNum = roomNumber;
+        lastLocLong = locationLong;
+        lastLocLat = locationLat;
+        lastMaxDist = maxDist;
+        lastMinRating = minRating;
+        lastLavaType = lavaType;
+
+        Bundle args = new Bundle(8);
+
         //set up the request
         if (!bldgName.equals("")) {
             args.putString("bldgName", bldgName);
@@ -348,8 +381,34 @@ public class MainActivity extends Activity
         if (!lavaType.equals("")) {
             args.putString("lavaType", lavaType);
         }
-
+        
+        loadingScreen = ProgressDialog.show(this, "Loading...",
+                "Getting data just for you!", true);
         //and finally pass it to the loader to be sent to the server
         getLoaderManager().initLoader(0, args, this);
+    }
+
+    /** 
+     * Retries the previous request and dismisses the popup box.
+     * 
+     * @author Wilkes Sunseri
+     * 
+     * @param target the popup box View to be dismissed
+     */
+    public void retryConnection(View target) {
+        lavatorySearch(lastBldg, lastFlr, lastRmNum, lastLocLong, lastLocLat,
+                lastMaxDist, lastMinRating, lastLavaType);
+        dismissConnection(target);
+    }
+
+    /**
+     * Dismisses the popup box.
+     * 
+     * @authoer Wilkes Sunseri
+     * 
+     * @param target the popup box View to be dismissed
+     */
+    public void dismissConnection(View target) {
+        connectionPopup.dismiss();
     }
 }
