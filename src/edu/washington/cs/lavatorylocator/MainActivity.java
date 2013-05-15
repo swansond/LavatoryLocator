@@ -4,6 +4,11 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
@@ -39,6 +44,7 @@ public class MainActivity extends Activity
     public static final String LAVATORY = "LAVATORY";
     private ListView listView;
     private PopupWindow popup;
+    private GoogleMap mMap;
 
     /**
      * Activates the "Got2Go" feature, showing the user the nearest highly-rated
@@ -134,9 +140,17 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        
+        setUpMapIfNeeded();
 
         listView = (ListView) findViewById(R.id.activity_main_search_results);
         lavatorySearch("CSE", "1", "", "-122.305599", "47.653305", "50", "", "");
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setUpMapIfNeeded();
     }
 
     @Override
@@ -144,6 +158,21 @@ public class MainActivity extends Activity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+    
+    /**
+     * Sets up the Google Map if needed.
+     */
+    private void setUpMapIfNeeded() {
+        if (mMap == null) {
+            mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+                                .getMap();
+            // Check if we were successful in obtaining the map.
+            if (mMap != null) {
+                // The Map is verified. It is now safe to manipulate the map.
+                
+            }
+        }
     }
     
     /**
@@ -259,7 +288,13 @@ public class MainActivity extends Activity
             try {
                 JSONObject finalResult = Parse.readJSON(response);
                 List<LavatoryData> lavatories = Parse.lavatoryList(finalResult);
-
+                
+                // add the resulting lavatories to the map
+                for (LavatoryData ld : lavatories) {
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(ld.latitude, ld.longitude)).title("Lavatory " + ld.lavatoryID));
+                }
+                
+                // add the resulting lavatories to the list
                 SearchResultsAdapter adapter = new SearchResultsAdapter(this,
                         R.layout.search_result_item, 
                         R.id.search_result_item_lavatory_name, lavatories);
