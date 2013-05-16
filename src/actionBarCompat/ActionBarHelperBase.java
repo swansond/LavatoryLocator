@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package edu.washington.cs.lavatorylocator.actionBarCompat;
+package actionBarCompat;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -166,7 +166,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
      * Adds an action button to the compatibility action bar, using menu information from a {@link
      * android.view.MenuItem}. If the menu item ID is <code>menu_refresh</code>, the menu item's
      * state can be changed to show a loading spinner using
-     * {@link edu.washington.cs.lavatorylocator.actionBarCompat.ActionBarHelperBase#setRefreshActionItemState(boolean)}.
+     * {@link actionBarCompat.ActionBarHelperBase#setRefreshActionItemState(boolean)}.
      */
     private View addActionItemCompatFromMenuItem(final MenuItem item) {
         final int itemId = item.getItemId();

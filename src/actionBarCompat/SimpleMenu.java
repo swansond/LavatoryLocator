@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package edu.washington.cs.lavatorylocator.actionBarCompat;
+package actionBarCompat;
 
 import android.content.ComponentName;
 import android.content.Context;

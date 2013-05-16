@@ -11,8 +11,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
-import edu.washington.cs.lavatorylocator.actionBarCompat.ActionBarActivity;
 
+import actionBarCompat.ActionBarActivity;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;

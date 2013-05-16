@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package edu.washington.cs.lavatorylocator.actionBarCompat;
+package actionBarCompat;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,7 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 /**
- * An extension of {@link edu.washington.cs.lavatorylocator.actionBarCompat.ActionBarHelper} that provides Android
+ * An extension of {@link actionBarCompat.ActionBarHelper} that provides Android
  * 4.0-specific functionality for IceCreamSandwich devices. It thus requires API level 14.
  */
 public class ActionBarHelperICS extends ActionBarHelperHoneycomb {
