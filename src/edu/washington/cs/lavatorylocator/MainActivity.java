@@ -2,17 +2,27 @@ package edu.washington.cs.lavatorylocator;
 
 import java.util.List;
 
+import location.LocationUtils;
+
 import org.json.JSONObject;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
+import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationClient;
 
 import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
 
 import actionBarCompat.ActionBarActivity;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -20,11 +30,15 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 
+import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -50,11 +64,19 @@ import android.widget.Toast;
  * @author Keith Miller, Chris Rovillos
  * 
  */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity 
+implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
 
     private ListView listView;
     private PopupWindow popup;
+    
     private GoogleMap mMap;
+    
+    // A request to connect to Location Services
+    private LocationRequest mLocationRequest;
+
+    // Stores the current instantiation of the location client in this object
+    private LocationClient mLocationClient;
 
     /**
      * Activates the "Got2Go" feature, showing the user the nearest highly-rated
@@ -151,16 +173,53 @@ public class MainActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_main);
         
-        setUpMapIfNeeded();
+        // Create a new global location parameters object
+        mLocationRequest = LocationRequest.create();
+
+        /*
+         * Set the update interval
+         */
+        mLocationRequest.setInterval(LocationUtils.UPDATE_INTERVAL_IN_MILLISECONDS);
+
+        // Use high accuracy
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        // Set the interval ceiling to one minute
+        mLocationRequest.setFastestInterval(LocationUtils.FAST_INTERVAL_CEILING_IN_MILLISECONDS);
 
         listView = (ListView) findViewById(R.id.activity_main_search_results);
         //lavatorySearch("CSE", "1", "", "-122.305599", "47.653305", "50", "", "");
     }
     
+    /**
+     * Called when the Activity is no longer visible at all.
+     * Stop updates and disconnect.
+     */
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+    
+    /*
+     * Called when the Activity is going into the background.
+     * Parts of the UI may be visible, but the Activity is inactive.
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        
+        if (mLocationClient != null) {
+            mLocationClient.disconnect();
+          }
+    }
+    
     @Override
     protected void onResume() {
         super.onResume();
-        //setUpMapIfNeeded();
+        
+        setUpMapIfNeeded();
+        setUpLocationClientIfNeeded();
+        mLocationClient.connect();
     }
 
     @Override
@@ -197,20 +256,157 @@ public class MainActivity extends ActionBarActivity {
                     .getMap();
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
-                setUpMap();
+                mMap.setMyLocationEnabled(true);
             }
         }
     }
     
-    /**
-     * This is where we can add markers or lines, add listeners or move the camera. In this case, we
-     * just add a marker near Africa.
-     * <p>
-     * This should only be called once and when we are sure that {@link #mMap} is not null.
+    private void setUpLocationClientIfNeeded() {
+        if (mLocationClient == null) {
+          mLocationClient = new LocationClient(
+              getApplicationContext(),
+              this,  // ConnectionCallbacks
+              this); // OnConnectionFailedListener
+        }
+      }
+
+    /*
+     * Called by Location Services if the connection to the
+     * location client drops because of an error.
      */
-    private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+    @Override
+    public void onDisconnected() {
+        //mConnectionStatus.setText(R.string.disconnected);
+        //TODO
     }
+
+    /*
+     * Called by Location Services if the attempt to
+     * Location Services fails.
+     */
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+        /*
+         * Google Play services can resolve some errors it detects.
+         * If the error has a resolution, try sending an Intent to
+         * start a Google Play services activity that can resolve
+         * error.
+         */
+        if (connectionResult.hasResolution()) {
+            try {
+
+                // Start an Activity that tries to resolve the error
+                connectionResult.startResolutionForResult(
+                        this,
+                        LocationUtils.CONNECTION_FAILURE_RESOLUTION_REQUEST);
+
+                /*
+                * Thrown if Google Play services canceled the original
+                * PendingIntent
+                */
+
+            } catch (IntentSender.SendIntentException e) {
+
+                // Log the error
+                e.printStackTrace();
+            }
+        } else {
+
+            // If no resolution is available, display a dialog to the user with the error.
+            showErrorDialog(connectionResult.getErrorCode());
+        }
+    }
+
+    /**
+     * Report location updates to the UI.
+     *
+     * @param location The updated location.
+     */
+    @Override
+    public void onLocationChanged(Location location) {
+          //TODO
+    }
+
+    
+    /**
+     * 
+     * Called by Location Services when the request to connect the
+     * client finishes successfully. At this point, you can
+     * request the current location or start periodic updates
+     *
+     * Callback called when connected to GCore. Implementation of {@link ConnectionCallbacks}.
+     */
+    @Override
+    public void onConnected(Bundle connectionHint) {
+      mLocationClient.requestLocationUpdates(
+          mLocationRequest,
+          this);  // LocationListener
+    }
+
+    /**
+     * Show a dialog returned by Google Play services for the
+     * connection error code
+     *
+     * @param errorCode An error code returned from onConnectionFailed
+     */
+    private void showErrorDialog(int errorCode) {
+
+        // Get the error dialog from Google Play services
+        Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(
+            errorCode,
+            this,
+            LocationUtils.CONNECTION_FAILURE_RESOLUTION_REQUEST);
+
+        // If Google Play services can provide an error dialog
+        if (errorDialog != null) {
+
+            // Create a new DialogFragment in which to show the error dialog
+            ErrorDialogFragment errorFragment = new ErrorDialogFragment();
+
+            // Set the dialog in the DialogFragment
+            errorFragment.setDialog(errorDialog);
+
+            // Show the error dialog in the DialogFragment
+            errorFragment.show(getSupportFragmentManager(), LocationUtils.APPTAG);
+        }
+    }
+
+    /**
+     * Define a DialogFragment to display the error dialog generated in
+     * showErrorDialog.
+     */
+    public static class ErrorDialogFragment extends DialogFragment {
+
+        // Global field to contain the error dialog
+        private Dialog mDialog;
+
+        /**
+         * Default constructor. Sets the dialog field to null
+         */
+        public ErrorDialogFragment() {
+            super();
+            mDialog = null;
+        }
+
+        /**
+         * Set the dialog to display
+         *
+         * @param dialog An error dialog
+         */
+        public void setDialog(Dialog dialog) {
+            mDialog = dialog;
+        }
+
+        /*
+         * This method must return a Dialog to the DialogFragment.
+         */
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            return mDialog;
+        }
+    }
+    
     
 //    /**
 //     * Shows the search action view.
