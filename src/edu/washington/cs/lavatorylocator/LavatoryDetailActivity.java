@@ -4,24 +4,28 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
 import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
 
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.ListActivity;
-import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
-import android.content.Loader;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.app.NavUtils;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v4.content.Loader;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -33,7 +37,7 @@ import android.widget.Toast;
  * @author Chris Rovillos
  * 
  */
-public class LavatoryDetailActivity extends ListActivity 
+public class LavatoryDetailActivity extends SherlockFragmentActivity 
         implements LoaderCallbacks<RESTLoader.RESTResponse> {
 
     private PopupWindow popup;
@@ -161,9 +165,7 @@ public class LavatoryDetailActivity extends ListActivity
             // Some bad state, do nothing and throw a null pointer exception
         }
         
-        getListView().setFocusable(false); // TODO: remove when 
-                                           //ReviewDetailActivity 
-                                           //is implemented
+        setContentView(R.layout.activity_lavatory_detail);
         
         setTitle("Lavatory " + lav.lavatoryID);
 
@@ -175,7 +177,9 @@ public class LavatoryDetailActivity extends ListActivity
                 .setText(lav.building);
         ((RatingBar) headerView.findViewById(R.id.lavatory_detail_rating))
                 .setRating((float) lav.avgRating);
-        getListView().addHeaderView(headerView, null, false);
+        
+        ListView listView = (ListView) findViewById(R.id.lavatory_detail_list_view);
+        listView.addHeaderView(headerView, null, false);
 
         getReviews(Integer.toString(lav.lavatoryID), "1", "helpfulness", "descending");
     }
@@ -184,13 +188,13 @@ public class LavatoryDetailActivity extends ListActivity
      * Set up the {@link android.app.ActionBar}.
      */
     private void setupActionBar() {
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.lavatory_detail, menu);
+        getSupportMenuInflater().inflate(R.menu.lavatory_detail, menu);
         return true;
     }
 
@@ -290,8 +294,9 @@ public class LavatoryDetailActivity extends ListActivity
 
                 LavatoryDetailAdapter adapter = new LavatoryDetailAdapter(this,
                         R.layout.review_item, R.id.review_author, reviews);
-
-                getListView().setAdapter(adapter);
+                
+                ListView listView = (ListView) findViewById(R.id.lavatory_detail_list_view);
+                listView.setAdapter(adapter);
             } catch (Exception e) {
                 Toast.makeText(this, "The data is ruined. I'm sorry.", 
                         Toast.LENGTH_SHORT).show();
@@ -343,7 +348,7 @@ public class LavatoryDetailActivity extends ListActivity
         }
 
         //and finally pass it to the loader to be sent to the server
-        getLoaderManager().initLoader(1, args, this);
+        getSupportLoaderManager().initLoader(1, args, this);
     }
 
     /**
@@ -365,7 +370,7 @@ public class LavatoryDetailActivity extends ListActivity
         }
         
         //and finally pass it to the loader to be sent to the server
-        getLoaderManager().initLoader(2, args, this);
+        getSupportLoaderManager().initLoader(2, args, this);
     }
     
     /**

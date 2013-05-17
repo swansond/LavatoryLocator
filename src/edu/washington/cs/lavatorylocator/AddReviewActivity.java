@@ -16,12 +16,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
@@ -33,7 +34,7 @@ import android.support.v4.app.NavUtils;
  * @author Chris Rovillos
  * 
  */
-public class AddReviewActivity extends Activity {
+public class AddReviewActivity extends SherlockActivity {
 
     /**
      * Starts submitting the entered review to the LavatoryLocator service.
@@ -65,13 +66,13 @@ public class AddReviewActivity extends Activity {
      * Set up the {@link android.app.ActionBar}.
      */
     private void setupActionBar() {
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.add_review, menu);
+        getSupportMenuInflater().inflate(R.menu.add_review, menu);
         return true;
     }
 

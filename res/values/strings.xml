@@ -27,4 +27,7 @@
     <string name="legal_notices">Legal Notices</string>
     <string name="about">About</string>
 
+    <!-- Latitude, longitude format -->
+    <string name="latitude_longitude">%1$.8f, %2$.8f</string>
+    
 </resources>

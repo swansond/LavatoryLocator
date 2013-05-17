@@ -2,14 +2,15 @@ package edu.washington.cs.lavatorylocator;
 
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
-public class AboutActivity extends Activity {
+public class AboutActivity extends SherlockActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +29,14 @@ public class AboutActivity extends Activity {
      */
     private void setupActionBar() {
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.about, menu);
+        getSupportMenuInflater().inflate(R.menu.about, menu);
         return true;
     }
 
