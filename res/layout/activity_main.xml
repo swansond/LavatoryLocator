@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        map:cameraTargetLat="47.6535"
-        map:cameraTargetLng="-122.306"
+        map:cameraTargetLat="47.655853"
+        map:cameraTargetLng="-122.309486"
         map:cameraZoom="16"
         map:mapType="normal" />
     

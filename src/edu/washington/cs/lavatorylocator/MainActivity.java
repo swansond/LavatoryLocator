@@ -1,6 +1,7 @@
 package edu.washington.cs.lavatorylocator;
 
 import java.util.List;
+import java.util.WeakHashMap;
 
 import location.LocationUtils;
 
@@ -10,10 +11,14 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -63,7 +68,7 @@ import android.widget.Toast;
  * 
  */
 public class MainActivity extends SherlockFragmentActivity 
-implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener, LoaderCallbacks<RESTLoader.RESTResponse> {
+implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener, LoaderCallbacks<RESTLoader.RESTResponse>, OnInfoWindowClickListener {
     public static final String LAVATORY = "LAVATORY";
     private ListView listView;
     private PopupWindow popup;
@@ -75,6 +80,8 @@ implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener, Lo
 
     // Stores the current instantiation of the location client in this object
     private LocationClient mLocationClient;
+    
+    private WeakHashMap<Marker, LavatoryData> markerLavatoryDataMap; // a WeakHashMap so that then a Marker gets garbage-collected, so will its entry in the map
 
     /**
      * Activates the "Got2Go" feature, showing the user the nearest highly-rated
@@ -255,6 +262,8 @@ implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener, Lo
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
                 mMap.setMyLocationEnabled(true);
+                
+                mMap.setOnInfoWindowClickListener(this);
             }
         }
     }
@@ -274,7 +283,8 @@ implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener, Lo
      */
     @Override
     public void onDisconnected() {
-        //mConnectionStatus.setText(R.string.disconnected);
+        Toast.makeText(this, "Disconnected. Please re-connect.",
+                Toast.LENGTH_SHORT).show();
         //TODO
     }
 
@@ -317,18 +327,16 @@ implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener, Lo
     }
 
     /**
-     * Report location updates to the UI.
+     * Called when the user's location changes.
      *
      * @param location The updated location.
      */
     @Override
     public void onLocationChanged(Location location) {
-          //TODO
+          // Nothing to do.
     }
-
     
     /**
-     * 
      * Called by Location Services when the request to connect the
      * client finishes successfully. At this point, you can
      * request the current location or start periodic updates
@@ -340,6 +348,23 @@ implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener, Lo
       mLocationClient.requestLocationUpdates(
           mLocationRequest,
           this);  // LocationListener
+      
+      centerMapOnCurrentLocation();
+    }
+    
+    /**
+     * Centers and animates the map on the user's current location.
+     */
+    private void centerMapOnCurrentLocation() {
+       Location currentLocation = mLocationClient.getLastLocation();
+       double currentLatitude = currentLocation.getLatitude();
+       double currentLongitude = currentLocation.getLongitude();
+       
+       LatLng currentLatLng = new LatLng(currentLatitude, currentLongitude);
+       
+       CameraUpdate cameraUpdateToCurrentLocation = CameraUpdateFactory.newLatLng(currentLatLng);
+       
+       mMap.animateCamera(cameraUpdateToCurrentLocation);
     }
 
     /**
@@ -522,7 +547,7 @@ implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener, Lo
                 
                 // add the resulting lavatories to the map
                 for (LavatoryData ld : lavatories) {
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(ld.latitude, ld.longitude)).title("Lavatory " + ld.lavatoryID));
+                    placeLavatoryMarker(ld);
                 }
                 
                 // add the resulting lavatories to the list
@@ -539,20 +564,25 @@ implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener, Lo
                             int position, long id) {
                         final LavatoryData selectedLavatory = (LavatoryData) parent
                                 .getItemAtPosition(position);
-                        Intent intent = new Intent(parent.getContext(),
-                                LavatoryDetailActivity.class);
-                        intent.putExtra(LAVATORY, selectedLavatory);
-                        startActivity(intent);
+                        showLavatoryDetail(selectedLavatory);
                     }
                 });
             } catch (Exception e) {
+                Log.e(this.getClass().getName(), "Error in loading data: " + e.getLocalizedMessage());
                 Toast.makeText(this, "The data is ruined. I'm sorry.", 
                         Toast.LENGTH_SHORT).show();
             }
         } else {
+            Log.e(this.getClass().getName(), "Error in loading data:\nResponse code: " + response.getCode());
             Toast.makeText(this, "Connection failure. Try again later.", 
                     Toast.LENGTH_SHORT).show();
         }
+    }
+    
+    private void placeLavatoryMarker(LavatoryData ld) {
+        Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(ld.latitude, ld.longitude)).title("Lavatory " + ld.lavatoryID));
+        
+        markerLavatoryDataMap.put(m, ld);
     }
 
     /**
@@ -617,5 +647,20 @@ implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener, Lo
 
         //and finally pass it to the loader to be sent to the server
         getSupportLoaderManager().initLoader(0, args, this);
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker m) {
+        LavatoryData ld = markerLavatoryDataMap.get(m);
+        assert (ld != null);
+        
+        showLavatoryDetail(ld);
+    }
+    
+    private void showLavatoryDetail(LavatoryData ld) {
+        Intent intent = new Intent(this,
+                LavatoryDetailActivity.class);
+        intent.putExtra(LAVATORY, ld);
+        startActivity(intent);
     }
 }
