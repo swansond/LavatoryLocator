@@ -57,7 +57,7 @@
             android:windowSoftInputMode="stateAlwaysVisible" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.washington.cs.lavatorylocator.LavatoryDetail" />
+                android:value="edu.washington.cs.lavatorylocator.LavatoryDetailActivity" />
         </activity>
         <activity
             android:name="edu.washington.cs.lavatorylocator.AddLavatoryActivity"

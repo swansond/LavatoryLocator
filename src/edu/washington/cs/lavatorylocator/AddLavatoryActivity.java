@@ -9,10 +9,11 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.support.v4.app.NavUtils;
@@ -23,7 +24,7 @@ import android.support.v4.app.NavUtils;
  * @author Chris Rovillos
  * 
  */
-public class AddLavatoryActivity extends Activity {
+public class AddLavatoryActivity extends SherlockActivity {
     
     /**
      * Starts submitting the new lavatory to the LavatoryLocator service.
@@ -82,13 +83,13 @@ public class AddLavatoryActivity extends Activity {
 	 * Set up the {@link android.app.ActionBar}.
 	 */
 	private void setupActionBar() {
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.add_lavatory, menu);
+		getSupportMenuInflater().inflate(R.menu.add_lavatory, menu);
 		return true;
 	}
 
