@@ -1,23 +1,5 @@
-LavatoryLocator
-===============
+# LavatoryLocator
 
-CSE 403 Project Spring 2013
+*LavatoryLocator* is an Android app that helps you make an informed choice when deciding on public lavatories.
 
-Group members:
-David Jung
-Keith Miller
-Aasav Prakash
-Chris Rovillos
-Wil Sunseri
-David Swanson
-
-database is hosted at: 
-http://lavlocdb.herokuapp.com/
-
-put query in text box for testing
-
-post request as string name="query" to http://lavlocdb.herokuapp.com/test.php
-
-Remeber to use single quotes around strings.
-
-The default team table is of the form firstname varchar(255), lastname varchar(255). 
+*LavatoryLocator* is a class project for [CSE 403 at the University of Washington](http://www.cs.washington.edu/education/courses/cse403/13sp/).

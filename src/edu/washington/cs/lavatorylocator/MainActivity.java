@@ -9,6 +9,11 @@ import org.json.JSONObject;
 
 import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -50,6 +55,7 @@ public class MainActivity extends Activity
             = "http://lavlocdb.herokuapp.com/lavasearch.php";
     
     private ListView listView;
+    private GoogleMap mMap;
     private PopupWindow popup;
     private PopupWindow connectionPopup;
     private ProgressDialog loadingScreen;
@@ -82,6 +88,17 @@ public class MainActivity extends Activity
 //        toast.show();
         got2GoFlag = true;
         lavatorySearch("CSE", "1", "", "-122.305599", "47.653305", "50", "4", "");
+    }
+    
+    /**
+     * Goes to the <code>AboutActivity</code>.
+     * 
+     * @param item
+     *            the <code>MenuItem</code> that was selected
+     */
+    public void goToAboutActivity(MenuItem item) {
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
     }
 
     /**
@@ -150,6 +167,8 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        
+        setUpMapIfNeeded();
        
         //Log.d("tagged", getIntent().toString());
         //getParcelableExtra(MainActivity.LAVATORY).toString());
@@ -173,6 +192,12 @@ public class MainActivity extends Activity
             }
         }
     }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setUpMapIfNeeded();
+    }
 
     
     
@@ -183,6 +208,21 @@ public class MainActivity extends Activity
         return true;
     }
 
+    /**
+     * Sets up the Google Map if needed.
+     */
+    private void setUpMapIfNeeded() {
+        if (mMap == null) {
+            mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+                                .getMap();
+            // Check if we were successful in obtaining the map.
+            if (mMap != null) {
+                // The Map is verified. It is now safe to manipulate the map.
+                
+            }
+        }
+    }
+    
     /**
      * Shows the search action view.
      * 
@@ -237,16 +277,16 @@ public class MainActivity extends Activity
             }
 
             ((RatingBar) convertView.findViewById(R.id.search_result_item_average_review))
-            .setRating((float) searchResults.get(position)
-                    .avgRating);
+            		.setRating((float) searchResults.get(position)
+                    		.avgRating);
 
             ((TextView) convertView.findViewById(R.id.search_result_item_lavatory_name))
-            .setText(searchResults.get(position).building + " "
-                    + searchResults.get(position).lavatoryID + " "
-                    + searchResults.get(position).lavatoryGender);
+            		.setText(searchResults.get(position).building + " "
+                    		+ searchResults.get(position).lavatoryID + " "
+                    		+ searchResults.get(position).lavatoryGender);
 
             ((TextView) convertView.findViewById(R.id.search_result_item_review_count))
-            .setText("" + searchResults.get(position).numReviews);
+            		.setText("" + searchResults.get(position).numReviews);
 
             ((TextView) convertView.findViewById(R.id.search_result_item_floor)).setText("Floor "
                     + searchResults.get(position).floor);
@@ -302,7 +342,8 @@ public class MainActivity extends Activity
                     startActivity(intent);
                 } else {
                     JSONObject finalResult = Parse.readJSON(response);
-
+                
+                // add the resulting lavatories to the list
                     List<LavatoryData> lavatories = Parse.lavatoryList(finalResult);
 
                     populateSearchResults(lavatories);
@@ -426,13 +467,19 @@ public class MainActivity extends Activity
     }
     
     /**
-     * Populates the list view with the search results.
+     * Populates the list view and map with the search results.
      * 
      * @author
      * 
      * @param lavatories the List of LavatoryData results
      */
     private void populateSearchResults(List<LavatoryData> lavatories) {
+        
+        // add the resulting lavatories to the map
+        for (LavatoryData ld : lavatories) {
+            mMap.addMarker(new MarkerOptions().position(new LatLng(ld.latitude, ld.longitude)).title("Lavatory " + ld.lavatoryID));
+        }
+        
         SearchResultsAdapter adapter = new SearchResultsAdapter(this,
                 R.layout.search_result_item, 
                 R.id.search_result_item_lavatory_name, lavatories);
