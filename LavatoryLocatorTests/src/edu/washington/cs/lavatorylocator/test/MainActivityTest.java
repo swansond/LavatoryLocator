@@ -11,8 +11,12 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     protected void setUp() throws Exception {
         super.setUp();
-        MainActivity main = getActivity();
+        //MainActivity main = getActivity();
         
+    }
+    
+    public void testCreation() {
+        assertTrue("Hello" != null);
     }
     
     
