@@ -1,16 +1,24 @@
 package edu.washington.cs.lavatorylocator;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import org.apache.http.HttpStatus;
 import org.json.JSONObject;
+
+import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.content.Loader;
@@ -37,11 +45,16 @@ public class MainActivity extends Activity
         implements LoaderCallbacks<RESTLoader.RESTResponse> {
 
     public static final String LAVATORY = "LAVATORY";
+    private static final int MANAGER_ID = 0;
+    private static final String LAVA_SEARCH
+            = "http://lavlocdb.herokuapp.com/lavasearch.php";
+    
     private ListView listView;
     private PopupWindow popup;
     private PopupWindow connectionPopup;
     private ProgressDialog loadingScreen;
-
+    private boolean got2GoFlag;
+    
     //fields to store the previous search parameters in so we can repeat it
     private String lastBldg;
     private String lastFlr;
@@ -61,12 +74,14 @@ public class MainActivity extends Activity
      */
     public void activateGot2go(MenuItem item) {
         // TODO: implement; remove stub message
-        Context context = getApplicationContext();
-        CharSequence notImplementedMessage = "Got2Go is not implemented yet!";
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, notImplementedMessage, duration);
-        toast.show();
+//        Context context = getApplicationContext();
+//        CharSequence notImplementedMessage = "Got2Go is not implemented yet!";
+//        int duration = Toast.LENGTH_SHORT;
+//
+//        Toast toast = Toast.makeText(context, notImplementedMessage, duration);
+//        toast.show();
+        got2GoFlag = true;
+        lavatorySearch("CSE", "1", "", "-122.305599", "47.653305", "50", "4", "");
     }
 
     /**
@@ -135,11 +150,32 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
+       
+        //Log.d("tagged", getIntent().toString());
+        //getParcelableExtra(MainActivity.LAVATORY).toString());
         listView = (ListView) findViewById(R.id.activity_main_search_results);
-        lavatorySearch("CSE", "1", "", "-122.305599", "47.653305", "50", "", "");
+        
+        Intent i = getIntent();
+        Bundle extra = i.getParcelableExtra(SearchActivity.SEARCH_RESULTS);
+        if (extra == null) {
+            lavatorySearch("CSE", "1", "", "-122.305599", "47.653305", "50", "", "");
+        } else {
+            List<Parcelable> results = Arrays.asList(extra.getParcelableArray("results"));
+            List<LavatoryData> lavatories = new ArrayList<LavatoryData>();
+            if (results.size() != 0) {
+                for (Parcelable p : results) {
+                    lavatories.add((LavatoryData) p);
+                }
+                populateSearchResults(lavatories);
+            } else {
+                Toast.makeText(this, "No results found.", 
+                        Toast.LENGTH_LONG).show();            
+            }
+        }
     }
 
+    
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -153,14 +189,10 @@ public class MainActivity extends Activity
      * @param view
      *            the <code>MenuItem</code> that was selected
      */
-    public void showSearchView(MenuItem item) {
+    public void goToSearchActivity(MenuItem item) {
         // TODO: implement; remove stub message
-        Context context = getApplicationContext();
-        CharSequence notImplementedMessage = "Search is not implemented yet!";
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, notImplementedMessage, duration);
-        toast.show();
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivityForResult(intent, 0);
     }
 
     /**
@@ -237,7 +269,7 @@ public class MainActivity extends Activity
     @Override
     public Loader<RESTLoader.RESTResponse> onCreateLoader(int id, Bundle args) {
         Uri searchAddress = 
-                Uri.parse("http://lavlocdb.herokuapp.com/lavasearch.php");
+                Uri.parse(LAVA_SEARCH);
         return new RESTLoader(getApplicationContext(), searchAddress, 
                 RESTLoader.requestType.GET, args);
     }
@@ -258,35 +290,28 @@ public class MainActivity extends Activity
     public void onLoadFinished(Loader<RESTLoader.RESTResponse> loader,
             RESTLoader.RESTResponse response) {
         loadingScreen.dismiss();
-        if (response.getCode() == 200) {
+        if (response.getCode() == HttpStatus.SC_OK) {
             try {
-                JSONObject finalResult = Parse.readJSON(response);
-                getLoaderManager().destroyLoader(loader.getId());
-                List<LavatoryData> lavatories = Parse.lavatoryList(finalResult);
+                if (got2GoFlag) {
+                    got2GoFlag = false;
+                    JSONObject got2GoResults = Parse.readJSON(response);
+                    LavatoryData topResult = Parse.lavatoryList(got2GoResults).get(0);
+                    
+                    Intent intent = new Intent(this, LavatoryDetailActivity.class);
+                    intent.putExtra(LAVATORY, topResult);
+                    startActivity(intent);
+                } else {
+                    JSONObject finalResult = Parse.readJSON(response);
 
-                SearchResultsAdapter adapter = new SearchResultsAdapter(this,
-                        R.layout.search_result_item, 
-                        R.id.search_result_item_lavatory_name, lavatories);
+                    List<LavatoryData> lavatories = Parse.lavatoryList(finalResult);
 
-                listView.setAdapter(adapter);
-
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view,
-                            int position, long id) {
-                        final LavatoryData selectedLavatory = (LavatoryData) parent
-                                .getItemAtPosition(position);
-                        Intent intent = new Intent(parent.getContext(),
-                                LavatoryDetailActivity.class);
-                        intent.putExtra(LAVATORY, selectedLavatory);
-                        startActivity(intent);
-                    }
-                });
+                    populateSearchResults(lavatories);
+                }
             } catch (Exception e) {
-                getLoaderManager().destroyLoader(loader.getId());
                 Toast.makeText(this, "The data is ruined. I'm sorry.", 
                         Toast.LENGTH_SHORT).show();
+            } finally {
+                getLoaderManager().destroyLoader(loader.getId());
             }
         } else {
             getLoaderManager().destroyLoader(loader.getId());
@@ -301,8 +326,7 @@ public class MainActivity extends Activity
     }
 
     /**
-     * Anything that needs to be done to nullify a reset Loader's data is to be
-     * done here.
+     * Nullifies the reset Loader's data so it can be garbage collected.
      * NOTE: This is called automatically when the Loader is reset.
      * 
      * @author Wilkes Sunseri
@@ -374,7 +398,7 @@ public class MainActivity extends Activity
         loadingScreen = ProgressDialog.show(this, "Loading...",
                 "Getting data just for you!", true);
         //and finally pass it to the loader to be sent to the server
-        getLoaderManager().initLoader(0, args, this);
+        getLoaderManager().initLoader(MANAGER_ID, args, this);
     }
 
     /** 
@@ -393,11 +417,40 @@ public class MainActivity extends Activity
     /**
      * Dismisses the popup box.
      * 
-     * @authoer Wilkes Sunseri
+     * @author Wilkes Sunseri
      * 
      * @param target the popup box View to be dismissed
      */
     public void dismissConnection(View target) {
         connectionPopup.dismiss();
+    }
+    
+    /**
+     * Populates the list view with the search results.
+     * 
+     * @author
+     * 
+     * @param lavatories the List of LavatoryData results
+     */
+    private void populateSearchResults(List<LavatoryData> lavatories) {
+        SearchResultsAdapter adapter = new SearchResultsAdapter(this,
+                R.layout.search_result_item, 
+                R.id.search_result_item_lavatory_name, lavatories);
+
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+                final LavatoryData selectedLavatory = (LavatoryData) parent
+                        .getItemAtPosition(position);
+                Intent intent = new Intent(parent.getContext(),
+                        LavatoryDetailActivity.class);
+                intent.putExtra(LAVATORY, selectedLavatory);
+                startActivity(intent);
+            }
+        });
     }
 }

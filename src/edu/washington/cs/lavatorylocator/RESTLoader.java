@@ -24,6 +24,8 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 /**
@@ -44,10 +46,10 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
     }
 
     // A wrapper that contains the server's response as well as its status code
-    public static class RESTResponse {
+    public static class RESTResponse  
+            implements Parcelable {
         private HttpEntity responseData;
         private int responseCode;
-
 
         /**
          * Creates an "empty" RESTResponse
@@ -86,6 +88,20 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
         public int getCode() {
             return responseCode;
         }
+
+        @Override
+        public int describeContents() {
+            // TODO Auto-generated method stub
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeValue(responseData);
+            dest.writeInt(responseCode);
+        }
+        
+        
     }
     
     private requestType rType;

@@ -70,6 +70,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.washington.cs.lavatorylocator.MainActivity" />
         </activity>
+        <activity
+            android:name="edu.washington.cs.lavatorylocator.SearchActivity"
+            android:label="@string/action_search"
+            android:parentActivityName="edu.washington.cs.lavatorylocator.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.washington.cs.lavatorylocator.MainActivity" />
+        </activity> 
     </application>
 
 </manifest>

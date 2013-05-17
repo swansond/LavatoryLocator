@@ -3,29 +3,28 @@
     android:id="@+id/no_connection_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF"
+    android:background="@color/white"
     android:orientation="vertical" >
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Couldn&apos;t connect to server." />
-
+        android:text="@string/couldnt_connect" />
 
         <Button
             android:id="@+id/popup_retryConnection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="retryConnection"
-            android:text="Retry" />
+            android:text="@string/retry" />
 
         <Button
             android:id="@+id/button1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="dismissConnection"
-            android:text="Dismiss" />
+            android:text="@string/dismiss" />
 
 
 </LinearLayout>

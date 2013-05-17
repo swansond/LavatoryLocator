@@ -1,5 +1,7 @@
 package edu.washington.cs.lavatorylocator;
 
+import org.apache.http.HttpStatus;
+
 import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
 
 import android.net.Uri;
@@ -31,6 +33,10 @@ import android.support.v4.app.NavUtils;
 public class AddReviewActivity extends Activity
         implements LoaderCallbacks<RESTLoader.RESTResponse> {
 
+    private static final String SUBMIT_REVIEW
+            = "http://lavlocdb.herokuapp.com/submitreview.php";
+    private static final int MANAGER_ID = 3;
+    
     private ProgressDialog loadingScreen;
     private PopupWindow connectionPopup;
     
@@ -114,7 +120,7 @@ public class AddReviewActivity extends Activity
     @Override
     public Loader<RESTResponse> onCreateLoader(int id, Bundle args) {
         Uri searchAddress =
-                Uri.parse("http://lavlocdb.herokuapp.com/submitreview.phpp");
+                Uri.parse(SUBMIT_REVIEW);
         return new RESTLoader(getApplicationContext(), searchAddress,
                 RESTLoader.requestType.POST, args);
     }
@@ -135,7 +141,7 @@ public class AddReviewActivity extends Activity
             RESTResponse response) {
         loadingScreen.dismiss();
         getLoaderManager().destroyLoader(loader.getId());
-        if (response.getCode() == 200) {
+        if (response.getCode() == HttpStatus.SC_OK) {
             Toast.makeText(this, "Thank you for your submission", 
                     Toast.LENGTH_SHORT).show();
         } else {
@@ -201,7 +207,7 @@ public class AddReviewActivity extends Activity
         loadingScreen = ProgressDialog.show(this, "Loading...",
                 "Getting data just for you!", true);
         //and initialize the Loader
-        getLoaderManager().initLoader(3, args, this);
+        getLoaderManager().initLoader(MANAGER_ID, args, this);
     }
     
     /** 
@@ -219,7 +225,7 @@ public class AddReviewActivity extends Activity
     /**
      * Dismisses the popup box.
      * 
-     * @authoer Wilkes Sunseri
+     * @author Wilkes Sunseri
      * 
      * @param target the popup box View to be dismissed
      */

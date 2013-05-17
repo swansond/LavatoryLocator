@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="num_review_stars">5</integer>
+    <integer name="num_review_stars">5</integer><integer name="min_rating_stars">5</integer>
 </resources>

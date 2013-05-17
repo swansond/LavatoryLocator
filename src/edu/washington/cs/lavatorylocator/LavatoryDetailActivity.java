@@ -2,6 +2,7 @@ package edu.washington.cs.lavatorylocator;
 
 import java.util.List;
 
+import org.apache.http.HttpStatus;
 import org.json.JSONObject;
 
 import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
@@ -15,6 +16,7 @@ import android.content.Context;
 import android.content.Loader;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.support.v4.app.NavUtils;
@@ -37,6 +39,13 @@ import android.widget.Toast;
 public class LavatoryDetailActivity extends ListActivity 
         implements LoaderCallbacks<RESTLoader.RESTResponse> {
 
+    private static final int REVIEW_MANAGER_ID = 1;
+    private static final int USER_REVIEW_MANAGER_ID = 2;
+    private static final String FETCH_REVIEWS
+            = "http://lavlocdb.herokuapp.com/fetchreviews.php";
+    private static final String FETCH_USER_REVIEW
+            = "http://lavlocdb.herokuapp.com/fetchuserreview.php";
+    
     private PopupWindow popup;
     private LavatoryData lav;
     private ProgressDialog loadingScreen;
@@ -136,7 +145,7 @@ public class LavatoryDetailActivity extends ListActivity
         
         Intent intent = getIntent();
         lav = intent.getParcelableExtra(MainActivity.LAVATORY);
-        
+        Log.d("tagged", getIntent().toString());
         getListView().setFocusable(false); // TODO: remove when 
                                            //ReviewDetailActivity 
                                            //is implemented
@@ -153,7 +162,8 @@ public class LavatoryDetailActivity extends ListActivity
                 .setRating((float) lav.avgRating);
         getListView().addHeaderView(headerView, null, false);
 
-        getReviews(Integer.toString(lav.lavatoryID), "1", "helpfulness", "descending");
+        getReviews("0", Integer.toString(lav.lavatoryID), "1", "helpfulness",
+                "descending");
     }
 
     /**
@@ -203,10 +213,10 @@ public class LavatoryDetailActivity extends ListActivity
      */
     public Loader<RESTResponse> onCreateLoader(int id, Bundle args) {
         Uri searchAddress;
-        if (id == 1) {
-            searchAddress = Uri.parse("http://lavlocdb.herokuapp.com/fetchreviews.php");
+        if (id == REVIEW_MANAGER_ID) {
+            searchAddress = Uri.parse(FETCH_REVIEWS);
         } else {
-            searchAddress = Uri.parse("http://lavlocdb.herokuapp.com/fetchuserreview.php");
+            searchAddress = Uri.parse(FETCH_USER_REVIEW);
         }
         return new RESTLoader(getApplicationContext(), searchAddress, 
                 RESTLoader.requestType.GET, args);
@@ -225,7 +235,7 @@ public class LavatoryDetailActivity extends ListActivity
     public void onLoadFinished(Loader<RESTLoader.RESTResponse> loader,
             RESTLoader.RESTResponse response) {
         loadingScreen.dismiss();
-        if (response.getCode() == 200 && !response.getData().equals("")) {
+        if (response.getCode() == HttpStatus.SC_OK && !response.getData().equals("")) {
             try {
                 JSONObject finalResult = Parse.readJSON(response);
                 List<ReviewData> reviews = Parse.reviewList(finalResult);
@@ -263,15 +273,19 @@ public class LavatoryDetailActivity extends ListActivity
      * 
      * @author Wilkes Sunseri
      * 
+     * @param uid the ID number of the user
      * @param lid the ID number for the lavatory
      * @param pageNo the page of reviews to get
      * @param sortparam the manner by which reviews are sorted
      * @param direction ascending or descending
      */
-    private void getReviews(String lid, String pageNo, String sortparam,
+    private void getReviews(String uid, String lid, String pageNo, String sortparam,
             String direction) {
         //set up the request
-        Bundle args = new Bundle(4);
+        Bundle args = new Bundle(5);
+        if (!uid.equals("")) {
+            args.putString("uid", uid);
+        }
         if (!lid.equals("")) {
             args.putString("lid", lid);
         }
@@ -288,7 +302,7 @@ public class LavatoryDetailActivity extends ListActivity
         loadingScreen = ProgressDialog.show(this, "Loading...",
                 "Getting data just for you!", true);
         //and finally pass it to the loader to be sent to the server
-        getLoaderManager().initLoader(1, args, this);
+        getLoaderManager().initLoader(REVIEW_MANAGER_ID, args, this);
     }
 
     /**
@@ -310,7 +324,7 @@ public class LavatoryDetailActivity extends ListActivity
         }
         
         //and finally pass it to the loader to be sent to the server
-        getLoaderManager().initLoader(2, args, this);
+        getLoaderManager().initLoader(USER_REVIEW_MANAGER_ID, args, this);
     }
     
     /**

@@ -1,5 +1,7 @@
 package edu.washington.cs.lavatorylocator;
 
+import org.apache.http.HttpStatus;
+
 import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
 
 import android.net.Uri;
@@ -30,8 +32,13 @@ import android.support.v4.app.NavUtils;
 public class AddLavatoryActivity extends Activity
         implements LoaderCallbacks<RESTLoader.RESTResponse>{
   
+    private static final String ADD_LAVA 
+            = "http://lavlocdb.herokuapp.com/addlava.php";
+    private static final int MANAGER_ID = 4;
+    
     private PopupWindow connectionPopup;
     private ProgressDialog loadingScreen;
+
     
     //stored data in case we need to repeat a query
     private String lastUid;
@@ -74,20 +81,6 @@ public class AddLavatoryActivity extends Activity
         
         finish();
     }
-    
-    
-    /**
-     * Sends the request to add a new lavatory to the server.
-     * 
-     * @author Wilkes Sunseri
-     * 
-     * @param uid the user's ID number
-     * @param buildingName the name of the building the new lavatory is in
-     * @param floor the floor the new lavatory is on
-     * @param lavaType the gender of the new lavatory
-     * @param longitude the new lavatory's longitude
-     * @param latitude the new lavatory's latitude
-     */
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,8 +134,7 @@ public class AddLavatoryActivity extends Activity
      */
     @Override
     public Loader<RESTResponse> onCreateLoader(int id, Bundle args) {
-        Uri searchAddress = 
-                Uri.parse("http://lavlocdb.herokuapp.com/addlava.phpp");
+        Uri searchAddress = Uri.parse(ADD_LAVA);
         return new RESTLoader(getApplicationContext(), searchAddress,
                 RESTLoader.requestType.POST, args);
     }
@@ -164,7 +156,7 @@ public class AddLavatoryActivity extends Activity
             RESTResponse response) {
         loadingScreen.dismiss();
         getLoaderManager().destroyLoader(loader.getId());
-        if (response.getCode() == 200) {
+        if (response.getCode() == HttpStatus.SC_OK) {
             Toast.makeText(this, "Thank you for your submission", 
                     Toast.LENGTH_SHORT).show();
         } else {
@@ -241,7 +233,7 @@ public class AddLavatoryActivity extends Activity
         loadingScreen = ProgressDialog.show(this, "Loading...",
                 "Getting data just for you!", true);
         //and initialize the Loader
-        getLoaderManager().initLoader(4, args, this);
+        getLoaderManager().initLoader(MANAGER_ID, args, this);
         }
     
     /** 
@@ -260,7 +252,7 @@ public class AddLavatoryActivity extends Activity
     /**
      * Dismisses the popup box.
      * 
-     * @authoer Wilkes Sunseri
+     * @author Wilkes Sunseri
      * 
      * @param target the popup box View to be dismissed
      */

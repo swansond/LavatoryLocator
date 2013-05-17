@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item android:id="@+id/action_search" android:title="@string/action_search" android:showAsAction="always" android:icon="@drawable/ic_action_search" android:onClick="showSearchView"></item><item android:id="@+id/action_got2go" android:title="@string/action_got2go" android:showAsAction="ifRoom" android:onClick="activateGot2go" android:icon="@drawable/ic_action_got2go"></item><item android:id="@+id/action_add_lavatory" android:icon="@drawable/ic_action_new" android:title="@string/title_activity_add_lavatory" android:showAsAction="ifRoom" android:onClick="goToAddLavatoryActivity"></item><item
+    <item android:id="@+id/action_search" android:title="@string/action_search" android:showAsAction="always" android:icon="@drawable/ic_action_search" android:onClick="goToSearchActivity"></item><item android:id="@+id/action_got2go" android:title="@string/action_got2go" android:showAsAction="ifRoom" android:onClick="activateGot2go" android:icon="@drawable/ic_action_got2go"></item><item android:id="@+id/action_add_lavatory" android:icon="@drawable/ic_action_new" android:title="@string/title_activity_add_lavatory" android:showAsAction="ifRoom" android:onClick="goToAddLavatoryActivity"></item><item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
