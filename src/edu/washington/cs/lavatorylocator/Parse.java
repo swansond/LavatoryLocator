@@ -87,6 +87,7 @@ public final class Parse {
      * @param resp the response to parse
      * @return a JSON string with the data
      * @throws IOException if the reading fails
+     * @throws JSONException if the data is not properly formatted
      */
     public static JSONObject readJSON(RESTResponse resp) throws IOException, JSONException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getData().getContent(), "UTF-8"));
