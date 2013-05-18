@@ -1,14 +1,18 @@
 package edu.washington.cs.lavatorylocator;
 
-
+//TODO: COMMENT
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
 import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -38,7 +42,6 @@ import android.util.Log;
  *
  */
 public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
-
     // Our app handles two types or requests, GET and POST
     public enum requestType {
         GET,
@@ -46,8 +49,7 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
     }
 
     // A wrapper that contains the server's response as well as its status code
-    public static class RESTResponse  
-            implements Parcelable {
+    public static class RESTResponse implements Parcelable {
         private HttpEntity responseData;
         private int responseCode;
 
@@ -100,14 +102,12 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
             dest.writeValue(responseData);
             dest.writeInt(responseCode);
         }
-        
-        
     }
     
     private requestType rType;
     private Bundle params;
     private Uri location;
-    
+
     /**
      * Constructs a new RESTLoader.
      * 
@@ -159,7 +159,7 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
                     }
                 }
                 break;
-                
+
                 // Because this is a POST request, we need to encode the
                 // parameters within the request
                 case POST: {    
@@ -214,13 +214,20 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
                 }
                 return new RESTResponse();
             }
+        } catch (UnsupportedEncodingException e) {
+            Log.i("tagged", "got nothing from loading");
+            return new RESTResponse();
+        } catch (ClientProtocolException e) {
+            Log.i("tagged", "got nothing from loading");
+            return new RESTResponse();
+        } catch (ParseException e) {
+            Log.i("tagged", "got nothing from loading");
+            return new RESTResponse();
+        } catch (URISyntaxException e) {
+            Log.i("tagged", "got nothing from loading");
+            return new RESTResponse();
         } catch (IOException e) {
             Log.i("tagged", "got nothing from loading");
-            // There was an issue making the connection to the server
-            return new RESTResponse(null, 0);
-        } catch (Exception e) {
-            Log.i("tagged", "loading got something but bad");
-            // There was any other kind of exception
             return new RESTResponse();
         }
     }

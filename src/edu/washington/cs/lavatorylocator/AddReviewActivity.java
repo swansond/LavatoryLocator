@@ -14,12 +14,35 @@ import android.content.Intent;
 import android.content.Loader;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.ParseException;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.content.Intent;
+import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
 import android.support.v4.app.NavUtils;
@@ -30,7 +53,7 @@ import android.support.v4.app.NavUtils;
  * @author Chris Rovillos
  * 
  */
-public class AddReviewActivity extends Activity
+public class AddReviewActivity extends SherlockActivity
         implements LoaderCallbacks<RESTLoader.RESTResponse> {
 
     private static final String SUBMIT_REVIEW
@@ -76,13 +99,13 @@ public class AddReviewActivity extends Activity
      * Set up the {@link android.app.ActionBar}.
      */
     private void setupActionBar() {
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.add_review, menu);
+        getSupportMenuInflater().inflate(R.menu.add_review, menu);
         return true;
     }
 

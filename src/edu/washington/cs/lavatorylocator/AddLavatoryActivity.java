@@ -13,10 +13,13 @@ import android.content.Context;
 import android.content.Loader;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
+import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.RadioGroup;
@@ -29,8 +32,8 @@ import android.support.v4.app.NavUtils;
  * @author Chris Rovillos
  * 
  */
-public class AddLavatoryActivity extends Activity
-        implements LoaderCallbacks<RESTLoader.RESTResponse>{
+public class AddLavatoryActivity extends SherlockActivity
+        implements LoaderCallbacks<RESTLoader.RESTResponse> {
   
     private static final String ADD_LAVA 
             = "http://lavlocdb.herokuapp.com/addlava.php";
@@ -94,13 +97,13 @@ public class AddLavatoryActivity extends Activity
 	 * Set up the {@link android.app.ActionBar}.
 	 */
 	private void setupActionBar() {
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.add_lavatory, menu);
+		getSupportMenuInflater().inflate(R.menu.add_lavatory, menu);
 		return true;
 	}
 

@@ -9,12 +9,12 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
         android:id="@+id/map"
-        android:name="com.google.android.gms.maps.MapFragment"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        map:cameraTargetLat="47.6535"
-        map:cameraTargetLng="-122.306"
+        map:cameraTargetLat="47.655853"
+        map:cameraTargetLng="-122.309486"
         map:cameraZoom="16"
         map:mapType="normal" />
     
