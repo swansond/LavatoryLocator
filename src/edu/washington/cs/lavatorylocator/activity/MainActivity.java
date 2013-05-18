@@ -55,16 +55,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import edu.washington.cs.lavatorylocator.Parse;
 import edu.washington.cs.lavatorylocator.R;
-import edu.washington.cs.lavatorylocator.RESTLoader;
 import edu.washington.cs.lavatorylocator.R.id;
 import edu.washington.cs.lavatorylocator.R.layout;
 import edu.washington.cs.lavatorylocator.R.menu;
-import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
-import edu.washington.cs.lavatorylocator.RESTLoader.requestType;
 import edu.washington.cs.lavatorylocator.location.LocationUtils;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
+import edu.washington.cs.lavatorylocator.util.Parse;
+import edu.washington.cs.lavatorylocator.util.RESTLoader;
+import edu.washington.cs.lavatorylocator.util.RESTLoader.RESTResponse;
+import edu.washington.cs.lavatorylocator.util.RESTLoader.requestType;
 
 /**
  * <code>Activity</code> first displayed when LavatoryLocator is opened. Shows a

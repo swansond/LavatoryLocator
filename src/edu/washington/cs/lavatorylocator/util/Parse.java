@@ -1,4 +1,4 @@
-package edu.washington.cs.lavatorylocator;
+package edu.washington.cs.lavatorylocator.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,9 +11,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 import edu.washington.cs.lavatorylocator.model.ReviewData;
+import edu.washington.cs.lavatorylocator.util.RESTLoader.RESTResponse;
 
 /**
  * 

@@ -1,4 +1,4 @@
-package edu.washington.cs.lavatorylocator;
+package edu.washington.cs.lavatorylocator.util;
 
 //TODO: COMMENT
 import java.io.IOException;

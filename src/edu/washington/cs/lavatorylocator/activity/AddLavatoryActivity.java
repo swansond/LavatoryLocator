@@ -23,12 +23,12 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import edu.washington.cs.lavatorylocator.R;
-import edu.washington.cs.lavatorylocator.RESTLoader;
 import edu.washington.cs.lavatorylocator.R.id;
 import edu.washington.cs.lavatorylocator.R.layout;
 import edu.washington.cs.lavatorylocator.R.menu;
-import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
-import edu.washington.cs.lavatorylocator.RESTLoader.requestType;
+import edu.washington.cs.lavatorylocator.util.RESTLoader;
+import edu.washington.cs.lavatorylocator.util.RESTLoader.RESTResponse;
+import edu.washington.cs.lavatorylocator.util.RESTLoader.requestType;
 
 /**
  * <code>Activity</code> for adding a new lavatory into LavatoryLocator.
