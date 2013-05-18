@@ -395,6 +395,7 @@ public class MainActivity extends SherlockFragmentActivity
      */
     private void centerMapOnCurrentLocation() {
        Location currentLocation = mLocationClient.getLastLocation();
+       // TODO Figure out why currentLocation can be null sometimes.
        double currentLatitude = currentLocation.getLatitude();
        double currentLongitude = currentLocation.getLongitude();
 
