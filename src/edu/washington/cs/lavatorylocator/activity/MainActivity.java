@@ -1,11 +1,10 @@
-package edu.washington.cs.lavatorylocator;
+package edu.washington.cs.lavatorylocator.activity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.WeakHashMap;
 
-import location.LocationUtils;
 
 import org.apache.http.HttpStatus;
 import org.json.JSONObject;
@@ -55,6 +54,17 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import edu.washington.cs.lavatorylocator.Parse;
+import edu.washington.cs.lavatorylocator.R;
+import edu.washington.cs.lavatorylocator.RESTLoader;
+import edu.washington.cs.lavatorylocator.R.id;
+import edu.washington.cs.lavatorylocator.R.layout;
+import edu.washington.cs.lavatorylocator.R.menu;
+import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
+import edu.washington.cs.lavatorylocator.RESTLoader.requestType;
+import edu.washington.cs.lavatorylocator.location.LocationUtils;
+import edu.washington.cs.lavatorylocator.model.LavatoryData;
 
 /**
  * <code>Activity</code> first displayed when LavatoryLocator is opened. Shows a

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package location;
+package edu.washington.cs.lavatorylocator.location;
 
 import com.google.android.gms.common.ConnectionResult;
 

@@ -1,10 +1,15 @@
-package edu.washington.cs.lavatorylocator;
+package edu.washington.cs.lavatorylocator.activity;
 
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+
+import edu.washington.cs.lavatorylocator.R;
+import edu.washington.cs.lavatorylocator.R.id;
+import edu.washington.cs.lavatorylocator.R.layout;
+import edu.washington.cs.lavatorylocator.R.menu;
 
 import android.os.Bundle;
 import android.widget.TextView;

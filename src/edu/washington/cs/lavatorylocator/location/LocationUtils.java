@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package location;
+package edu.washington.cs.lavatorylocator.location;
 
 import android.content.Context;
 import android.location.Location;

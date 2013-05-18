@@ -12,6 +12,8 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
+import edu.washington.cs.lavatorylocator.model.LavatoryData;
+import edu.washington.cs.lavatorylocator.model.ReviewData;
 
 /**
  * 

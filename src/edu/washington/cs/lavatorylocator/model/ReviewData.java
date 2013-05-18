@@ -1,4 +1,4 @@
-package edu.washington.cs.lavatorylocator;
+package edu.washington.cs.lavatorylocator.model;
 
 /**
  * The Review class is an immutable representation of the data related to
