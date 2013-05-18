@@ -24,20 +24,20 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
-import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 /**
  * The RESTLoader class builds a query from the parameters passed to it from
  * its parent Activity to send to the server. It then sends the response back
  * to the Activity to be processed.
- * 
- * 
+ *
+ *
  * @author Wilkes Sunseri
  *
  */
@@ -55,16 +55,16 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
 
         /**
          * Creates an "empty" RESTResponse
-         * 
+         *
          * The empty RESTResponse is used to indicate unsuccessful querying.
-         * 
+         *
          */
         public RESTResponse() {
         }
 
         /**
          * Creates a RESTResponse with data and the status code from the server
-         * 
+         *
          * @param data
          * @param code
          */
@@ -72,19 +72,19 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
             responseData = data;
             responseCode = code;
         }
-        
+
         /**
          * Gets this RESTResponse's data
-         * 
+         *
          * @return this RESTResponse's data
          */
         public HttpEntity getData() {
             return responseData;
         }
-        
+
         /**
          * Gets this RESTResponse's status code
-         * 
+         *
          * @return this RESTResponse's status code
          */
         public int getCode() {
@@ -103,14 +103,14 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
             dest.writeInt(responseCode);
         }
     }
-    
-    private requestType rType;
-    private Bundle params;
+
+    private final requestType rType;
+    private final Bundle params;
     private Uri location;
 
     /**
      * Constructs a new RESTLoader.
-     * 
+     *
      * @param context the context of the Activity creating this RESTLoader
      * @param address the server address to send this RESTLoader to
      * @param type the type of request this RESTLoader is to use (GET/POST)
@@ -119,17 +119,17 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
     public RESTLoader(Context context, Uri address, requestType type,
             Bundle args) {
         super(context);
-        
+
         location = address;
         rType = type;
         params = args;
     }
-    
+
     /**
      * Queries the server and returns a RESTResponse containing the status code
      * of the request, the response data if there is any, or nothing if there
      * was an exception thrown on the way to the server.
-     * 
+     *
      * @return a RESTResponse containing any data relevant to the query
      */
     @Override
@@ -162,12 +162,12 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
 
                 // Because this is a POST request, we need to encode the
                 // parameters within the request
-                case POST: {    
+                case POST: {
                     request = new HttpPost();
                     request.setURI(new URI(location.toString()));
                     HttpPost postRequest = (HttpPost) request;
                     if (params != null) {
-                        UrlEncodedFormEntity entity = 
+                        UrlEncodedFormEntity entity =
                                 new UrlEncodedFormEntity(makeParamList(params));
                         postRequest.setEntity(entity);
                     }
@@ -177,19 +177,19 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
 
                 if (request != null) {
                     // The request was created successfully
-                    
+
                     HttpParams httpParameters = new BasicHttpParams();
                     HttpConnectionParams.setConnectionTimeout(httpParameters,
                             5000);
                     HttpConnectionParams.setSoTimeout(httpParameters, 5000);
-                    
+
                     HttpClient client = new DefaultHttpClient(httpParameters);
-                    
+
                     Log.i("tagged", "about to load");
                     HttpResponse response = client.execute(request);
-                    
+
                     Log.i("tagged", "loading executed");
-                    
+
                     HttpEntity responseEntity = response.getEntity();
                     StatusLine responseStatus = response.getStatusLine();
                     int statusCode;
@@ -204,7 +204,7 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
                     RESTResponse restResponse;
                     if (responseEntity != null) {
                         // There's some amount of response data to return
-                        restResponse = new RESTResponse(responseEntity, 
+                        restResponse = new RESTResponse(responseEntity,
                                 statusCode);
                     } else {
                         // There's absolutely no response data to return
@@ -231,44 +231,44 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
             return new RESTResponse();
         }
     }
-    
+
     /**
      * Sends the result of this query to the Activity that created this Loader.
      * Note that we don't need to call this ourselves, as it's handled
      * automatically.
-     * 
+     *
      * @param data the data from the query
      */
     @Override
     public void deliverResult(RESTResponse data) {
         super.deliverResult(data);
     }
-    
+
     // Tells the Loader to query the server and load data
     // Note: called automatically
     @Override
     public void onStartLoading() {
         forceLoad();
     }
-    
+
     // Cancels this Loader's loading process
     // Note: called automatically
     @Override
     protected void onStopLoading() {
         cancelLoad();
     }
-    
+
     // Stop this Loader and resets its stored data to its default state
     @Override
     protected void onReset() {
         super.onReset();
         onStopLoading();
     }
-    
+
     // private helper method that converts a Bundle of parameters into a List
     // of pairs that can be used more easily
     private List<BasicNameValuePair> makeParamList(Bundle params) {
-        List<BasicNameValuePair> paramList = 
+        List<BasicNameValuePair> paramList =
                 new LinkedList<BasicNameValuePair>();
         for (String key : params.keySet()) {
             paramList.add(new BasicNameValuePair(key, params.getString(key)));

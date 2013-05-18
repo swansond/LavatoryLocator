@@ -2,47 +2,45 @@ package edu.washington.cs.lavatorylocator;
 
 import org.apache.http.HttpStatus;
 
-import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
-
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.Context;
-import android.content.Loader;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.app.NavUtils;
+import android.support.v4.content.Loader;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
-import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-import android.support.v4.app.NavUtils;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
+import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
 
 /**
  * <code>Activity</code> for adding a new lavatory into LavatoryLocator.
- * 
+ *
  * @author Chris Rovillos
- * 
+ *
  */
-public class AddLavatoryActivity extends SherlockActivity
+public class AddLavatoryActivity extends SherlockFragmentActivity
         implements LoaderCallbacks<RESTLoader.RESTResponse> {
-  
-    private static final String ADD_LAVA 
+
+    private static final String ADD_LAVA
             = "http://lavlocdb.herokuapp.com/addlava.php";
     private static final int MANAGER_ID = 4;
-    
+
     private PopupWindow connectionPopup;
     private ProgressDialog loadingScreen;
 
-    
+
     //stored data in case we need to repeat a query
     private String lastUid;
     private String lastBldg;
@@ -50,13 +48,13 @@ public class AddLavatoryActivity extends SherlockActivity
     private String lastLocLat;
     private String lastLocLong;
     private String lastFlr;
-    
+
 
 
 
     /**
      * Starts submitting the new lavatory to the LavatoryLocator service.
-     * 
+     *
      * @param item
      *            the <code>MenuItem</code> that was selected
      */
@@ -64,9 +62,9 @@ public class AddLavatoryActivity extends SherlockActivity
         String buildingName = ((EditText) findViewById(R.id.activity_add_lavatory_building_name)).getText().toString();
         String floor = ((EditText) findViewById(R.id.activity_add_lavatory_floor)).getText().toString();
         int lavaType = ((RadioGroup) findViewById(R.id.activity_add_lavatory_type)).getCheckedRadioButtonId();
-        
+
         String lavaTypeString = "";
-        
+
         switch (lavaType) {
             case R.id.activity_add_lavatory_male:
                 lavaTypeString = "M";
@@ -75,16 +73,16 @@ public class AddLavatoryActivity extends SherlockActivity
                 lavaTypeString = "F";
                 break;
         }
-        
+
         String longitude = ((EditText) findViewById(R.id.activity_add_lavatory_longitude)).getText().toString();
         String latitude = ((EditText) findViewById(R.id.activity_add_lavatory_latitude)).getText().toString();
-        
-        
+
+
         requestAddLavatory(Integer.toString(1), buildingName, floor, lavaTypeString, longitude, latitude);
-        
+
         finish();
     }
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,16 +121,16 @@ public class AddLavatoryActivity extends SherlockActivity
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	/**
      * Returns a new Loader to this activity's LoaderManager.
      * NOTE: We never need to call this directly as it is done automatically.
-     * 
+     *
      * @author Wilkes Sunseri
-     * 
+     *
      * @param id the id of the LoaderManager
      * @param args the Bundle of arguments to be passed to the Loader
-     * 
+     *
      * @return A Loader to request the addition of a lavatory
      */
     @Override
@@ -146,11 +144,11 @@ public class AddLavatoryActivity extends SherlockActivity
     /**
      * Thanks the user for their submission if it is successful, or prompts
      * them to try again otherwise.
-     * 
+     *
      * This is called automatically when the load finishes.
-     * 
+     *
      * @author Wilkes Sunseri
-     * 
+     *
      * @param loader the Loader that did the submission request
      * @param response the server response
      */
@@ -160,18 +158,18 @@ public class AddLavatoryActivity extends SherlockActivity
         loadingScreen.dismiss();
         getLoaderManager().destroyLoader(loader.getId());
         if (response.getCode() == HttpStatus.SC_OK) {
-            Toast.makeText(this, "Thank you for your submission", 
+            Toast.makeText(this, "Thank you for your submission",
                     Toast.LENGTH_SHORT).show();
         } else {
             LayoutInflater inflater = (LayoutInflater)
                     this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View layout = inflater.inflate(R.layout.no_connection_popup, 
+            View layout = inflater.inflate(R.layout.no_connection_popup,
                     (ViewGroup) findViewById(R.id.no_connection_layout));
 
             connectionPopup = new PopupWindow(layout, 350, 250, true);
             connectionPopup.showAtLocation(layout, Gravity.CENTER, 0, 0);
         }
-        
+
     }
 
 
@@ -179,21 +177,21 @@ public class AddLavatoryActivity extends SherlockActivity
      * Nullifies the data of the Loader being reset so that it can be garbage
      * collected.
      * NOTE: This is called automatically when the Loader is reset.
-     * 
+     *
      * @author Wilkes Sunseri
-     * 
+     *
      * @param loader the Loader being reset
      */
     @Override
     public void onLoaderReset(Loader<RESTLoader.RESTResponse> loader) {
         // TODO: nullify the loader's cached data for garbage collecting
     }
-    
+
     /**
      * Sends the request to add a new lavatory to the server.
-     * 
+     *
      * @author Wilkes Sunseri
-     * 
+     *
      * @param uid the user's ID number
      * @param buildingName the name of the building the new lavatory is in
      * @param floor the floor the new lavatory is on
@@ -211,7 +209,7 @@ public class AddLavatoryActivity extends SherlockActivity
         lastLocLong = longitude;
         lastLocLat = latitude;
         lastLavaType = lavaType;
-        
+
         //set up the arguments
         Bundle args = new Bundle(6);
         if (!uid.equals("")) {
@@ -235,15 +233,15 @@ public class AddLavatoryActivity extends SherlockActivity
 
         loadingScreen = ProgressDialog.show(this, "Loading...",
                 "Getting data just for you!", true);
-        //and initialize the Loader
-        getLoaderManager().initLoader(MANAGER_ID, args, this);
+        // and initialize the Loader
+        getSupportLoaderManager().initLoader(MANAGER_ID, args, this);
         }
-    
-    /** 
+
+    /**
      * Retries the previous request and dismisses the popup box.
-     * 
+     *
      * @author Wilkes Sunseri
-     * 
+     *
      * @param target the popup box View to be dismissed
      */
     public void retryConnection(View target) {
@@ -254,9 +252,9 @@ public class AddLavatoryActivity extends SherlockActivity
 
     /**
      * Dismisses the popup box.
-     * 
+     *
      * @author Wilkes Sunseri
-     * 
+     *
      * @param target the popup box View to be dismissed
      */
     public void dismissConnection(View target) {

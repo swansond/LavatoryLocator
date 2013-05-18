@@ -10,51 +10,19 @@ import location.LocationUtils;
 import org.apache.http.HttpStatus;
 import org.json.JSONObject;
 
-import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
-import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationClient;
-
-import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.MenuInflater;
-
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
-
-import android.location.Location;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.app.ProgressDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -68,12 +36,32 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
+import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 /**
  * <code>Activity</code> first displayed when LavatoryLocator is opened. Shows a
  * list of nearby lavatories.
- * 
+ *
  * @author Keith Miller, Chris Rovillos
- * 
+ *
  */
 public class MainActivity extends SherlockFragmentActivity
         implements ConnectionCallbacks, OnConnectionFailedListener,
@@ -83,13 +71,13 @@ public class MainActivity extends SherlockFragmentActivity
     private static final int MANAGER_ID = 0;
     private static final String LAVA_SEARCH
             = "http://lavlocdb.herokuapp.com/lavasearch.php";
-    
+
     private ListView listView;
     private PopupWindow popup;
     private PopupWindow connectionPopup;
     private ProgressDialog loadingScreen;
     private boolean got2GoFlag;
-    
+
     // Fields to store the previous search parameters in so we can repeat it
     private String lastBldg;
     private String lastFlr;
@@ -99,23 +87,23 @@ public class MainActivity extends SherlockFragmentActivity
     private String lastMaxDist;
     private String lastMinRating;
     private String lastLavaType;
-    
+
     private GoogleMap mMap;
-    
+
     // A request to connect to Location Services
     private LocationRequest mLocationRequest;
 
     // Stores the current instantiation of the location client in this object
     private LocationClient mLocationClient;
-    
+
     // A WeakHashMap so that then a Marker gets garbage-collected,
     // so will its entry in the map
-    private WeakHashMap<Marker, LavatoryData> markerLavatoryDataMap; 
+    private WeakHashMap<Marker, LavatoryData> markerLavatoryDataMap;
 
     /**
      * Activates the "Got2Go" feature, showing the user the nearest
      * highly-rated lavatory.
-     * 
+     *
      * @param item
      *            the <code>MenuItem</code> that was selected
      */
@@ -130,21 +118,10 @@ public class MainActivity extends SherlockFragmentActivity
         got2GoFlag = true;
         lavatorySearch("CSE", "1", "", "-122.305599", "47.653305", "50", "4", "");
     }
-    
+
     /**
      * Goes to the <code>AboutActivity</code>.
-     * 
-     * @param item
-     *            the <code>MenuItem</code> that was selected
-     */
-    public void goToAboutActivity(MenuItem item) {
-        Intent intent = new Intent(this, AboutActivity.class);
-        startActivity(intent);
-    }
-    
-    /**
-     * Goes to the <code>AboutActivity</code>.
-     * 
+     *
      * @param item
      *            the <code>MenuItem</code> that was selected
      */
@@ -156,7 +133,7 @@ public class MainActivity extends SherlockFragmentActivity
     /**
      * Goes to the <code>AddLavatoryActivity</code> to allow the user to request to add a
      * lavatory to the LavatoryLocator service.
-     * 
+     *
      * @param item
      *            the <code>MenuItem</code> that was selected
      */
@@ -167,7 +144,7 @@ public class MainActivity extends SherlockFragmentActivity
         if(!loggedIn){
             LayoutInflater inflater = (LayoutInflater)
                     this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View layout = inflater.inflate(R.layout.login_popup, 
+            View layout = inflater.inflate(R.layout.login_popup,
                     (ViewGroup) findViewById(R.id.login_popup_layout));
 
             popup = new PopupWindow(layout, 350, 250, true);
@@ -180,7 +157,7 @@ public class MainActivity extends SherlockFragmentActivity
 
     /**
      * Logs the user in so that they can add missing lavatories
-     * 
+     *
      * @param target
      */
     public void loginUser(View target){
@@ -191,7 +168,7 @@ public class MainActivity extends SherlockFragmentActivity
 
     /**
      * Closes the popup window
-     * 
+     *
      * @param target
      */
     public void dismissLoginPrompt(View target){
@@ -200,7 +177,7 @@ public class MainActivity extends SherlockFragmentActivity
 
     /**
      * Goes to the <code>SettingsActivity</code>.
-     * 
+     *
      * @param item
      *            the <code>MenuItem</code> that was selected
      */
@@ -219,7 +196,7 @@ public class MainActivity extends SherlockFragmentActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        
+
         setUpMapIfNeeded();
 
         // Create a new global location parameters object
@@ -235,10 +212,10 @@ public class MainActivity extends SherlockFragmentActivity
         mLocationRequest.setFastestInterval(LocationUtils.FAST_INTERVAL_CEILING_IN_MILLISECONDS);
 
         listView = (ListView) findViewById(R.id.activity_main_search_results);
-        
+
         Intent i = getIntent();
         Bundle extra = i.getParcelableExtra(SearchActivity.SEARCH_RESULTS);
-        
+
         if (extra == null) {
             lavatorySearch("CSE", "1", "", "-122.305599", "47.653305", "50", "", "");
         } else {
@@ -250,18 +227,22 @@ public class MainActivity extends SherlockFragmentActivity
                 }
                 populateSearchResults(lavatories);
             } else {
-                Toast.makeText(this, "No results found.", 
-                        Toast.LENGTH_LONG).show();            
+                Toast.makeText(this, "No results found.",
+                        Toast.LENGTH_LONG).show();
             }
         }
     }
-    
+
+
     @Override
     protected void onResume() {
         super.onResume();
+
         setUpMapIfNeeded();
+        setUpLocationClientIfNeeded();
+        mLocationClient.connect();
     }
-    
+
     /**
      * Called when the Activity is no longer visible at all.
      * Stop updates and disconnect.
@@ -270,7 +251,7 @@ public class MainActivity extends SherlockFragmentActivity
     public void onStop() {
         super.onStop();
     }
-    
+
     /*
      * Called when the Activity is going into the background.
      * Parts of the UI may be visible, but the Activity is inactive.
@@ -278,49 +259,23 @@ public class MainActivity extends SherlockFragmentActivity
     @Override
     public void onPause() {
         super.onPause();
-        
+
         if (mLocationClient != null) {
             mLocationClient.disconnect();
           }
     }
-    
-    @Override
-    protected void onResume() {
-        super.onResume();
-        
-        setUpMapIfNeeded();
-        setUpLocationClientIfNeeded();
-        mLocationClient.connect();
-    }
 
-    
-    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater menuInflater = getSupportMenuInflater();
         menuInflater.inflate(R.menu.main, menu);
-        
+
      // Calling super after populating the menu is necessary here to ensure that the
         // action bar helpers have a chance to handle this event.
         return super.onCreateOptionsMenu(menu);
     }
 
-    /**
-     * Sets up the Google Map if needed.
-     */
-    private void setUpMapIfNeeded() {
-        if (mMap == null) {
-            mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
-                                .getMap();
-            // Check if we were successful in obtaining the map.
-            if (mMap != null) {
-                // The Map is verified. It is now safe to manipulate the map.
-                
-            }
-        }
-    }
-    
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
      * installed) and the map has not already been instantiated.. This will ensure that we only ever
@@ -345,12 +300,12 @@ public class MainActivity extends SherlockFragmentActivity
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
                 mMap.setMyLocationEnabled(true);
-                
+
                 mMap.setOnInfoWindowClickListener(this);
             }
         }
     }
-    
+
     private void setUpLocationClientIfNeeded() {
         if (mLocationClient == null) {
           mLocationClient = new LocationClient(
@@ -418,7 +373,7 @@ public class MainActivity extends SherlockFragmentActivity
     public void onLocationChanged(Location location) {
           // Nothing to do.
     }
-    
+
     /**
      * Called by Location Services when the request to connect the
      * client finishes successfully. At this point, you can
@@ -431,10 +386,10 @@ public class MainActivity extends SherlockFragmentActivity
       mLocationClient.requestLocationUpdates(
           mLocationRequest,
           this);  // LocationListener
-      
+
       centerMapOnCurrentLocation();
     }
-    
+
     /**
      * Centers and animates the map on the user's current location.
      */
@@ -442,11 +397,11 @@ public class MainActivity extends SherlockFragmentActivity
        Location currentLocation = mLocationClient.getLastLocation();
        double currentLatitude = currentLocation.getLatitude();
        double currentLongitude = currentLocation.getLongitude();
-       
+
        LatLng currentLatLng = new LatLng(currentLatitude, currentLongitude);
-       
+
        CameraUpdate cameraUpdateToCurrentLocation = CameraUpdateFactory.newLatLng(currentLatLng);
-       
+
        mMap.animateCamera(cameraUpdateToCurrentLocation);
     }
 
@@ -512,11 +467,11 @@ public class MainActivity extends SherlockFragmentActivity
             return mDialog;
         }
     }
-    
-    
+
+
     /**
      * Shows the search action view.
-     * 
+     *
      * @param view
      *            the <code>MenuItem</code> that was selected
      */
@@ -530,18 +485,18 @@ public class MainActivity extends SherlockFragmentActivity
      * Custom <code>Adapter</code> for displaying an array of
      * <code>LavatoryData</code>s. Creates a custom <code>View</code> for each
      * lavatory. row.
-     * 
+     *
      * @author Keith Miller
-     * 
+     *
      */
     private class SearchResultsAdapter extends ArrayAdapter<LavatoryData> {
 
-        private List<LavatoryData> searchResults;
+        private final List<LavatoryData> searchResults;
 
         /**
          * Constructs a new <code>SearchResultsAdapter</code> with given
          * <code>List</code> of <code>LavatoryData</code>s.
-         * 
+         *
          * @param context
          *            the current context
          * @param resultRowResource
@@ -589,19 +544,19 @@ public class MainActivity extends SherlockFragmentActivity
     /**
      * Returns a new Loader to this activity's LoaderManager.
      * NOTE: We never need to call this directly as it is done automatically.
-     * 
+     *
      * @author Wilkes Sunseri
-     * 
+     *
      * @param id the id of the LoaderManager
      * @param args the Bundle of arguments to be passed to the Loader
-     * 
+     *
      * @return A Loader to search for lavatories
      */
     @Override
     public Loader<RESTLoader.RESTResponse> onCreateLoader(int id, Bundle args) {
-        Uri searchAddress = 
+        Uri searchAddress =
                 Uri.parse(LAVA_SEARCH);
-        return new RESTLoader(getApplicationContext(), searchAddress, 
+        return new RESTLoader(getApplicationContext(), searchAddress,
                 RESTLoader.requestType.GET, args);
     }
 
@@ -609,11 +564,11 @@ public class MainActivity extends SherlockFragmentActivity
      * Parses the response from the server if there is one and passes it off.
      * If the app could not connect to the server properly, the user will be
      * prompted to try again.
-     * 
+     *
      * This is called automatically when the load finishes.
-     * 
+     *
      * @author Wilkes Sunseri
-     * 
+     *
      * @param loader the Loader doing the loading
      * @param response the server response to be processed
      */
@@ -627,22 +582,22 @@ public class MainActivity extends SherlockFragmentActivity
                     got2GoFlag = false;
                     JSONObject got2GoResults = Parse.readJSON(response);
                     LavatoryData topResult = Parse.lavatoryList(got2GoResults).get(0);
-                    
+
                     Intent intent = new Intent(this, LavatoryDetailActivity.class);
                     intent.putExtra(LAVATORY, topResult);
                     startActivity(intent);
                 } else {
                     JSONObject finalResult = Parse.readJSON(response);
                     List<LavatoryData> lavatories = Parse.lavatoryList(finalResult);
-                    
+
                     // add the resulting lavatories to the map
                     for (LavatoryData ld : lavatories) {
                         placeLavatoryMarker(ld);
                     }
-                    
+
                     // add the resulting lavatories to the list
                     SearchResultsAdapter adapter = new SearchResultsAdapter(this,
-                            R.layout.search_result_item, 
+                            R.layout.search_result_item,
                             R.id.search_result_item_lavatory_name, lavatories);
 
                     listView.setAdapter(adapter);
@@ -661,7 +616,7 @@ public class MainActivity extends SherlockFragmentActivity
                 }
             } catch (Exception e) {
                 Log.e(this.getClass().getName(), "Error in loading data: " + e.getLocalizedMessage());
-                Toast.makeText(this, "The data is ruined. I'm sorry.", 
+                Toast.makeText(this, "The data is ruined. I'm sorry.",
                         Toast.LENGTH_SHORT).show();
             } finally {
                 getLoaderManager().destroyLoader(loader.getId());
@@ -670,30 +625,30 @@ public class MainActivity extends SherlockFragmentActivity
             getLoaderManager().destroyLoader(loader.getId());
             LayoutInflater inflater = (LayoutInflater)
                     this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View layout = inflater.inflate(R.layout.no_connection_popup, 
+            View layout = inflater.inflate(R.layout.no_connection_popup,
                     (ViewGroup) findViewById(R.id.no_connection_layout));
 
             connectionPopup = new PopupWindow(layout, 350, 250, true);
             connectionPopup.showAtLocation(layout, Gravity.CENTER, 0, 0);
 
             Log.e(this.getClass().getName(), "Error in loading data:\nResponse code: " + response.getCode());
-            Toast.makeText(this, "Connection failure. Try again later.", 
+            Toast.makeText(this, "Connection failure. Try again later.",
                     Toast.LENGTH_SHORT).show();
         }
     }
-    
+
     private void placeLavatoryMarker(LavatoryData ld) {
         Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(ld.latitude, ld.longitude)).title("Lavatory " + ld.lavatoryID));
-        
+
         markerLavatoryDataMap.put(m, ld);
     }
 
     /**
      * Nullifies the reset Loader's data so it can be garbage collected.
      * NOTE: This is called automatically when the Loader is reset.
-     * 
+     *
      * @author Wilkes Sunseri
-     * 
+     *
      * @param loader the Loader being reset
      */
     @Override
@@ -703,9 +658,9 @@ public class MainActivity extends SherlockFragmentActivity
 
     /**
      * Queries the server for lavatories that match the passed parameters
-     * 
+     *
      * @author Wilkes Sunseri
-     * 
+     *
      * @param bldgName building to search for
      * @param floor floor to search on
      * @param roomNumber room number to search for
@@ -716,8 +671,8 @@ public class MainActivity extends SherlockFragmentActivity
      * @param lavaType gender to search for
      */
     //queries the server for lavatories that meet the passed parameters
-    private void lavatorySearch(String bldgName, String floor, 
-            String roomNumber, String locationLong, String locationLat, 
+    private void lavatorySearch(String bldgName, String floor,
+            String roomNumber, String locationLong, String locationLat,
             String maxDist, String minRating, String lavaType) {
 
         //save our search params for later in case we need to try again
@@ -757,19 +712,19 @@ public class MainActivity extends SherlockFragmentActivity
         if (!lavaType.equals("")) {
             args.putString("lavaType", lavaType);
         }
-        
+
         loadingScreen = ProgressDialog.show(this, "Loading...",
                 "Getting data just for you!", true);
-                
+
         // and finally pass it to the loader to be sent to the server
         getSupportLoaderManager().initLoader(MANAGER_ID, args, this);
     }
 
-    /** 
+    /**
      * Retries the previous request and dismisses the popup box.
-     * 
+     *
      * @author Wilkes Sunseri
-     * 
+     *
      * @param target the popup box View to be dismissed
      */
     public void retryConnection(View target) {
@@ -780,31 +735,31 @@ public class MainActivity extends SherlockFragmentActivity
 
     /**
      * Dismisses the popup box.
-     * 
+     *
      * @author Wilkes Sunseri
-     * 
+     *
      * @param target the popup box View to be dismissed
      */
     public void dismissConnection(View target) {
         connectionPopup.dismiss();
     }
-    
+
     /**
      * Populates the list view and map with the search results.
-     * 
+     *
      * @author
-     * 
+     *
      * @param lavatories the List of LavatoryData results
      */
     private void populateSearchResults(List<LavatoryData> lavatories) {
-        
+
         // add the resulting lavatories to the map
         for (LavatoryData ld : lavatories) {
             mMap.addMarker(new MarkerOptions().position(new LatLng(ld.latitude, ld.longitude)).title("Lavatory " + ld.lavatoryID));
         }
-        
+
         SearchResultsAdapter adapter = new SearchResultsAdapter(this,
-                R.layout.search_result_item, 
+                R.layout.search_result_item,
                 R.id.search_result_item_lavatory_name, lavatories);
 
         listView.setAdapter(adapter);
@@ -828,10 +783,10 @@ public class MainActivity extends SherlockFragmentActivity
     public void onInfoWindowClick(Marker m) {
         LavatoryData ld = markerLavatoryDataMap.get(m);
         assert (ld != null);
-        
+
         showLavatoryDetail(ld);
     }
-    
+
     private void showLavatoryDetail(LavatoryData ld) {
         Intent intent = new Intent(this,
                 LavatoryDetailActivity.class);
