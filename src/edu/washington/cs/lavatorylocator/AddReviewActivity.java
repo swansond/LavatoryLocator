@@ -1,28 +1,25 @@
 package edu.washington.cs.lavatorylocator;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.LinkedList;
-import java.util.List;
+import org.apache.http.HttpStatus;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.ParseException;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
+import edu.washington.cs.lavatorylocator.RESTLoader.RESTResponse;
 
-import android.os.AsyncTask;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.Toast;
 import android.support.v4.app.NavUtils;
@@ -33,7 +30,21 @@ import android.support.v4.app.NavUtils;
  * @author Chris Rovillos
  * 
  */
-public class AddReviewActivity extends Activity {
+public class AddReviewActivity extends Activity
+        implements LoaderCallbacks<RESTLoader.RESTResponse> {
+
+    private static final String SUBMIT_REVIEW
+            = "http://lavlocdb.herokuapp.com/submitreview.php";
+    private static final int MANAGER_ID = 3;
+    
+    private ProgressDialog loadingScreen;
+    private PopupWindow connectionPopup;
+    
+    //saved data in case we need to retry a query
+    private String lastUid;
+    private String lastLid;
+    private String lastRating;
+    private String lastReview;
 
     /**
      * Starts submitting the entered review to the LavatoryLocator service.
@@ -96,6 +107,70 @@ public class AddReviewActivity extends Activity {
     }
 
     /**
+     * Returns a new Loader to this activity's LoaderManager.
+     * NOTE: We never need to call this directly as it is done automatically.
+     * 
+     * @author Wilkes Sunseri
+     * 
+     * @param id the id of the LoaderManager
+     * @param args the Bundle of arguments to be passed to the Loader
+     * 
+     * @return A Loader to submit a review
+     */
+    @Override
+    public Loader<RESTResponse> onCreateLoader(int id, Bundle args) {
+        Uri searchAddress =
+                Uri.parse(SUBMIT_REVIEW);
+        return new RESTLoader(getApplicationContext(), searchAddress,
+                RESTLoader.requestType.POST, args);
+    }
+
+    /**
+     * Thanks the user for their submission if it is successful, or prompts
+     * them to try again otherwise.
+     * 
+     * This is called automatically when the load finishes.
+     * 
+     * @author Wilkes Sunseri
+     * 
+     * @param loader the Loader that did the submission request
+     * @param response the server response
+     */
+    @Override
+    public void onLoadFinished(Loader<RESTResponse> loader,
+            RESTResponse response) {
+        loadingScreen.dismiss();
+        getLoaderManager().destroyLoader(loader.getId());
+        if (response.getCode() == HttpStatus.SC_OK) {
+            Toast.makeText(this, "Thank you for your submission", 
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            LayoutInflater inflater = (LayoutInflater)
+                    this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View layout = inflater.inflate(R.layout.no_connection_popup, 
+                    (ViewGroup) findViewById(R.id.no_connection_layout));
+
+            connectionPopup = new PopupWindow(layout, 350, 250, true);
+            connectionPopup.showAtLocation(layout, Gravity.CENTER, 0, 0);
+        }
+        
+    }
+
+    /**
+     * Nullifies the data of the Loader being reset so that it can be garbage
+     * collected.
+     * NOTE: This is called automatically when the Loader is reset.
+     * 
+     * @author Wilkes Sunseri
+     * 
+     * @param loader the Loader being reset
+     */
+    @Override
+    public void onLoaderReset(Loader<RESTLoader.RESTResponse> loader) {
+        // TODO: nullify the loader's cached data for garbage collecting
+    }
+    
+    /**
      * Sends a new review to the server.
      * 
      * @author Wilkes Sunseri
@@ -107,75 +182,54 @@ public class AddReviewActivity extends Activity {
      */
     private void updateReview(String uid, String lid, String rating,
             String review) {
+
+        //save the search params in case we need them later
+        lastUid = uid;
+        lastLid = lid;
+        lastRating = rating;
+        lastReview = review;
+
         //set up the request
-        String URL = "http://lavlocdb.herokuapp.com/submitreview.php";
-        HttpPost hp = new HttpPost(URL);
-        List<NameValuePair> paramList = new LinkedList<NameValuePair>();
+        Bundle args = new Bundle(4);
         if (!uid.equals("")) {
-            paramList.add(new BasicNameValuePair("uid", uid));
+            args.putString("uid", uid);
         }
         if (!lid.equals("")) {
-            paramList.add(new BasicNameValuePair("lid", lid));
+            args.putString("lid", lid);
         }
         if (!rating.equals("")) {
-            paramList.add(new BasicNameValuePair("rating", rating));
+            args.putString("rating", rating);
         }
         if (!review.equals("")) {
-            paramList.add(new BasicNameValuePair("review", review));
+            args.putString("review", review);
         }
-        //encode the parameters into the request
-        try {
-            hp.setEntity(new UrlEncodedFormEntity(paramList, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        //and finally pass it another string to be send to the server
-        new UpdateReviewTask().execute(hp);
+        
+        loadingScreen = ProgressDialog.show(this, "Loading...",
+                "Getting data just for you!", true);
+        //and initialize the Loader
+        getLoaderManager().initLoader(MANAGER_ID, args, this);
+    }
+    
+    /** 
+     * Retries the previous request and dismisses the popup box.
+     * 
+     * @author Wilkes Sunseri
+     * 
+     * @param target the popup box View to be dismissed
+     */
+    public void retryConnection(View target) {
+        updateReview(lastUid, lastLid, lastRating, lastReview);
+        dismissConnection(target);
     }
 
     /**
-     * This class sends the data of a new review to the server.
+     * Dismisses the popup box.
      * 
-     * @author Wil
-     *
+     * @author Wilkes Sunseri
+     * 
+     * @param target the popup box View to be dismissed
      */
-    private class UpdateReviewTask extends AsyncTask<HttpPost, Void, HttpResponse>{
-       
-        //The server communication that occurs in the background
-        @Override
-        protected HttpResponse doInBackground(HttpPost... hp) {
-            HttpClient client = new DefaultHttpClient();
-            try {
-                String test = EntityUtils.toString(hp[0].getEntity());
-                System.out.println(test);
-                return client.execute(hp[0]);
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-                return null;
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.err.println(e);
-                return null;
-            }
-        }
-        
-        //executes when it finishes the server communication
-        protected void onPostExecute(HttpResponse hr) {
-            try {
-                String responseBody = EntityUtils.toString(hr.getEntity());
-                System.out.println(responseBody);
-            } catch (ParseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            Toast.makeText(AddReviewActivity.this, "test", Toast.LENGTH_SHORT);
-            finish();
-        }
+    public void dismissConnection(View target) {
+        connectionPopup.dismiss();
     }
-    
 }
