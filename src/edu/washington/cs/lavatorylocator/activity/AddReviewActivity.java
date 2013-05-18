@@ -68,7 +68,7 @@ public class AddReviewActivity extends SherlockFragmentActivity
         float rating = ratingbar.getRating();
         EditText reviewText = ((EditText) findViewById(R.id.add_review_text));
         String reviewTextString = reviewText.getText().toString();
-        updateReview("1", Integer.toString(ld.lavatoryID), Float.toString(rating), reviewTextString);
+        updateReview("1", Integer.toString(ld.id), Float.toString(rating), reviewTextString);
     }
 
     @Override

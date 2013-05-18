@@ -186,12 +186,12 @@ public class LavatoryDetailActivity extends SherlockFragmentActivity
 
         setContentView(R.layout.activity_lavatory_detail);
 
-        setTitle("Lavatory " + lav.lavatoryID);
+        setTitle("Lavatory " + lav.id);
 
         View headerView = getLayoutInflater().inflate(
                 R.layout.activity_lavatory_detail_header, null);
         ((TextView) headerView.findViewById(R.id.lavatory_detail_name_text))
-                .setText("Lavatory " + lav.lavatoryID);
+                .setText("Lavatory " + lav.id);
         ((TextView) headerView.findViewById(R.id.lavatory_detail_building_text))
                 .setText(lav.building);
         ((RatingBar) headerView.findViewById(R.id.lavatory_detail_rating))
@@ -200,7 +200,7 @@ public class LavatoryDetailActivity extends SherlockFragmentActivity
         ListView listView = (ListView) findViewById(R.id.lavatory_detail_list_view);
         listView.addHeaderView(headerView, null, false);
 
-        getReviews("0", Integer.toString(lav.lavatoryID), "1", "helpfulness",
+        getReviews("0", Integer.toString(lav.id), "1", "helpfulness",
                 "descending");
     }
 
@@ -256,14 +256,14 @@ public class LavatoryDetailActivity extends SherlockFragmentActivity
         SharedPreferences.Editor editor = settings.edit();
 
         // save the current lavatory data
-        editor.putInt("ID", lav.lavatoryID);
-        editor.putString("Gender", String.valueOf(lav.lavatoryGender));
+        editor.putInt("ID", lav.id);
+        editor.putString("Gender", String.valueOf(lav.type));
         editor.putString("Building", lav.building);
         editor.putString("Floor", lav.floor);
-        editor.putString("RoomNumber", lav.roomNumber);
+        editor.putString("RoomNumber", lav.room);
         editor.putFloat("Long", (float)lav.longitude);
         editor.putFloat("Lat", (float)lav.latitude);
-        editor.putInt("NumReviews", lav.numReviews);
+        editor.putInt("NumReviews", lav.reviewCount);
         editor.putFloat("Average", (float)lav.avgRating);
         editor.commit();
     }
