@@ -1,6 +1,6 @@
 package edu.washington.cs.lavatorylocator.test;
 
-import edu.washington.cs.lavatorylocator.MainActivity;
+import edu.washington.cs.lavatorylocator.activity.MainActivity;
 import android.test.ActivityInstrumentationTestCase2;
 
 public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
