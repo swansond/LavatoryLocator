@@ -82,17 +82,16 @@ import edu.washington.cs.lavatorylocator.util.RESTLoader.requestType;
  */
 public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         implements ConnectionCallbacks, OnConnectionFailedListener,
-        LocationListener,
-        OnInfoWindowClickListener {
+        LocationListener, OnInfoWindowClickListener {
 
     // --------------------------------------------------------------------------------------------
     // CONSTANTS
     // --------------------------------------------------------------------------------------------
     public static final String LAVATORY = "LAVATORY";
-    
+
     private static final String JSON_CACHE_KEY = "lavatorySearchResultsJson";
     private static final long JSON_CACHE_DURATION = DurationInMillis.ONE_MINUTE;
-    
+
     private static final int MANAGER_ID = 0;
     private static final String LAVA_SEARCH = "http://lavlocdb.herokuapp.com/lavasearch.php";
 
@@ -106,7 +105,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
     private boolean got2GoFlag;
 
     private LavatorySearchResults lavatorySearchResults;
-    
+
     // Fields to store the previous search parameters in so we can repeat it
     private String lastBldg;
     private String lastFlr;
@@ -135,9 +134,9 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature( Window.FEATURE_INDETERMINATE_PROGRESS );
-        setProgressBarIndeterminateVisibility( false );
-        
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setProgressBarIndeterminateVisibility(false);
+
         setContentView(R.layout.activity_main);
 
         setUpMapIfNeeded();
@@ -160,99 +159,108 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
 
         Intent i = getIntent();
         Bundle extra = i.getParcelableExtra(SearchActivity.SEARCH_RESULTS);
-//
-//        if (extra == null) {
-//            lavatorySearch("CSE", "1", "", "-122.305599", "47.653305", "50",
-//                    "", "");
-//        } else {
-//            List<Parcelable> results = Arrays.asList(extra
-//                    .getParcelableArray("results"));
-//            List<LavatoryData> lavatories = new ArrayList<LavatoryData>();
-//            if (results.size() != 0) {
-//                for (Parcelable p : results) {
-//                    lavatories.add((LavatoryData) p);
-//                }
-//                populateSearchResults(lavatories);
-//            } else {
-//                Toast.makeText(this, "No results found.", Toast.LENGTH_LONG)
-//                        .show();
-//            }
-//        }
+        //
+        // if (extra == null) {
+        // lavatorySearch("CSE", "1", "", "-122.305599", "47.653305", "50",
+        // "", "");
+        // } else {
+        // List<Parcelable> results = Arrays.asList(extra
+        // .getParcelableArray("results"));
+        // List<LavatoryData> lavatories = new ArrayList<LavatoryData>();
+        // if (results.size() != 0) {
+        // for (Parcelable p : results) {
+        // lavatories.add((LavatoryData) p);
+        // }
+        // populateSearchResults(lavatories);
+        // } else {
+        // Toast.makeText(this, "No results found.", Toast.LENGTH_LONG)
+        // .show();
+        // }
+        // }
     }
-    
+
     @Override
     public void onStart() {
         super.onStart();
 
         loadNearbyLavatories();
     }
-    
+
     // --------------------------------------------------------------------------------------------
     // PRIVATE HELPER METHODS
     // --------------------------------------------------------------------------------------------
     private void loadNearbyLavatories() {
-        setProgressBarIndeterminateVisibility( true );
-        
-        getSpiceManager().execute(new LavatorySearchRequest(), JSON_CACHE_KEY, JSON_CACHE_DURATION, new LavatorySearchListener());
+        setProgressBarIndeterminateVisibility(true);
+
+        getSpiceManager().execute(new LavatorySearchRequest(), JSON_CACHE_KEY,
+                JSON_CACHE_DURATION, new LavatorySearchListener());
     }
-    
-    private void updateLavatorySearchResults(LavatorySearchResults lavatorySearchResults) {
-       assertNotNull(lavatorySearchResults);
+
+    private void updateLavatorySearchResults(
+            LavatorySearchResults lavatorySearchResults) {
+        assertNotNull(lavatorySearchResults);
         this.lavatorySearchResults = lavatorySearchResults;
-        
-      // add the resulting lavatories to the map
-      for (LavatoryData lavatoryData : lavatorySearchResults.getLavatories()) {
-          mMap.addMarker(new MarkerOptions().position(
-                  new LatLng(lavatoryData.getLatitude(), lavatoryData.getLongitude())).title(
-                  "Lavatory " + lavatoryData.getLid()));
-      }
 
-      LavatorySearchResultsAdapter adapter = new LavatorySearchResultsAdapter(this,
-              R.layout.search_result_item,
-              R.id.search_result_item_lavatory_name, lavatorySearchResults);
+        if (mMap != null) {
+            // add the resulting lavatories to the map
+            for (LavatoryData lavatoryData : lavatorySearchResults
+                    .getLavatories()) {
+                mMap.addMarker(new MarkerOptions().position(
+                        new LatLng(lavatoryData.getLatitude(), lavatoryData
+                                .getLongitude())).title(
+                        "Lavatory " + lavatoryData.getLid()));
+            }
+        }
 
-      listView.setAdapter(adapter);
+        LavatorySearchResultsAdapter adapter = new LavatorySearchResultsAdapter(
+                this, R.layout.search_result_item,
+                R.id.search_result_item_lavatory_name, lavatorySearchResults);
 
-//      listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//          @Override
-//          public void onItemClick(AdapterView<?> parent, View view,
-//                  int position, long id) {
-//              final LavatoryData selectedLavatory = (LavatoryData) parent
-//                      .getItemAtPosition(position);
-//              Intent intent = new Intent(parent.getContext(),
-//                      LavatoryDetailActivity.class);
-//              intent.putExtra(LAVATORY, selectedLavatory);
-//              startActivity(intent);
-//          }
-//      });
+        listView.setAdapter(adapter);
 
-        
+        // listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        // {
+        //
+        // @Override
+        // public void onItemClick(AdapterView<?> parent, View view,
+        // int position, long id) {
+        // final LavatoryData selectedLavatory = (LavatoryData) parent
+        // .getItemAtPosition(position);
+        // Intent intent = new Intent(parent.getContext(),
+        // LavatoryDetailActivity.class);
+        // intent.putExtra(LAVATORY, selectedLavatory);
+        // startActivity(intent);
+        // }
+        // });
+
     }
-    
+
     // --------------------------------------------------------------------------------------------
     // PRIVATE INNER CLASSES
     // --------------------------------------------------------------------------------------------
-    private class LavatorySearchListener implements RequestListener<LavatorySearchResults> {
+    private class LavatorySearchListener implements
+            RequestListener<LavatorySearchResults> {
 
         @Override
-        public void onRequestFailure( SpiceException spiceException ) {
-            String errorMessage = "Lavatory search request failed: " + spiceException.getMessage();
-            
+        public void onRequestFailure(SpiceException spiceException) {
+            String errorMessage = "Lavatory search request failed: "
+                    + spiceException.getMessage();
+
             Log.e(getLocalClassName(), errorMessage);
-            Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_LONG).show();
-            MainActivity.this.setProgressBarIndeterminateVisibility( false );
+            Toast.makeText(getApplicationContext(), errorMessage,
+                    Toast.LENGTH_LONG).show();
+            MainActivity.this.setProgressBarIndeterminateVisibility(false);
         }
 
         @Override
-        public void onRequestSuccess( LavatorySearchResults lavatorySearchResults ) {
-            MainActivity.this.updateLavatorySearchResults(lavatorySearchResults);
-            
-            MainActivity.this.setProgressBarIndeterminateVisibility( false );
+        public void onRequestSuccess(LavatorySearchResults lavatorySearchResults) {
+            MainActivity.this
+                    .updateLavatorySearchResults(lavatorySearchResults);
+
+            MainActivity.this.setProgressBarIndeterminateVisibility(false);
         }
     }
-    
-    
+
     /**
      * Activates the "Got2Go" feature, showing the user the nearest highly-rated
      * lavatory.
@@ -270,9 +278,9 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         // Toast toast = Toast.makeText(context, notImplementedMessage,
         // duration);
         // toast.show();
-        //got2GoFlag = true;
-        //lavatorySearch("CSE", "1", "", "-122.305599", "47.653305", "50", "4",
-        //        "");
+        // got2GoFlag = true;
+        // lavatorySearch("CSE", "1", "", "-122.305599", "47.653305", "50", "4",
+        // "");
     }
 
     /**
@@ -349,8 +357,6 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         toast.show();
     }
 
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -423,7 +429,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
             if (mMap != null) {
                 mMap.setMyLocationEnabled(true);
 
-                //mMap.setOnInfoWindowClickListener(this);
+                // mMap.setOnInfoWindowClickListener(this);
             }
         }
     }
@@ -601,219 +607,220 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         startActivityForResult(intent, 0);
     }
 
-
-//
-//    /**
-//     * Returns a new Loader to this activity's LoaderManager. NOTE: We never
-//     * need to call this directly as it is done automatically.
-//     * 
-//     * @author Wilkes Sunseri
-//     * 
-//     * @param id
-//     *            the id of the LoaderManager
-//     * @param args
-//     *            the Bundle of arguments to be passed to the Loader
-//     * 
-//     * @return A Loader to search for lavatories
-//     */
-//    @Override
-//    public Loader<RESTLoader.RESTResponse> onCreateLoader(int id, Bundle args) {
-//        Uri searchAddress = Uri.parse(LAVA_SEARCH);
-//        return new RESTLoader(getApplicationContext(), searchAddress,
-//                RESTLoader.requestType.GET, args);
-//    }
-//
-//    /**
-//     * Parses the response from the server if there is one and passes it off. If
-//     * the app could not connect to the server properly, the user will be
-//     * prompted to try again.
-//     * 
-//     * This is called automatically when the load finishes.
-//     * 
-//     * @author Wilkes Sunseri
-//     * 
-//     * @param loader
-//     *            the Loader doing the loading
-//     * @param response
-//     *            the server response to be processed
-//     */
-//    @Override
-//    public void onLoadFinished(Loader<RESTLoader.RESTResponse> loader,
-//            RESTLoader.RESTResponse response) {
-//        loadingScreen.dismiss();
-//            LayoutInflater inflater = (LayoutInflater) this
-//                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            View layout = inflater.inflate(R.layout.no_connection_popup,
-//                    (ViewGroup) findViewById(R.id.no_connection_layout));
-//
-//            connectionPopup = new PopupWindow(layout, 350, 250, true);
-//            connectionPopup.showAtLocation(layout, Gravity.CENTER, 0, 0);
-//
-//            Log.e(this.getClass().getName(),
-//                    "Error in loading data:\nResponse code: "
-//                            + response.getCode());
-//            Toast.makeText(this, "Connection failure. Try again later.",
-//                    Toast.LENGTH_SHORT).show();
-//        }
-//    }
-//
-//    private void placeLavatoryMarker(LavatoryData ld) {
-//        Marker m = mMap.addMarker(new MarkerOptions().position(
-//                new LatLng(ld.latitude, ld.longitude)).title(
-//                "Lavatory " + ld.lavatoryID));
-//
-//        markerLavatoryDataMap.put(m, ld);
-//    }
-//
-//    /**
-//     * Nullifies the reset Loader's data so it can be garbage collected. NOTE:
-//     * This is called automatically when the Loader is reset.
-//     * 
-//     * @author Wilkes Sunseri
-//     * 
-//     * @param loader
-//     *            the Loader being reset
-//     */
-//    @Override
-//    public void onLoaderReset(Loader<RESTLoader.RESTResponse> loader) {
-//        // TODO: nullify the loader's cached data for garbage collecting
-//    }
-//
-//    /**
-//     * Queries the server for lavatories that match the passed parameters
-//     * 
-//     * @author Wilkes Sunseri
-//     * 
-//     * @param bldgName
-//     *            building to search for
-//     * @param floor
-//     *            floor to search on
-//     * @param roomNumber
-//     *            room number to search for
-//     * @param locationLong
-//     *            longitude to search for
-//     * @param locationLat
-//     *            latitude to search for
-//     * @param maxDist
-//     *            max distance from the search coordinates to look
-//     * @param minRating
-//     *            minimum rating found lavatories must have
-//     * @param lavaType
-//     *            gender to search for
-//     */
-//    // queries the server for lavatories that meet the passed parameters
-//    private void lavatorySearch(String bldgName, String floor,
-//            String roomNumber, String locationLong, String locationLat,
-//            String maxDist, String minRating, String lavaType) {
-//
-//        // save our search params for later in case we need to try again
-//        lastBldg = bldgName;
-//        lastFlr = floor;
-//        lastRmNum = roomNumber;
-//        lastLocLong = locationLong;
-//        lastLocLat = locationLat;
-//        lastMaxDist = maxDist;
-//        lastMinRating = minRating;
-//        lastLavaType = lavaType;
-//
-//        Bundle args = new Bundle(8);
-//
-//        // set up the request
-//        if (!bldgName.equals("")) {
-//            args.putString("bldgName", bldgName);
-//        }
-//        if (!floor.equals("")) {
-//            args.putString("floor", floor);
-//        }
-//        if (!roomNumber.equals("")) {
-//            args.putString("roomNumber", roomNumber);
-//        }
-//        if (!locationLong.equals("")) {
-//            args.putString("locationLong", locationLong);
-//        }
-//        if (!locationLat.equals("")) {
-//            args.putString("locationLat", locationLat);
-//        }
-//        if (!maxDist.equals("")) {
-//            args.putString("maxDist", maxDist);
-//        }
-//        if (!minRating.equals("")) {
-//            args.putString("minRating", minRating);
-//        }
-//        if (!lavaType.equals("")) {
-//            args.putString("lavaType", lavaType);
-//        }
-//
-//        loadingScreen = ProgressDialog.show(this, "Loading...",
-//                "Getting data just for you!", true);
-//
-//        // and finally pass it to the loader to be sent to the server
-//        getSupportLoaderManager().initLoader(MANAGER_ID, args, this);
-//    }
-//
-//    /**
-//     * Retries the previous request and dismisses the popup box.
-//     * 
-//     * @author Wilkes Sunseri
-//     * 
-//     * @param target
-//     *            the popup box View to be dismissed
-//     */
-//    public void retryConnection(View target) {
-//        lavatorySearch(lastBldg, lastFlr, lastRmNum, lastLocLong, lastLocLat,
-//                lastMaxDist, lastMinRating, lastLavaType);
-//        dismissConnection(target);
-//    }
-//
-//    /**
-//     * Dismisses the popup box.
-//     * 
-//     * @author Wilkes Sunseri
-//     * 
-//     * @param target
-//     *            the popup box View to be dismissed
-//     */
-//    public void dismissConnection(View target) {
-//        connectionPopup.dismiss();
-//    }
-//
-//    /**
-//     * Populates the list view and map with the search results.
-//     * 
-//     * @author
-//     * 
-//     * @param lavatories
-//     *            the List of LavatoryData results
-//     */
-//    private void populateSearchResults(List<LavatoryData> lavatories) {
-//
-//        // add the resulting lavatories to the map
-//        for (LavatoryData ld : lavatories) {
-//            mMap.addMarker(new MarkerOptions().position(
-//                    new LatLng(ld.latitude, ld.longitude)).title(
-//                    "Lavatory " + ld.lavatoryID));
-//        }
-//
-//        SearchResultsAdapter adapter = new SearchResultsAdapter(this,
-//                R.layout.search_result_item,
-//                R.id.search_result_item_lavatory_name, lavatories);
-//
-//        listView.setAdapter(adapter);
-//
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view,
-//                    int position, long id) {
-//                final LavatoryData selectedLavatory = (LavatoryData) parent
-//                        .getItemAtPosition(position);
-//                Intent intent = new Intent(parent.getContext(),
-//                        LavatoryDetailActivity.class);
-//                intent.putExtra(LAVATORY, selectedLavatory);
-//                startActivity(intent);
-//            }
-//        });
-//    }
+    //
+    // /**
+    // * Returns a new Loader to this activity's LoaderManager. NOTE: We never
+    // * need to call this directly as it is done automatically.
+    // *
+    // * @author Wilkes Sunseri
+    // *
+    // * @param id
+    // * the id of the LoaderManager
+    // * @param args
+    // * the Bundle of arguments to be passed to the Loader
+    // *
+    // * @return A Loader to search for lavatories
+    // */
+    // @Override
+    // public Loader<RESTLoader.RESTResponse> onCreateLoader(int id, Bundle
+    // args) {
+    // Uri searchAddress = Uri.parse(LAVA_SEARCH);
+    // return new RESTLoader(getApplicationContext(), searchAddress,
+    // RESTLoader.requestType.GET, args);
+    // }
+    //
+    // /**
+    // * Parses the response from the server if there is one and passes it off.
+    // If
+    // * the app could not connect to the server properly, the user will be
+    // * prompted to try again.
+    // *
+    // * This is called automatically when the load finishes.
+    // *
+    // * @author Wilkes Sunseri
+    // *
+    // * @param loader
+    // * the Loader doing the loading
+    // * @param response
+    // * the server response to be processed
+    // */
+    // @Override
+    // public void onLoadFinished(Loader<RESTLoader.RESTResponse> loader,
+    // RESTLoader.RESTResponse response) {
+    // loadingScreen.dismiss();
+    // LayoutInflater inflater = (LayoutInflater) this
+    // .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    // View layout = inflater.inflate(R.layout.no_connection_popup,
+    // (ViewGroup) findViewById(R.id.no_connection_layout));
+    //
+    // connectionPopup = new PopupWindow(layout, 350, 250, true);
+    // connectionPopup.showAtLocation(layout, Gravity.CENTER, 0, 0);
+    //
+    // Log.e(this.getClass().getName(),
+    // "Error in loading data:\nResponse code: "
+    // + response.getCode());
+    // Toast.makeText(this, "Connection failure. Try again later.",
+    // Toast.LENGTH_SHORT).show();
+    // }
+    // }
+    //
+    // private void placeLavatoryMarker(LavatoryData ld) {
+    // Marker m = mMap.addMarker(new MarkerOptions().position(
+    // new LatLng(ld.latitude, ld.longitude)).title(
+    // "Lavatory " + ld.lavatoryID));
+    //
+    // markerLavatoryDataMap.put(m, ld);
+    // }
+    //
+    // /**
+    // * Nullifies the reset Loader's data so it can be garbage collected. NOTE:
+    // * This is called automatically when the Loader is reset.
+    // *
+    // * @author Wilkes Sunseri
+    // *
+    // * @param loader
+    // * the Loader being reset
+    // */
+    // @Override
+    // public void onLoaderReset(Loader<RESTLoader.RESTResponse> loader) {
+    // // TODO: nullify the loader's cached data for garbage collecting
+    // }
+    //
+    // /**
+    // * Queries the server for lavatories that match the passed parameters
+    // *
+    // * @author Wilkes Sunseri
+    // *
+    // * @param bldgName
+    // * building to search for
+    // * @param floor
+    // * floor to search on
+    // * @param roomNumber
+    // * room number to search for
+    // * @param locationLong
+    // * longitude to search for
+    // * @param locationLat
+    // * latitude to search for
+    // * @param maxDist
+    // * max distance from the search coordinates to look
+    // * @param minRating
+    // * minimum rating found lavatories must have
+    // * @param lavaType
+    // * gender to search for
+    // */
+    // // queries the server for lavatories that meet the passed parameters
+    // private void lavatorySearch(String bldgName, String floor,
+    // String roomNumber, String locationLong, String locationLat,
+    // String maxDist, String minRating, String lavaType) {
+    //
+    // // save our search params for later in case we need to try again
+    // lastBldg = bldgName;
+    // lastFlr = floor;
+    // lastRmNum = roomNumber;
+    // lastLocLong = locationLong;
+    // lastLocLat = locationLat;
+    // lastMaxDist = maxDist;
+    // lastMinRating = minRating;
+    // lastLavaType = lavaType;
+    //
+    // Bundle args = new Bundle(8);
+    //
+    // // set up the request
+    // if (!bldgName.equals("")) {
+    // args.putString("bldgName", bldgName);
+    // }
+    // if (!floor.equals("")) {
+    // args.putString("floor", floor);
+    // }
+    // if (!roomNumber.equals("")) {
+    // args.putString("roomNumber", roomNumber);
+    // }
+    // if (!locationLong.equals("")) {
+    // args.putString("locationLong", locationLong);
+    // }
+    // if (!locationLat.equals("")) {
+    // args.putString("locationLat", locationLat);
+    // }
+    // if (!maxDist.equals("")) {
+    // args.putString("maxDist", maxDist);
+    // }
+    // if (!minRating.equals("")) {
+    // args.putString("minRating", minRating);
+    // }
+    // if (!lavaType.equals("")) {
+    // args.putString("lavaType", lavaType);
+    // }
+    //
+    // loadingScreen = ProgressDialog.show(this, "Loading...",
+    // "Getting data just for you!", true);
+    //
+    // // and finally pass it to the loader to be sent to the server
+    // getSupportLoaderManager().initLoader(MANAGER_ID, args, this);
+    // }
+    //
+    // /**
+    // * Retries the previous request and dismisses the popup box.
+    // *
+    // * @author Wilkes Sunseri
+    // *
+    // * @param target
+    // * the popup box View to be dismissed
+    // */
+    // public void retryConnection(View target) {
+    // lavatorySearch(lastBldg, lastFlr, lastRmNum, lastLocLong, lastLocLat,
+    // lastMaxDist, lastMinRating, lastLavaType);
+    // dismissConnection(target);
+    // }
+    //
+    // /**
+    // * Dismisses the popup box.
+    // *
+    // * @author Wilkes Sunseri
+    // *
+    // * @param target
+    // * the popup box View to be dismissed
+    // */
+    // public void dismissConnection(View target) {
+    // connectionPopup.dismiss();
+    // }
+    //
+    // /**
+    // * Populates the list view and map with the search results.
+    // *
+    // * @author
+    // *
+    // * @param lavatories
+    // * the List of LavatoryData results
+    // */
+    // private void populateSearchResults(List<LavatoryData> lavatories) {
+    //
+    // // add the resulting lavatories to the map
+    // for (LavatoryData ld : lavatories) {
+    // mMap.addMarker(new MarkerOptions().position(
+    // new LatLng(ld.latitude, ld.longitude)).title(
+    // "Lavatory " + ld.lavatoryID));
+    // }
+    //
+    // SearchResultsAdapter adapter = new SearchResultsAdapter(this,
+    // R.layout.search_result_item,
+    // R.id.search_result_item_lavatory_name, lavatories);
+    //
+    // listView.setAdapter(adapter);
+    //
+    // listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    //
+    // @Override
+    // public void onItemClick(AdapterView<?> parent, View view,
+    // int position, long id) {
+    // final LavatoryData selectedLavatory = (LavatoryData) parent
+    // .getItemAtPosition(position);
+    // Intent intent = new Intent(parent.getContext(),
+    // LavatoryDetailActivity.class);
+    // intent.putExtra(LAVATORY, selectedLavatory);
+    // startActivity(intent);
+    // }
+    // });
+    // }
 
     @Override
     public void onInfoWindowClick(Marker m) {
@@ -824,8 +831,8 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
     }
 
     private void showLavatoryDetail(LavatoryData ld) {
-        //Intent intent = new Intent(this, LavatoryDetailActivity.class);
-        //intent.putExtra(LAVATORY, ld);
-        //startActivity(intent);
+        // Intent intent = new Intent(this, LavatoryDetailActivity.class);
+        // intent.putExtra(LAVATORY, ld);
+        // startActivity(intent);
     }
 }
