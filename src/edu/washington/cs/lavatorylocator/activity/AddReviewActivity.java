@@ -25,13 +25,9 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import edu.washington.cs.lavatorylocator.R;
-import edu.washington.cs.lavatorylocator.R.id;
-import edu.washington.cs.lavatorylocator.R.layout;
-import edu.washington.cs.lavatorylocator.R.menu;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 import edu.washington.cs.lavatorylocator.util.RESTLoader;
 import edu.washington.cs.lavatorylocator.util.RESTLoader.RESTResponse;
-import edu.washington.cs.lavatorylocator.util.RESTLoader.requestType;
 
 /**
  * <code>Activity</code> for adding a review on a lavatory.
@@ -68,7 +64,7 @@ public class AddReviewActivity extends SherlockFragmentActivity
         float rating = ratingbar.getRating();
         EditText reviewText = ((EditText) findViewById(R.id.add_review_text));
         String reviewTextString = reviewText.getText().toString();
-        updateReview("1", Integer.toString(ld.id), Float.toString(rating), reviewTextString);
+        updateReview("1", Integer.toString(ld.getLid()), Float.toString(rating), reviewTextString);
     }
 
     @Override

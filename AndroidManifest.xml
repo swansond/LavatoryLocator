@@ -45,6 +45,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="edu.washington.cs.lavatorylocator.activity.SearchActivity"
+            uiOptions="splitActionBarWhenNarrow"
+            android:label="@string/title_activity_lavatory_detail"
+            android:parentActivityName="edu.washington.cs.lavatorylocator.activity.MainActivity"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.washington.cs.lavatorylocator.activity.MainActivity" />
+        </activity>
+        <activity
             android:name="edu.washington.cs.lavatorylocator.activity.LavatoryDetailActivity"
             uiOptions="splitActionBarWhenNarrow"
             android:label="@string/title_activity_lavatory_detail"
@@ -52,7 +62,7 @@
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.washington.cs.lavatorylocator.MainActivity" />
+                android:value="edu.washington.cs.lavatorylocator.activity.MainActivity" />
         </activity>
         <activity
             android:name="edu.washington.cs.lavatorylocator.activity.AddReviewActivity"
@@ -62,7 +72,7 @@
             android:windowSoftInputMode="stateAlwaysVisible" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.washington.cs.lavatorylocator.LavatoryDetailActivity" />
+                android:value="edu.washington.cs.lavatorylocator.activity.LavatoryDetailActivity" />
         </activity>
         <activity
             android:name="edu.washington.cs.lavatorylocator.activity.AddLavatoryActivity"
@@ -72,7 +82,7 @@
             android:windowSoftInputMode="stateAlwaysVisible" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.washington.cs.lavatorylocator.MainActivity" />
+                android:value="edu.washington.cs.lavatorylocator.activity.MainActivity" />
         </activity>
         <activity
             android:name="edu.washington.cs.lavatorylocator.activity.AboutActivity"
@@ -80,7 +90,7 @@
             android:parentActivityName="edu.washington.cs.lavatorylocator.activity.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.washington.cs.lavatorylocator.MainActivity" />
+                android:value="edu.washington.cs.lavatorylocator.activity.MainActivity" />
         </activity>
 
         <meta-data

@@ -212,14 +212,14 @@ public class LavatoryData implements Parcelable {
     // --------------------------------------------------------------------------------------------
     // GETTERS
     // --------------------------------------------------------------------------------------------
-
+    
     /**
-     * Returns the lavatory ID in the database.
+     * Returns this lavatory’s name.
      * 
-     * @return the lavatory ID in the database
+     * @return this lavatory’s name
      */
-    public int getLavatoryID() {
-        return lid;
+    public String getName() {
+            return "Room " + getRoom() + ", " + getBuilding();
     }
 
     /**

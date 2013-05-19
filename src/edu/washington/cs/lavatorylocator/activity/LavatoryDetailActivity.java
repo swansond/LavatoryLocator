@@ -31,15 +31,13 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import edu.washington.cs.lavatorylocator.R;
-import edu.washington.cs.lavatorylocator.R.id;
-import edu.washington.cs.lavatorylocator.R.layout;
-import edu.washington.cs.lavatorylocator.R.menu;
+import edu.washington.cs.lavatorylocator.activity.AddReviewActivity;
+import edu.washington.cs.lavatorylocator.activity.MainActivity;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 import edu.washington.cs.lavatorylocator.model.ReviewData;
 import edu.washington.cs.lavatorylocator.util.Parse;
 import edu.washington.cs.lavatorylocator.util.RESTLoader;
 import edu.washington.cs.lavatorylocator.util.RESTLoader.RESTResponse;
-import edu.washington.cs.lavatorylocator.util.RESTLoader.requestType;
 
 /**
  * <code>Activity</code> for viewing information about a specific lavatory.
@@ -156,13 +154,13 @@ public class LavatoryDetailActivity extends SherlockFragmentActivity
 
         Intent intent = getIntent();
         Log.d("tagged", getIntent().toString());
-        if(intent.hasExtra(MainActivity.LAVATORY)){
+        if(intent.hasExtra(MainActivity.LAVATORY_DATA)){
             // called from the list of bathrooms, data is passed in
-            lav = intent.getParcelableExtra(MainActivity.LAVATORY);
+            lav = intent.getParcelableExtra(MainActivity.LAVATORY_DATA);
         } else if(savedInstanceState != null &&
-                savedInstanceState.containsKey(MainActivity.LAVATORY)){
+                savedInstanceState.containsKey(MainActivity.LAVATORY_DATA)){
             // called from restore, get lav info from passed bundle
-            lav = savedInstanceState.getParcelable(MainActivity.LAVATORY);
+            lav = savedInstanceState.getParcelable(MainActivity.LAVATORY_DATA);
         } else if(getSharedPreferences("User", MODE_PRIVATE).contains("ID")){
             // called after destruction and saveInstanceState did not get called
             // have to build lavatory from data stored in onPause
@@ -186,21 +184,21 @@ public class LavatoryDetailActivity extends SherlockFragmentActivity
 
         setContentView(R.layout.activity_lavatory_detail);
 
-        setTitle("Lavatory " + lav.id);
+        setTitle(lav.getName());
 
         View headerView = getLayoutInflater().inflate(
                 R.layout.activity_lavatory_detail_header, null);
         ((TextView) headerView.findViewById(R.id.lavatory_detail_name_text))
-                .setText("Lavatory " + lav.id);
+                .setText(lav.getName());
         ((TextView) headerView.findViewById(R.id.lavatory_detail_building_text))
-                .setText(lav.building);
+                .setText(lav.getBuilding());
         ((RatingBar) headerView.findViewById(R.id.lavatory_detail_rating))
-                .setRating((float) lav.avgRating);
+                .setRating((float) lav.getAvgRating());
 
         ListView listView = (ListView) findViewById(R.id.lavatory_detail_list_view);
         listView.addHeaderView(headerView, null, false);
 
-        getReviews("0", Integer.toString(lav.id), "1", "helpfulness",
+        getReviews("0", Integer.toString(lav.getLid()), "1", "helpfulness",
                 "descending");
     }
 
@@ -239,13 +237,13 @@ public class LavatoryDetailActivity extends SherlockFragmentActivity
     @Override
     protected void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
-        outState.putParcelable(MainActivity.LAVATORY, lav);
+        outState.putParcelable(MainActivity.LAVATORY_DATA, lav);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState){
         super.onRestoreInstanceState(savedInstanceState);
-        lav = (LavatoryData) savedInstanceState.get(MainActivity.LAVATORY);
+        lav = (LavatoryData) savedInstanceState.get(MainActivity.LAVATORY_DATA);
     }
 
     @Override
@@ -256,15 +254,15 @@ public class LavatoryDetailActivity extends SherlockFragmentActivity
         SharedPreferences.Editor editor = settings.edit();
 
         // save the current lavatory data
-        editor.putInt("ID", lav.id);
-        editor.putString("Gender", String.valueOf(lav.type));
-        editor.putString("Building", lav.building);
-        editor.putString("Floor", lav.floor);
-        editor.putString("RoomNumber", lav.room);
-        editor.putFloat("Long", (float)lav.longitude);
-        editor.putFloat("Lat", (float)lav.latitude);
-        editor.putInt("NumReviews", lav.reviewCount);
-        editor.putFloat("Average", (float)lav.avgRating);
+        editor.putInt("ID", lav.getLid());
+        editor.putString("Gender", String.valueOf(lav.getType()));
+        editor.putString("Building", lav.getBuilding());
+        editor.putString("Floor", lav.getFloor());
+        editor.putString("RoomNumber", lav.getRoom());
+        editor.putFloat("Long", (float)lav.getLongitude());
+        editor.putFloat("Lat", (float)lav.getLatitude());
+        editor.putInt("NumReviews", lav.getReviewCount());
+        editor.putFloat("Average", (float)lav.getAvgRating());
         editor.commit();
     }
 
