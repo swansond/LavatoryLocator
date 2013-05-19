@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="16"
+        android:minSdkVersion="8"
         android:targetSdkVersion="17" />
 
     <permission
@@ -30,13 +30,17 @@
     
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/ic_home"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Holo.Light" >
+        android:theme="@style/AppTheme" >
         
-		<uses-library android:name="android.test.runner" />
+        <uses-library android:name="android.test.runner" />
+        <service
+            android:name="com.octo.android.robospice.JacksonSpringAndroidSpiceService"
+            android:exported="false" />
+
         <activity
-            android:name="edu.washington.cs.lavatorylocator.MainActivity"
+            android:name="edu.washington.cs.lavatorylocator.activity.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -46,42 +50,52 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="edu.washington.cs.lavatorylocator.LavatoryDetailActivity"
+            android:name="edu.washington.cs.lavatorylocator.activity.SearchActivity"
             uiOptions="splitActionBarWhenNarrow"
             android:label="@string/title_activity_lavatory_detail"
-            android:parentActivityName="edu.washington.cs.lavatorylocator.MainActivity"
+            android:parentActivityName="edu.washington.cs.lavatorylocator.activity.MainActivity"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.washington.cs.lavatorylocator.MainActivity" />
+                android:value="edu.washington.cs.lavatorylocator.activity.MainActivity" />
         </activity>
         <activity
-            android:name="edu.washington.cs.lavatorylocator.AddReviewActivity"
+            android:name="edu.washington.cs.lavatorylocator.activity.LavatoryDetailActivity"
+            uiOptions="splitActionBarWhenNarrow"
+            android:label="@string/title_activity_lavatory_detail"
+            android:parentActivityName="edu.washington.cs.lavatorylocator.activity.MainActivity"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.washington.cs.lavatorylocator.activity.MainActivity" />
+        </activity>
+        <activity
+            android:name="edu.washington.cs.lavatorylocator.activity.AddReviewActivity"
             android:label="@string/title_activity_add_review"
-            android:parentActivityName="edu.washington.cs.lavatorylocator.LavatoryDetailActivity"
+            android:parentActivityName="edu.washington.cs.lavatorylocator.activity.LavatoryDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.washington.cs.lavatorylocator.LavatoryDetail" />
+                android:value="edu.washington.cs.lavatorylocator.activity.LavatoryDetailActivity" />
         </activity>
         <activity
-            android:name="edu.washington.cs.lavatorylocator.AddLavatoryActivity"
+            android:name="edu.washington.cs.lavatorylocator.activity.AddLavatoryActivity"
             android:label="@string/title_activity_add_lavatory"
-            android:parentActivityName="edu.washington.cs.lavatorylocator.MainActivity"
+            android:parentActivityName="edu.washington.cs.lavatorylocator.activity.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.washington.cs.lavatorylocator.MainActivity" />
+                android:value="edu.washington.cs.lavatorylocator.activity.MainActivity" />
         </activity>
         <activity
-            android:name="edu.washington.cs.lavatorylocator.AboutActivity"
+            android:name="edu.washington.cs.lavatorylocator.activity.AboutActivity"
             android:label="@string/title_activity_about"
-            android:parentActivityName="edu.washington.cs.lavatorylocator.MainActivity" >
+            android:parentActivityName="edu.washington.cs.lavatorylocator.activity.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.washington.cs.lavatorylocator.MainActivity" />
+                android:value="edu.washington.cs.lavatorylocator.activity.MainActivity" />
         </activity>
 
         <meta-data

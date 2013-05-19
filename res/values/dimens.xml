@@ -8,5 +8,5 @@
     <dimen name="list_item_vertical_margin">8dp</dimen>
     
     <dimen name="zero">0dp</dimen>
-
+    
 </resources>
