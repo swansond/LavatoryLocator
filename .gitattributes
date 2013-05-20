@@ -2,3 +2,4 @@
 * binary
 *.java text
 *.xml text
+*.properties text
