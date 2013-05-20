@@ -40,10 +40,10 @@ public class LavatorySearchResultsListItemView extends RelativeLayout {
      *            the lavatory to display
      */
     public void updateView(LavatoryData lavatoryData) {
-        String name = lavatoryData.getName();
-        float avgRating = (float) lavatoryData.getAvgRating();
-        int reviewCount = lavatoryData.getReviews();
-        String floor = lavatoryData.getFloor();
+        final String name = lavatoryData.getName();
+        final float avgRating = (float) lavatoryData.getAvgRating();
+        final int reviewCount = lavatoryData.getReviews();
+        final String floor = lavatoryData.getFloor();
 
         lavatoryNameTextView.setText(name);
         averageRatingBar.setRating(avgRating);
@@ -65,9 +65,13 @@ public class LavatorySearchResultsListItemView extends RelativeLayout {
     private void inflateView(Context context) {
         LayoutInflater.from(context).inflate(R.layout.search_result_item, this);
 
-        lavatoryNameTextView = ((TextView) findViewById(R.id.search_result_item_lavatory_name));
-        averageRatingBar = ((RatingBar) findViewById(R.id.search_result_item_average_review));
-        reviewCountTextView = ((TextView) findViewById(R.id.search_result_item_review_count));
-        floorTextView = ((TextView) findViewById(R.id.search_result_item_floor));
+        lavatoryNameTextView = ((TextView) findViewById(
+                R.id.search_result_item_lavatory_name));
+        averageRatingBar = ((RatingBar) findViewById(
+                R.id.search_result_item_average_review));
+        reviewCountTextView = ((TextView) findViewById(
+                R.id.search_result_item_review_count));
+        floorTextView = ((TextView) findViewById(
+                R.id.search_result_item_floor));
     }
 }

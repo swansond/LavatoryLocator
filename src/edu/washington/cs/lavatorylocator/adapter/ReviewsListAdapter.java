@@ -6,7 +6,6 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 import edu.washington.cs.lavatorylocator.model.ReviewData;
 import edu.washington.cs.lavatorylocator.view.ReviewListItemView;
 
@@ -44,7 +43,7 @@ public class ReviewsListAdapter extends ArrayAdapter<ReviewData> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
 
-        ReviewData currentItem = getItem(position);
+        final ReviewData currentItem = getItem(position);
         if (convertView != null) {
             view = convertView;
         } else {

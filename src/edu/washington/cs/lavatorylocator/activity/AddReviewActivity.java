@@ -38,7 +38,8 @@ import edu.washington.cs.lavatorylocator.util.RESTLoader.RESTResponse;
 public class AddReviewActivity extends SherlockFragmentActivity implements
         LoaderCallbacks<RESTLoader.RESTResponse> {
 
-    private static final String SUBMIT_REVIEW = "http://lavlocdb.herokuapp.com/submitreview.php";
+    private static final String SUBMIT_REVIEW = 
+            "http://lavlocdb.herokuapp.com/submitreview.php";
     private static final int MANAGER_ID = 3;
 
     private ProgressDialog loadingScreen;
@@ -57,13 +58,15 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
      *            the {@link MenuItem} that was selected
      */
     public void addReview(MenuItem item) {
-        Intent intent = getIntent();
-        LavatoryData ld = intent
+        final Intent intent = getIntent();
+        final LavatoryData ld = intent
                 .getParcelableExtra(LavatoryDetailActivity.LAVATORY_DATA);
-        RatingBar ratingbar = ((RatingBar) findViewById(R.id.add_review_rating));
-        float rating = ratingbar.getRating();
-        EditText reviewText = ((EditText) findViewById(R.id.add_review_text));
-        String reviewTextString = reviewText.getText().toString();
+        final RatingBar ratingbar = ((RatingBar) findViewById(
+                R.id.add_review_rating));
+        final float rating = ratingbar.getRating();
+        final EditText reviewText = ((EditText) findViewById(
+                R.id.add_review_text));
+        final String reviewTextString = reviewText.getText().toString();
         updateReview("1", Integer.toString(ld.getLid()),
                 Float.toString(rating), reviewTextString);
     }
@@ -99,13 +102,15 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
             // to navigate up one level in the application structure. For
             // more details, see the Navigation pattern on Android Design:
             //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+            // http://developer.android.com/design/patterns/navigation.html
             //
 
             // TODO: save entered review as a draft when user navigates away
 
             NavUtils.navigateUpFromSameTask(this);
             return true;
+        default:
+            break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -123,7 +128,7 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
      */
     @Override
     public Loader<RESTResponse> onCreateLoader(int id, Bundle args) {
-        Uri searchAddress = Uri.parse(SUBMIT_REVIEW);
+        final Uri searchAddress = Uri.parse(SUBMIT_REVIEW);
         return new RESTLoader(getApplicationContext(), searchAddress,
                 RESTLoader.requestType.POST, args);
     }
@@ -148,9 +153,9 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
             Toast.makeText(this, "Thank you for your submission",
                     Toast.LENGTH_SHORT).show();
         } else {
-            LayoutInflater inflater = (LayoutInflater) this
+            final LayoutInflater inflater = (LayoutInflater) this
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View layout = inflater.inflate(R.layout.no_connection_popup,
+            final View layout = inflater.inflate(R.layout.no_connection_popup,
                     (ViewGroup) findViewById(R.id.no_connection_layout));
 
             connectionPopup = new PopupWindow(layout, 350, 250, true);
@@ -193,17 +198,17 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
         lastReview = review;
 
         // set up the request
-        Bundle args = new Bundle(4);
-        if (!uid.equals("")) {
+        final Bundle args = new Bundle(4);
+        if (!"".equals(uid)) {
             args.putString("uid", uid);
         }
-        if (!lid.equals("")) {
+        if (!"".equals(lid)) {
             args.putString("lid", lid);
         }
-        if (!rating.equals("")) {
+        if (!"".equals(rating)) {
             args.putString("rating", rating);
         }
-        if (!review.equals("")) {
+        if (!"".equals(review)) {
             args.putString("review", review);
         }
 

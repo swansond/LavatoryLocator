@@ -25,8 +25,6 @@ import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import edu.washington.cs.lavatorylocator.R;
-import edu.washington.cs.lavatorylocator.activity.AddReviewActivity;
-import edu.washington.cs.lavatorylocator.activity.MainActivity;
 import edu.washington.cs.lavatorylocator.adapter.ReviewsListAdapter;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 import edu.washington.cs.lavatorylocator.model.ReviewData;
@@ -44,9 +42,9 @@ import edu.washington.cs.lavatorylocator.network.GetLavatoryReviewsRequest;
 public class LavatoryDetailActivity extends
         JacksonSpringSpiceSherlockFragmentActivity {
 
-    // --------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------
     // CONSTANTS
-    // --------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------
     /**
      * Key for caching reviews.
      */
@@ -55,7 +53,8 @@ public class LavatoryDetailActivity extends
     /**
      * Cache duration, in milliseconds.
      */
-    private static final long JSON_CACHE_DURATION = DurationInMillis.ALWAYS_EXPIRED;
+    private static final long JSON_CACHE_DURATION = 
+            DurationInMillis.ALWAYS_EXPIRED;
 
     /**
      * Key for storing the loaded lavatory in persistent storage.
@@ -65,22 +64,22 @@ public class LavatoryDetailActivity extends
     // TODO: replace when user IDs are implemented
     private static final int STUB_USER_ID = 1;
 
-    // --------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------
     // INSTANCE VARIABLES
-    // --------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------
     private PopupWindow popup;
     private LavatoryData lavatory;
 
-    // --------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------
     // ACTIVITY LIFECYCLE
-    // --------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Show the Up button in the action bar.
         setupActionBar();
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
 
         // restore the state saved in persistent storage if necessary
         if (intent.hasExtra(MainActivity.LAVATORY_DATA)) {
@@ -94,23 +93,24 @@ public class LavatoryDetailActivity extends
         } else if (getSharedPreferences("User", MODE_PRIVATE).contains("ID")) {
             // called after destruction and saveInstanceState did not get called
             // have to build lavatory from data stored in onPause
-            SharedPreferences data = getSharedPreferences("User", MODE_PRIVATE);
-            int id = data.getInt("ID", 0);
-            char type = data.getString("Gender", "").charAt(0);
-            String building = data.getString("Building", "");
-            String floor = data.getString("Floor", "");
-            String room = data.getString("RoomNumber", "");
-            double longitude = data.getFloat("Long", 0);
-            double latitude = data.getFloat("Lat", 0);
-            int reviews = data.getInt("NumReviews", 0);
-            float avgRating = data.getFloat("Average", 0);
+            final SharedPreferences data = 
+                    getSharedPreferences("User", MODE_PRIVATE);
+            final int id = data.getInt("ID", 0);
+            final char type = data.getString("Gender", "").charAt(0);
+            final String building = data.getString("Building", "");
+            final String floor = data.getString("Floor", "");
+            final String room = data.getString("RoomNumber", "");
+            final double longitude = data.getFloat("Long", 0);
+            final double latitude = data.getFloat("Lat", 0);
+            final int reviews = data.getInt("NumReviews", 0);
+            final float avgRating = data.getFloat("Average", 0);
 
             lavatory = new LavatoryData(id, type, building, floor, room,
                     latitude, longitude, reviews, avgRating);
 
-        } else {
+        } /*else 
             // Some bad state, do nothing and throw a null pointer exception
-        }
+        }*/
 
         setContentView(R.layout.activity_lavatory_detail);
 
@@ -127,8 +127,9 @@ public class LavatoryDetailActivity extends
     protected void onPause() {
         super.onPause();
 
-        SharedPreferences settings = getSharedPreferences("User", MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
+        final SharedPreferences settings = 
+                getSharedPreferences("User", MODE_PRIVATE);
+        final SharedPreferences.Editor editor = settings.edit();
 
         // save the current lavatory data
         editor.putInt("ID", lavatory.getLid());
@@ -170,16 +171,16 @@ public class LavatoryDetailActivity extends
         return true;
     }
 
-    // --------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------
     // VIEW EVENT HANDLERS
-    // --------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------
     /**
-     * Logs the user in so that they can add missing lavatories
+     * Logs the user in so that they can add missing lavatories.
      * 
      * @param target
      */
     public void loginUser(View target) {
-        SharedPreferences userDetails = getApplicationContext()
+        final SharedPreferences userDetails = getApplicationContext()
                 .getSharedPreferences("User", MODE_PRIVATE);
         userDetails.edit().putBoolean("isLoggedIn", true).commit();
         dismissLoginPrompt();
@@ -200,20 +201,20 @@ public class LavatoryDetailActivity extends
      *            the {@link MenuItem} that was selected
      */
     public void goToAddReviewActivity(MenuItem item) {
-        SharedPreferences userDetails = getApplicationContext()
+        final SharedPreferences userDetails = getApplicationContext()
                 .getSharedPreferences("User", MODE_PRIVATE);
-        Boolean loggedIn = userDetails.getBoolean("isLoggedIn", false);
+        final boolean loggedIn = userDetails.getBoolean("isLoggedIn", false);
 
         if (!loggedIn) {
-            LayoutInflater inflater = (LayoutInflater) this
+            final LayoutInflater inflater = (LayoutInflater) this
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View layout = inflater.inflate(R.layout.login_popup,
+            final View layout = inflater.inflate(R.layout.login_popup,
                     (ViewGroup) findViewById(R.id.login_popup_layout));
 
             popup = new PopupWindow(layout, 350, 250, true);
             popup.showAtLocation(layout, Gravity.CENTER, 0, 0);
         } else {
-            Intent intent = new Intent(this, AddReviewActivity.class);
+            final Intent intent = new Intent(this, AddReviewActivity.class);
             intent.putExtra(LAVATORY_DATA, lavatory);
             startActivityForResult(intent, 0);
         }
@@ -226,7 +227,7 @@ public class LavatoryDetailActivity extends
      *            the {@link MenuItem} that was selected
      */
     public void goToEditLavatoryDetailActivity(MenuItem item) {
-        Intent intent = new Intent(this, EditLavatoryDetailActivity.class);
+        final Intent intent = new Intent(this, EditLavatoryDetailActivity.class);
         intent.putExtra(LAVATORY_DATA, lavatory);
         intent.putExtra(EditLavatoryDetailActivity.USER_ID_KEY, STUB_USER_ID);
         startActivity(intent);
@@ -236,22 +237,24 @@ public class LavatoryDetailActivity extends
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. Use NavUtils to allow users
-            // to navigate up one level in the application structure. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
+            /* This ID represents the Home or Up button. In the case of this
+             * activity, the Up button is shown. Use NavUtils to allow users
+             * to navigate up one level in the application structure. For
+             * more details, see the Navigation pattern on Android Design:
+             * 
+             * http://developer.android.com/design/patterns/navigation.html
+             */
             NavUtils.navigateUpFromSameTask(this);
             return true;
+        default:
+            break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    // --------------------------------------------------------------------------------------------
+    // ---------------------------------------------------
     // PRIVATE HELPER METHODS
-    // --------------------------------------------------------------------------------------------
+    // ---------------------------------------------------
     /**
      * Displays the given {@link List} of reviews.
      * 
@@ -259,10 +262,11 @@ public class LavatoryDetailActivity extends
      *            a {@link List} of reviews to display
      */
     private void displayReviews(List<ReviewData> reviews) {
-        ReviewsListAdapter adapter = new ReviewsListAdapter(this,
+        final ReviewsListAdapter adapter = new ReviewsListAdapter(this,
                 R.layout.review_item, R.id.review_author, reviews);
 
-        ListView listView = (ListView) findViewById(R.id.lavatory_detail_list_view);
+        final ListView listView = (ListView) findViewById(
+                R.id.lavatory_detail_list_view);
         listView.setAdapter(adapter);
     }
 
@@ -287,29 +291,30 @@ public class LavatoryDetailActivity extends
         getSpiceManager().execute(
                 new GetLavatoryReviewsRequest(userId, lavatoryId, page,
                         sortParam, sortDirection), REVIEWS_JSON_CACHE_KEY,
-                JSON_CACHE_DURATION, new ReviewsRequestListener());
+                        JSON_CACHE_DURATION, new ReviewsRequestListener());
     }
 
     /**
      * Sets up the list view.
      */
     private void setUpListView() {
-        View headerView = getLayoutInflater().inflate(
+        final View headerView = getLayoutInflater().inflate(
                 R.layout.activity_lavatory_detail_header, null);
         ((TextView) headerView.findViewById(R.id.lavatory_detail_name_text))
-                .setText(lavatory.getName());
+        .setText(lavatory.getName());
         ((TextView) headerView.findViewById(R.id.lavatory_detail_building_text))
-                .setText(lavatory.getBuilding());
+        .setText(lavatory.getBuilding());
         ((RatingBar) headerView.findViewById(R.id.lavatory_detail_rating))
-                .setRating((float) lavatory.getAvgRating());
+        .setRating((float) lavatory.getAvgRating());
 
-        ListView listView = (ListView) findViewById(R.id.lavatory_detail_list_view);
+        final ListView listView = (ListView) findViewById(
+                R.id.lavatory_detail_list_view);
         listView.addHeaderView(headerView, null, false);
     }
 
-    // --------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------
     // PRIVATE INNER CLASSES
-    // --------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------
     /**
      * {@code RequestListener} for reviews from the LavatoryLocator service.
      * 
@@ -321,14 +326,14 @@ public class LavatoryDetailActivity extends
         @Override
         public void onRequestFailure(SpiceException spiceException) {
             // TODO: move to string resources XML file
-            String errorMessage = "Reviews request failed: "
+            final String errorMessage = "Reviews request failed: "
                     + spiceException.getMessage();
 
             Log.e(getLocalClassName(), errorMessage);
             Toast.makeText(LavatoryDetailActivity.this, errorMessage,
                     Toast.LENGTH_LONG).show();
             LavatoryDetailActivity.this
-                    .setProgressBarIndeterminateVisibility(false);
+            .setProgressBarIndeterminateVisibility(false);
         }
 
         @Override
@@ -336,7 +341,7 @@ public class LavatoryDetailActivity extends
             LavatoryDetailActivity.this.displayReviews(reviews.getReviews());
 
             LavatoryDetailActivity.this
-                    .setProgressBarIndeterminateVisibility(false);
+            .setProgressBarIndeterminateVisibility(false);
         }
     }
 

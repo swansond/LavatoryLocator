@@ -3,7 +3,8 @@ package edu.washington.cs.lavatorylocator.network;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceRequest;
+import com.octo.android.robospice.request.
+    springandroid.SpringAndroidSpiceRequest;
 
 import edu.washington.cs.lavatorylocator.model.LavatorySearchResults;
 
@@ -15,7 +16,8 @@ import edu.washington.cs.lavatorylocator.model.LavatorySearchResults;
  */
 public class LavatorySearchRequest extends
         SpringAndroidSpiceRequest<LavatorySearchResults> {
-    private static final String LAVATORY_SEARCH_SERVICE_URL = "http://lavlocdb.herokuapp.com/lavasearch.php";
+    private static final String LAVATORY_SEARCH_SERVICE_URL = 
+            "http://lavlocdb.herokuapp.com/lavasearch.php";
     private static final String LATITUDE_SERVER_KEY = "locationLat";
     private static final String LONGITUDE_SERVER_KEY = "locationLong";
     private static final String RADIUS_SERVER_KEY = "maxDist";
@@ -92,8 +94,8 @@ public class LavatorySearchRequest extends
             return getRestTemplate().getForObject(LAVATORY_SEARCH_SERVICE_URL,
                     LavatorySearchResults.class);
         } else {
-            Uri.Builder uriBuilder = Uri.parse(LAVATORY_SEARCH_SERVICE_URL)
-                    .buildUpon();
+            final Uri.Builder uriBuilder = 
+                    Uri.parse(LAVATORY_SEARCH_SERVICE_URL).buildUpon();
 
             // TODO: make the server code not require empty keys
             appendQueryParameterToUriBuilderNoEmptyKeys(uriBuilder,
@@ -113,7 +115,7 @@ public class LavatorySearchRequest extends
             appendQueryParameterToUriBuilderNoEmptyKeys(uriBuilder,
                     TYPE_SERVER_KEY, type);
 
-            String url = uriBuilder.build().toString();
+            final String url = uriBuilder.build().toString();
 
             return getRestTemplate().getForObject(url,
                     LavatorySearchResults.class);

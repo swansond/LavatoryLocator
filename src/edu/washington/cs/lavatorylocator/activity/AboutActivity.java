@@ -13,16 +13,17 @@ import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
 /**
- * {@link android.app.Activity} for displaying information about LavatoryLocator.
+ * {@link android.app.Activity} for displaying 
+ * information about LavatoryLocator.
  * 
  * @author Chris Rovillos
  * 
  */
 public class AboutActivity extends SherlockActivity {
 
-    // --------------------------------------------------------------------------------------------
+    // --------------------------------------------------------
     // ACTIVITY LIFECYCLE
-    // --------------------------------------------------------------------------------------------
+    // --------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +31,9 @@ public class AboutActivity extends SherlockActivity {
         // Show the Up button in the action bar.
         setupActionBar();
 
-        TextView googlePlayServicesAttributionTextView = (TextView) findViewById(R.id.google_play_services_attribution_text);
+        final TextView googlePlayServicesAttributionTextView = 
+                (TextView) findViewById(
+                        R.id.google_play_services_attribution_text);
         googlePlayServicesAttributionTextView.setText(GooglePlayServicesUtil
                 .getOpenSourceSoftwareLicenseInfo(getApplicationContext()));
     }
@@ -60,10 +63,12 @@ public class AboutActivity extends SherlockActivity {
             // to navigate up one level in the application structure. For
             // more details, see the Navigation pattern on Android Design:
             //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+            // http://developer.android.com/design/patterns/navigation.html
             //
             NavUtils.navigateUpFromSameTask(this);
             return true;
+        default:
+            break;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -16,9 +16,9 @@ import android.os.Parcelable;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LavatoryData implements Parcelable {
-    // --------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------
     // INSTANCE VARIABLES
-    // --------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------
     private int lid;
 
     private char type;
@@ -33,36 +33,38 @@ public class LavatoryData implements Parcelable {
     private int reviews;
     private float avgRating;
 
-    // --------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------
     // CONSTRUCTORS AND CREATORS
-    // --------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------
     /**
      * {@link Creator} that allows for serialization of {@link LavatoryData}
      * objects.
      */
-    public static final Creator<LavatoryData> CREATOR = new Creator<LavatoryData>() {
-        /**
-         * Constructs a new {@link LavatoryData} object from a {@link Parcel}.
-         * 
-         * @param the
-         *            {@link Parcel} that represents a {@link LavatoryData}
-         *            object
-         */
-        @Override
-        public LavatoryData createFromParcel(Parcel source) {
-            return new LavatoryData(source);
-        }
+    public static final Creator<LavatoryData> CREATOR = 
+            new Creator<LavatoryData>() {
+            /**
+             * Constructs a new {@link LavatoryData} 
+             * object from a {@link Parcel}.
+             * 
+             * @param the
+             *            {@link Parcel} that represents a {@link LavatoryData}
+             *            object
+             */
+            @Override
+            public LavatoryData createFromParcel(Parcel source) {
+                return new LavatoryData(source);
+            }
 
-        /**
-         * Unused method.
-         * 
-         * @throws {@link UnsupportedOperationException}
-         */
-        @Override
-        public LavatoryData[] newArray(int size) {
-            throw new UnsupportedOperationException();
-        }
-    };
+            /**
+             * Unused method.
+             * 
+             * @throws {@link UnsupportedOperationException}
+             */
+            @Override
+            public LavatoryData[] newArray(int size) {
+                throw new UnsupportedOperationException();
+            }
+        };
 
     /**
      * Constructs a new empty {@link LavatoryData} object.
@@ -124,9 +126,9 @@ public class LavatoryData implements Parcelable {
         avgRating = source.readFloat();
     }
 
-    // --------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------
     // GETTERS
-    // --------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------
     /**
      * Returns this lavatory's average rating.
      * 
@@ -210,7 +212,7 @@ public class LavatoryData implements Parcelable {
     }
 
     /**
-     * Returns the type of this lavatory (e.g., male, female, etc.)
+     * Returns the type of this lavatory (e.g., male, female, etc.).
      * 
      * @return the type of this lavatory
      */
@@ -218,9 +220,9 @@ public class LavatoryData implements Parcelable {
         return type;
     }
 
-    // --------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------
     // SETTERS
-    // --------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------
     /**
      * Sets this lavatory's average rating.
      * 
@@ -313,9 +315,9 @@ public class LavatoryData implements Parcelable {
         this.type = type;
     }
 
-    // --------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------
     // PUBLIC METHODS
-    // --------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------
     /**
      * Takes the fields of this object and writes them into the {@link Parcel}.
      * It is imperative that the order here matches the order in the
@@ -339,9 +341,9 @@ public class LavatoryData implements Parcelable {
         out.writeFloat(avgRating);
     }
 
-    // --------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------
     // UNUSED
-    // --------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------
     /**
      * This method is unused, but required for the {@link Parcelable} interface.
      * If this class is subclassed, the value will need to be increased.

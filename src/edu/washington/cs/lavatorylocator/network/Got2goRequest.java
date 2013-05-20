@@ -1,6 +1,7 @@
 package edu.washington.cs.lavatorylocator.network;
 
-import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceRequest;
+import com.octo.android.robospice.request.
+    springandroid.SpringAndroidSpiceRequest;
 
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 
@@ -12,7 +13,8 @@ import edu.washington.cs.lavatorylocator.model.LavatoryData;
  */
 public class Got2goRequest extends SpringAndroidSpiceRequest<LavatoryData> {
 
-    private static final String GOT2GO_SERVICE_URL = "http://lavlocdb.herokuapp.com/got2go.php";
+    private static final String GOT2GO_SERVICE_URL = 
+            "http://lavlocdb.herokuapp.com/got2go.php";
 
     private double latitude;
     private double longitude;
@@ -36,7 +38,8 @@ public class Got2goRequest extends SpringAndroidSpiceRequest<LavatoryData> {
     @Override
     public LavatoryData loadDataFromNetwork() throws Exception {
         // TODO: use URL builder instead
-        String requestUrl = GOT2GO_SERVICE_URL + "?locationLat=" + latitude
+        final String requestUrl = GOT2GO_SERVICE_URL
+                + "?locationLat=" + latitude
                 + "&locationLong=" + longitude;
         return getRestTemplate().getForObject(requestUrl, LavatoryData.class);
     }

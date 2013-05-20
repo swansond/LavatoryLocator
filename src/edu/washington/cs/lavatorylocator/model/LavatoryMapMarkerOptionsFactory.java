@@ -10,9 +10,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
  * @author Chris Rovillos
  * 
  */
-public class LavatoryMapMarkerOptionsFactory {
+public final class LavatoryMapMarkerOptionsFactory {
 
-    // Prevent instantiation of this class
+    /**
+     *  Prevent instantiation of this class
+     */
     private LavatoryMapMarkerOptionsFactory() {
     }
 
@@ -27,11 +29,11 @@ public class LavatoryMapMarkerOptionsFactory {
      */
     public static MarkerOptions createLavatoryMapMarkerOptions(
             LavatoryData lavatoryData) {
-        String name = lavatoryData.getName();
+        final String name = lavatoryData.getName();
 
-        double latitude = lavatoryData.getLatitude();
-        double longitude = lavatoryData.getLongitude();
-        LatLng latLng = new LatLng(latitude, longitude);
+        final double latitude = lavatoryData.getLatitude();
+        final double longitude = lavatoryData.getLongitude();
+        final LatLng latLng = new LatLng(latitude, longitude);
 
         return new MarkerOptions().position(latLng).title(name);
     }

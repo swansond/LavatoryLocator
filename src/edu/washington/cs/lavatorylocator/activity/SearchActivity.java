@@ -27,9 +27,9 @@ import edu.washington.cs.lavatorylocator.R;
  */
 public class SearchActivity extends SherlockActivity {
 
-    // --------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------
     // CONSTANTS
-    // --------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------
     // Keys used in the Intent sent from and to the MainActivity with the user's
     // search parameters
     public static final String SEARCH_PARAMETERS = "searchParameters";
@@ -42,9 +42,9 @@ public class SearchActivity extends SherlockActivity {
     public static final String LONGITUDE_PARAMETER = "longitudeParameter";
     public static final String TYPE_PARAMETER = "typeParameter";
 
-    // --------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------
     // ACTIVITY LIFECYCLE
-    // --------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,17 +69,19 @@ public class SearchActivity extends SherlockActivity {
             // to navigate up one level in the application structure. For
             // more details, see the Navigation pattern on Android Design:
             //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+            // http://developer.android.com/design/patterns/navigation.html
             //
             NavUtils.navigateUpFromSameTask(this);
             return true;
+        default:
+            break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    // --------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------
     // VIEW EVENT HANDLERS
-    // --------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------
     /**
      * Submits the user's entered search parameters back to the
      * {@link MainActivity}.
@@ -88,22 +90,30 @@ public class SearchActivity extends SherlockActivity {
      *            the {@link MenuItem} that was selected
      */
     public void submitSearchParameters(MenuItem item) {
-        String building = ((EditText) findViewById(R.id.activity_search_building_name))
+        final String building = ((EditText) findViewById(
+                R.id.activity_search_building_name))
                 .getText().toString().trim();
-        String room = ((EditText) findViewById(R.id.activity_search_room_number))
+        final String room = ((EditText) findViewById(
+                R.id.activity_search_room_number))
                 .getText().toString().trim();
-        String floor = ((EditText) findViewById(R.id.activity_search_floor))
+        final String floor = ((EditText) findViewById(
+                R.id.activity_search_floor))
                 .getText().toString().trim();
-        String longitude = ((EditText) findViewById(R.id.activity_search_longitude))
+        final String longitude = ((EditText) findViewById(
+                R.id.activity_search_longitude))
                 .getText().toString().trim();
-        String latitude = ((EditText) findViewById(R.id.activity_search_latitude))
+        final String latitude = ((EditText) findViewById(
+                R.id.activity_search_latitude))
                 .getText().toString().trim();
-        String radiusText = ((EditText) findViewById(R.id.activity_search_max_distance))
+        final String radiusText = ((EditText) findViewById(
+                R.id.activity_search_max_distance))
                 .getText().toString().trim();
 
-        double minRating = ((RatingBar) findViewById(R.id.activity_search_rating))
+        final double minRating = ((RatingBar) findViewById(
+                R.id.activity_search_rating))
                 .getRating();
-        int lavatoryTypeRadioButtonId = ((RadioGroup) findViewById(R.id.activity_search_type))
+        final int lavatoryTypeRadioButtonId = ((RadioGroup) findViewById(
+                R.id.activity_search_type))
                 .getCheckedRadioButtonId();
 
         String type = "";
@@ -113,17 +123,19 @@ public class SearchActivity extends SherlockActivity {
             type = "F";
         }
 
-        boolean textParametersSpecified = (!TextUtils.isEmpty(building)
+        final boolean textParametersSpecified = (!TextUtils.isEmpty(building)
                 || !TextUtils.isEmpty(room) || !TextUtils.isEmpty(floor));
-        boolean locationParametersSpecified = (!TextUtils.isEmpty(latitude)
+        final boolean locationParametersSpecified = (
+                !TextUtils.isEmpty(latitude)
                 && !TextUtils.isEmpty(longitude) && !TextUtils
                 .isEmpty(radiusText));
-        boolean typeParametersSpecified = ((RadioGroup) findViewById(R.id.activity_search_type))
+        final boolean typeParametersSpecified = ((RadioGroup) findViewById(
+                R.id.activity_search_type))
                 .getCheckedRadioButtonId() != -1;
 
         if (textParametersSpecified || locationParametersSpecified
                 || typeParametersSpecified) {
-            Intent intent = getIntent();
+            final Intent intent = getIntent();
             intent.putExtra(BUILDING_PARAMETER, building);
             intent.putExtra(FLOOR_PARAMETER, floor);
             intent.putExtra(ROOM_PARAMETER, room);
@@ -137,7 +149,7 @@ public class SearchActivity extends SherlockActivity {
             finish();
         } else {
             // TODO: move to string resources XML file
-            String message = "Enter some search parameters!";
+            final String message = "Enter some search parameters!";
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
     }
