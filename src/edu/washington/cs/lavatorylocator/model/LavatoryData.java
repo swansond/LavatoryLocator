@@ -9,7 +9,7 @@ import android.os.Parcelable;
  * The {@link LavatoryData} class is a representation of the data related to any
  * particular lavatory. This includes its ID in the database, type, building,
  * floor, room latitude and longitude, review count, and average rating.
- * 
+ *
  * @author Wilkes Sunseri
  * @author David Swanson
  * @author Chris Rovillos
@@ -43,7 +43,7 @@ public class LavatoryData implements Parcelable {
     public static final Creator<LavatoryData> CREATOR = new Creator<LavatoryData>() {
         /**
          * Constructs a new {@link LavatoryData} object from a {@link Parcel}.
-         * 
+         *
          * @param the
          *            {@link Parcel} that represents a {@link LavatoryData}
          *            object
@@ -55,7 +55,7 @@ public class LavatoryData implements Parcelable {
 
         /**
          * Unused method.
-         * 
+         *
          * @throws {@link UnsupportedOperationException}
          */
         @Override
@@ -72,7 +72,7 @@ public class LavatoryData implements Parcelable {
 
     /**
      * Constructs a new {@link LavatoryData} object.
-     * 
+     *
      * @param id
      *            the lavatory's id number in the database
      * @param type
@@ -108,7 +108,7 @@ public class LavatoryData implements Parcelable {
 
     /**
      * Constructs a new {@link LavatoryData} object from a {@link Parcel}.
-     * 
+     *
      * @param the
      *            {@link Parcel} that represents a {@link LavatoryData} object
      */
@@ -128,9 +128,9 @@ public class LavatoryData implements Parcelable {
     // GETTERS
     // --------------------------------------------------------------------------------------------
     /**
-     * Returns this lavatory’s average rating.
-     * 
-     * @return this lavatory’s average rating
+     * Returns this lavatory's average rating.
+     *
+     * @return this lavatory's average rating
      */
     public float getAvgRating() {
         return avgRating;
@@ -138,7 +138,7 @@ public class LavatoryData implements Parcelable {
 
     /**
      * Returns the building that contains this lavatory.
-     * 
+     *
      * @return the building that contains this lavatory
      */
     public String getBuilding() {
@@ -147,7 +147,7 @@ public class LavatoryData implements Parcelable {
 
     /**
      * Returns the floor that contains this lavatory.
-     * 
+     *
      * @return the floor that contains this lavatory
      */
     public String getFloor() {
@@ -155,18 +155,18 @@ public class LavatoryData implements Parcelable {
     }
 
     /**
-     * Returns this lavatory’s latitude.
-     * 
-     * @return this lavatory’s latitude
+     * Returns this lavatory's latitude.
+     *
+     * @return this lavatory's latitude
      */
     public double getLatitude() {
         return latitude;
     }
 
     /**
-     * Returns this lavatory’s longitude.
-     * 
-     * @return this lavatory’s longitude
+     * Returns this lavatory's longitude.
+     *
+     * @return this lavatory's longitude
      */
     public double getLongitude() {
         return longitude;
@@ -174,7 +174,7 @@ public class LavatoryData implements Parcelable {
 
     /**
      * Returns this lavatory's ID in the LavatoryLocator service.
-     * 
+     *
      * @return this lavatory's ID in the LavatoryLocator service.
      */
     public int getLid() {
@@ -182,17 +182,17 @@ public class LavatoryData implements Parcelable {
     }
 
     /**
-     * Returns this lavatory’s name.
-     * 
-     * @return this lavatory’s name
+     * Returns this lavatory's name.
+     *
+     * @return this lavatory's name
      */
     public String getName() {
-        return "Room " + getRoom() + ", " + getBuilding();
+        return "(" + getType() + ") " + getBuilding() + ", Floor " + getFloor();
     }
 
     /**
      * Returns the number of reviews for this lavatory.
-     * 
+     *
      * @return the number of reviews for this lavatory
      */
     public int getReviews() {
@@ -200,9 +200,9 @@ public class LavatoryData implements Parcelable {
     }
 
     /**
-     * Returns this lavatory’s room.
-     * 
-     * @return this lavatory’s room
+     * Returns this lavatory's room.
+     *
+     * @return this lavatory's room
      */
     public String getRoom() {
         return room;
@@ -210,7 +210,7 @@ public class LavatoryData implements Parcelable {
 
     /**
      * Returns the type of this lavatory (e.g., male, female, etc.)
-     * 
+     *
      * @return the type of this lavatory
      */
     public char getType() {
@@ -221,10 +221,10 @@ public class LavatoryData implements Parcelable {
     // SETTERS
     // --------------------------------------------------------------------------------------------
     /**
-     * Sets this lavatory’s average rating.
-     * 
+     * Sets this lavatory's average rating.
+     *
      * @param avgRating
-     *            this lavatory’s average rating
+     *            this lavatory's average rating
      */
     public void setAvgRating(float avgRating) {
         this.avgRating = avgRating;
@@ -232,7 +232,7 @@ public class LavatoryData implements Parcelable {
 
     /**
      * Sets the building that contains this lavatory.
-     * 
+     *
      * @param building
      *            the building that contains this lavatory
      */
@@ -242,7 +242,7 @@ public class LavatoryData implements Parcelable {
 
     /**
      * Returns the floor that contains this lavatory.
-     * 
+     *
      * @param floor
      *            the floor that contains this lavatory
      */
@@ -251,20 +251,20 @@ public class LavatoryData implements Parcelable {
     }
 
     /**
-     * Sets this lavatory’s latitude.
-     * 
+     * Sets this lavatory's latitude.
+     *
      * @param latitude
-     *            this lavatory’s latitude.
+     *            this lavatory's latitude.
      */
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
     /**
-     * Sets this lavatory’s longitude.
-     * 
+     * Sets this lavatory's longitude.
+     *
      * @param longitude
-     *            this lavatory’s longitude.
+     *            this lavatory's longitude.
      */
     public void setLongitude(double longitude) {
         this.longitude = longitude;
@@ -272,7 +272,7 @@ public class LavatoryData implements Parcelable {
 
     /**
      * Sets this lavatory's ID in the LavatoryLocator service.
-     * 
+     *
      * @param lid
      *            the this lavatory's ID in the LavatoryLocator service.
      */
@@ -283,7 +283,7 @@ public class LavatoryData implements Parcelable {
     /**
      * Sets the number of reviews for this lavatory in the LavatoryLocator
      * service.
-     * 
+     *
      * @param reviews
      *            the number of reviews for this lavatory in the LavatoryLocator
      *            service
@@ -293,10 +293,10 @@ public class LavatoryData implements Parcelable {
     }
 
     /**
-     * Sets this lavatory’s room.
-     * 
+     * Sets this lavatory's room.
+     *
      * @param room
-     *            this lavatory’s room
+     *            this lavatory's room
      */
     public void setRoom(String room) {
         this.room = room;
@@ -304,7 +304,7 @@ public class LavatoryData implements Parcelable {
 
     /**
      * Sets this lavatory's type (e.g., male, female, etc.).
-     * 
+     *
      * @param type
      *            this lavatory's type
      */
@@ -319,7 +319,7 @@ public class LavatoryData implements Parcelable {
      * Takes the fields of this object and writes them into the {@link Parcel}.
      * It is imperative that the order here matches the order in the
      * constructor.
-     * 
+     *
      * @param out
      *            the destination Parcel
      * @param flags
