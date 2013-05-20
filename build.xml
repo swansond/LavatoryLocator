@@ -88,7 +88,7 @@
     -->
     <!-- version-tag: custom -->
     <import file="${sdk.dir}/tools/ant/build.xml" />
-    <taskdef resource="checkstyletask.properties" classpath="${basedir}/libs/checkstyle-5.6.jar" />
+    <taskdef resource="checkstyletask.properties" classpath="${basedir}/libs/checkstyle.jar" />
     <target name="checkstyle">
         <checkstyle config="checkstyle_checks.xml">
             <fileset dir="src" includes="**/*.java" />
