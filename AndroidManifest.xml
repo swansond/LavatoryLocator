@@ -52,7 +52,7 @@
         <activity
             android:name="edu.washington.cs.lavatorylocator.activity.SearchActivity"
             uiOptions="splitActionBarWhenNarrow"
-            android:label="@string/title_activity_lavatory_detail"
+            android:label="@string/title_activity_search"
             android:parentActivityName="edu.washington.cs.lavatorylocator.activity.MainActivity"
             android:screenOrientation="portrait" >
             <meta-data
