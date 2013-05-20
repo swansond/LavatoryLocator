@@ -55,8 +55,8 @@ import edu.washington.cs.lavatorylocator.network.Got2goRequest;
 import edu.washington.cs.lavatorylocator.network.LavatorySearchRequest;
 
 /**
- * {@link android.app.Activity} first displayed when LavatoryLocator is opened. Shows a map
- * and list of nearby lavatories.
+ * {@link android.app.Activity} first displayed when LavatoryLocator is opened.
+ * Shows a map and list of nearby lavatories.
  * 
  * @author Chris Rovillos
  * @author Keith Miller
@@ -138,7 +138,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         markerLavatoryDataMap = new HashMap<Marker, LavatoryData>();
 
         setUpLavatorySearchResultsListView();
-        
+
         loadAllLavatories();
     }
 
@@ -204,7 +204,8 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
                         .getStringExtra(SearchActivity.LATITUDE_PARAMETER);
                 String longitude = data
                         .getStringExtra(SearchActivity.LONGITUDE_PARAMETER);
-                String type = data.getStringExtra(SearchActivity.TYPE_PARAMETER);
+                String type = data
+                        .getStringExtra(SearchActivity.TYPE_PARAMETER);
 
                 searchForLavatories(building, floor, room, minRating, type,
                         latitude, longitude, radius);
@@ -225,8 +226,9 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
      *            the {@link MenuItem} that was selected
      */
     public void activateGot2go(MenuItem item) {
-        Location currentLocation = mLocationClient.getLastLocation();
-        if (currentLocation != null) {
+        if (mLocationClient.isConnected()
+                && (mLocationClient.getLastLocation() != null)) {
+            Location currentLocation = mLocationClient.getLastLocation();
             double currentLatitude = currentLocation.getLatitude();
             double currentLongitude = currentLocation.getLongitude();
             getSpiceManager().execute(
@@ -288,7 +290,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         Intent intent = new Intent(this, SearchActivity.class);
         startActivityForResult(intent, SEARCH_PARAMETERS_REQUEST);
     }
-    
+
     /**
      * Logs the user in.
      */
