@@ -5,7 +5,8 @@ import com.octo.android.robospice.JacksonSpringAndroidSpiceService;
 import com.octo.android.robospice.SpiceManager;
 
 /**
- * Base class for {@link android.app.Activity}s that use the RoboSpice library along with
+ * Base class for {@link android.app.Activity}s 
+ * that use the RoboSpice library along with
  * the SherlockActionBar library. This class uses a {@code Jackson}
  * {@code SpiceManager} for transforming JSON into plain Java objects.
  * <p>
@@ -16,8 +17,8 @@ import com.octo.android.robospice.SpiceManager;
  */
 public abstract class JacksonSpringSpiceSherlockActivity extends
         SherlockActivity {
-    protected SpiceManager spiceManager = new SpiceManager(
-            JacksonSpringAndroidSpiceService.class);
+    protected SpiceManager spiceManager = 
+            new SpiceManager(JacksonSpringAndroidSpiceService.class);
 
     @Override
     protected void onStart() {
@@ -32,9 +33,9 @@ public abstract class JacksonSpringSpiceSherlockActivity extends
     }
     
     /**
-     * Returns this class’s {@code SpiceManager}.
+     * Returns this class���s {@code SpiceManager}.
      * 
-     * @return this class’s {@code SpiceManager}
+     * @return this class���s {@code SpiceManager}
      */
     protected SpiceManager getSpiceManager() {
         return spiceManager;

@@ -65,7 +65,7 @@ public class LavatorySearchResultsAdapter extends ArrayAdapter<LavatoryData> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
 
-        LavatoryData currentItem = getItem(position);
+        final LavatoryData currentItem = getItem(position);
         if (convertView != null) {
             view = convertView;
         } else {

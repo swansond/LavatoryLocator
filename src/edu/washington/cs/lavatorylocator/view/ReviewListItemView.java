@@ -27,9 +27,9 @@ public class ReviewListItemView extends RelativeLayout {
     }
 
     public void updateView(ReviewData review) {
-        String reviewAuthor = review.getAuthor();
-        float rating = review.getRating();
-        String reviewText = review.getReview();
+        final String reviewAuthor = review.getAuthor();
+        final float rating = review.getRating();
+        final String reviewText = review.getReview();
 
         reviewAuthorTextView.setText(reviewAuthor);
         ratingBar.setRating(rating);

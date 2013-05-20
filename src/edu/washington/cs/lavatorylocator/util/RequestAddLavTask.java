@@ -17,12 +17,12 @@ import android.os.AsyncTask;
  * @author Wil
  *
  */
-public class RequestAddLavTask extends AsyncTask<HttpPost, Void, HttpResponse>{
+public class RequestAddLavTask extends AsyncTask<HttpPost, Void, HttpResponse> {
 
     //The server communication that occurs in the background
     @Override
     protected HttpResponse doInBackground(HttpPost... hp) {
-        HttpClient client = new DefaultHttpClient();
+        final HttpClient client = new DefaultHttpClient();
         try {
             return client.execute(hp[0]);
         } catch (ClientProtocolException e) {

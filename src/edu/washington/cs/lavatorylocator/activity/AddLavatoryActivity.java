@@ -37,7 +37,8 @@ import edu.washington.cs.lavatorylocator.util.RESTLoader.RESTResponse;
 public class AddLavatoryActivity extends SherlockFragmentActivity implements
         LoaderCallbacks<RESTLoader.RESTResponse> {
 
-    private static final String ADD_LAVA = "http://lavlocdb.herokuapp.com/addlava.php";
+    private static final String ADD_LAVA = 
+            "http://lavlocdb.herokuapp.com/addlava.php";
     private static final int MANAGER_ID = 4;
 
     private PopupWindow connectionPopup;
@@ -58,11 +59,14 @@ public class AddLavatoryActivity extends SherlockFragmentActivity implements
      *            the {@link MenuItem} that was selected
      */
     public void addLavatory(MenuItem item) {
-        String buildingName = ((EditText) findViewById(R.id.activity_add_lavatory_building_name))
+        final String buildingName = ((EditText) findViewById(
+                R.id.activity_add_lavatory_building_name))
                 .getText().toString();
-        String floor = ((EditText) findViewById(R.id.activity_add_lavatory_floor))
+        final String floor = ((EditText) findViewById(
+                R.id.activity_add_lavatory_floor))
                 .getText().toString();
-        int lavaType = ((RadioGroup) findViewById(R.id.activity_add_lavatory_type))
+        final int lavaType = ((RadioGroup) findViewById(
+                R.id.activity_add_lavatory_type))
                 .getCheckedRadioButtonId();
 
         String lavaTypeString = "";
@@ -74,11 +78,15 @@ public class AddLavatoryActivity extends SherlockFragmentActivity implements
         case R.id.activity_add_lavatory_female:
             lavaTypeString = "F";
             break;
+        default:
+            break;
         }
 
-        String longitude = ((EditText) findViewById(R.id.activity_add_lavatory_longitude))
+        final String longitude = ((EditText) findViewById(
+                R.id.activity_add_lavatory_longitude))
                 .getText().toString();
-        String latitude = ((EditText) findViewById(R.id.activity_add_lavatory_latitude))
+        final String latitude = ((EditText) findViewById(
+                R.id.activity_add_lavatory_latitude))
                 .getText().toString();
 
         requestAddLavatory(Integer.toString(1), buildingName, floor,
@@ -118,10 +126,12 @@ public class AddLavatoryActivity extends SherlockFragmentActivity implements
             // to navigate up one level in the application structure. For
             // more details, see the Navigation pattern on Android Design:
             //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+            // http://developer.android.com/design/patterns/navigation.html
             //
             NavUtils.navigateUpFromSameTask(this);
             return true;
+        default:
+            break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -139,7 +149,7 @@ public class AddLavatoryActivity extends SherlockFragmentActivity implements
      */
     @Override
     public Loader<RESTResponse> onCreateLoader(int id, Bundle args) {
-        Uri searchAddress = Uri.parse(ADD_LAVA);
+        final Uri searchAddress = Uri.parse(ADD_LAVA);
         return new RESTLoader(getApplicationContext(), searchAddress,
                 RESTLoader.requestType.POST, args);
     }
@@ -164,9 +174,9 @@ public class AddLavatoryActivity extends SherlockFragmentActivity implements
             Toast.makeText(this, "Thank you for your submission",
                     Toast.LENGTH_SHORT).show();
         } else {
-            LayoutInflater inflater = (LayoutInflater) this
+            final LayoutInflater inflater = (LayoutInflater) this
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View layout = inflater.inflate(R.layout.no_connection_popup,
+            final View layout = inflater.inflate(R.layout.no_connection_popup,
                     (ViewGroup) findViewById(R.id.no_connection_layout));
 
             connectionPopup = new PopupWindow(layout, 350, 250, true);
@@ -214,23 +224,23 @@ public class AddLavatoryActivity extends SherlockFragmentActivity implements
         lastLavaType = lavaType;
 
         // set up the arguments
-        Bundle args = new Bundle(6);
-        if (!uid.equals("")) {
+        final Bundle args = new Bundle(6);
+        if (!"".equals(uid)) {
             args.putString("uid", uid);
         }
-        if (!buildingName.equals("")) {
+        if (!"".equals(buildingName)) {
             args.putString("buildingName", buildingName);
         }
-        if (!floor.equals("")) {
+        if (!"".equals(floor)) {
             args.putString("floor", floor);
         }
-        if (!lavaType.equals("")) {
+        if (!"".equals(lavaType)) {
             args.putString("lavaType", lavaType);
         }
-        if (!longitude.equals("")) {
+        if (!"".equals(longitude)) {
             args.putString("longitude", longitude);
         }
-        if (!latitude.equals("")) {
+        if (!"".equals(latitude)) {
             args.putString("latitude", latitude);
         }
 

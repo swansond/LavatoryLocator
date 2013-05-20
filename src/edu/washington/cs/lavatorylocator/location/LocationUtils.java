@@ -22,10 +22,16 @@ import android.location.Location;
 import edu.washington.cs.lavatorylocator.R;
 
 /**
- * Defines app-wide constants and utilities
+ * Defines app-wide constants and utilities.
  */
 public final class LocationUtils {
 
+    /**
+     * Empty private constructor to prevent instantiation.
+     */
+    private LocationUtils() {
+    }
+    
     // Debugging tag for the application
     public static final String APPTAG = "LocationSample";
 
@@ -41,7 +47,7 @@ public final class LocationUtils {
      * Define a request code to send to Google Play services
      * This code is returned in Activity.onActivityResult
      */
-    public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    public static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
     /*
      * Constants for location update parameters

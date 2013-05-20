@@ -66,7 +66,7 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
         }
 
         /**
-         * Creates a RESTResponse with data and the status code from the server
+         * Creates a RESTResponse with data and the status code from the server.
          *
          * @param data
          * @param code
@@ -78,7 +78,7 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
         }
 
         /**
-         * Gets this RESTResponse's data
+         * Gets this RESTResponse's data.
          *
          * @return this RESTResponse's data
          */
@@ -87,7 +87,7 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
         }
 
         /**
-         * Gets this RESTResponse's status code
+         * Gets this RESTResponse's status code.
          *
          * @return this RESTResponse's status code
          */
@@ -154,7 +154,7 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
                     if (params == null) {
                         request.setURI(new URI(location.toString()));
                     } else {
-                        Uri.Builder uriBuilder = location.buildUpon();
+                        final Uri.Builder uriBuilder = location.buildUpon();
                         for (BasicNameValuePair param : makeParamList(params)) {
                             uriBuilder.appendQueryParameter(param.getName(),
                                     param.getValue());
@@ -163,41 +163,44 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
                         request.setURI(new URI(location.toString()));
                     }
                 }
-                break;
+                    break;
 
                 // Because this is a POST request, we need to encode the
                 // parameters within the request
                 case POST: {
                     request = new HttpPost();
                     request.setURI(new URI(location.toString()));
-                    HttpPost postRequest = (HttpPost) request;
+                    final HttpPost postRequest = (HttpPost) request;
                     if (params != null) {
-                        UrlEncodedFormEntity entity =
+                        final UrlEncodedFormEntity entity =
                                 new UrlEncodedFormEntity(makeParamList(params));
 
                         postRequest.setEntity(entity);
                     }
                 }
-                break;
+                    break;
+                default:
+                    break;
                 }
 
                 if (request != null) {
                     // The request was created successfully
 
-                    HttpParams httpParameters = new BasicHttpParams();
+                    final HttpParams httpParameters = new BasicHttpParams();
                     HttpConnectionParams.setConnectionTimeout(httpParameters,
                             5000);
                     HttpConnectionParams.setSoTimeout(httpParameters, 5000);
 
-                    HttpClient client = new DefaultHttpClient(httpParameters);
+                    final HttpClient client = 
+                            new DefaultHttpClient(httpParameters);
 
                     Log.i("tagged", "about to load");
-                    HttpResponse response = client.execute(request);
+                    final HttpResponse response = client.execute(request);
 
                     Log.i("tagged", "loading executed");
 
-                    HttpEntity responseEntity = response.getEntity();
-                    StatusLine responseStatus = response.getStatusLine();
+                    final HttpEntity responseEntity = response.getEntity();
+                    final StatusLine responseStatus = response.getStatusLine();
                     int statusCode;
                     if (responseStatus != null) {
                         // We executed the request just fine
@@ -275,7 +278,7 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
     // private helper method that converts a Bundle of parameters into a List
     // of pairs that can be used more easily
     private List<BasicNameValuePair> makeParamList(Bundle params) {
-        List<BasicNameValuePair> paramList =
+        final List<BasicNameValuePair> paramList =
                 new LinkedList<BasicNameValuePair>();
         for (String key : params.keySet()) {
             paramList.add(new BasicNameValuePair(key, params.getString(key)));

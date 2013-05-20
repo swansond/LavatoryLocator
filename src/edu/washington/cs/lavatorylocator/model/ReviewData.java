@@ -15,9 +15,9 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReviewData {
     
-    // --------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------
     // INSTANCE VARIABLES
-    // --------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------
     private int lid;
     private int uid;
     private String datetime;
@@ -26,18 +26,18 @@ public class ReviewData {
     private int helpfulness;
     private int uservote;
 
-    // --------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------
     // CONSTRUCTORS AND CREATORS
-    // --------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------
     /**
      * Constructs an empty {@link ReviewData} object.
      */
     public ReviewData() {
     }
 
-    // --------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------
     // GETTERS
-    // --------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------
     /**
      * Returns this review's author.
      * 
@@ -103,9 +103,9 @@ public class ReviewData {
         return uservote;
     }
 
-    // --------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------
     // SETTERS
-    // --------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------
     /**
      * Sets this review's date and time.
      * 
@@ -127,7 +127,7 @@ public class ReviewData {
     }
 
     /**
-     * Sets this review's lavatory ID, as stored in the LavatoryLocator service
+     * Sets this review's lavatory ID, as stored in the LavatoryLocator service.
      * 
      * @param lid
      *            this review's lavatory ID, as stored in the LavatoryLocator
