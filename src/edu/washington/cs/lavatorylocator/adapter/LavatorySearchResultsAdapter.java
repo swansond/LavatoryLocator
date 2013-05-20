@@ -13,36 +13,49 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 /**
- * Custom <code>Adapter</code> for displaying an array of
- * <code>LavatoryData</code>s. Creates a custom <code>View</code> for each
- * lavatory row.
+ * Custom {@link Adapter} for displaying an array of{@link LavatoryData}
+ * objects. Inflates the custom {@link View} for each row.
  * 
  * @author Keith Miller
+ * @author Chris Rovillos
  * 
  */
 public class LavatorySearchResultsAdapter extends ArrayAdapter<LavatoryData> {
 
-    public LavatorySearchResultsAdapter(Context context, int resultRowResourceId, int lavatoryDataNameTextViewResourceId) {
+    /**
+     * Constructs a new {@code LavatorySearchResultsAdapter} with no data.
+     * 
+     * @param context
+     *            the current context
+     * @param resultRowResourceId
+     *            the resource ID for a layout file containing the LavatoryData
+     *            row layout to use when instantiating views
+     * @param lavatoryDataNameTextViewResourceId
+     *            the id of the {@link TextView} for displaying the
+     *            LavatoryData's name in each row
+     */
+    public LavatorySearchResultsAdapter(Context context,
+            int resultRowResourceId, int lavatoryDataNameTextViewResourceId) {
         super(context, resultRowResourceId, lavatoryDataNameTextViewResourceId);
     }
-    
+
     /**
      * Constructs a new <code>LavatorySearchResultsAdapter</code> with given
      * <code>List</code> of <code>LavatoryData</code>s.
      * 
      * @param context
      *            the current context
-     * @param resultRowResource
+     * @param resultRowResourceId
      *            the resource ID for a layout file containing the LavatoryData
      *            row layout to use when instantiating views
-     * @param LavatoryDataNameTextViewResourceId
-     *            the id of the <code>TextView</code> for displaying the
+     * @param lavatoryDataNameTextViewResourceId
+     *            the id of the {@link TextView} for displaying the
      *            LavatoryData's name in each row
      * @param reviews
-     *            a <code>List</code> of <code>Review</code>s to display
+     *            a {@link List} of {@link ReviewData} objects to display
      */
-    public LavatorySearchResultsAdapter(Context context, int resultRowResourceId,
-            int lavatoryDataNameTextViewResourceId,
+    public LavatorySearchResultsAdapter(Context context,
+            int resultRowResourceId, int lavatoryDataNameTextViewResourceId,
             LavatorySearchResults lavatorySearchResults) {
         super(context, resultRowResourceId, lavatoryDataNameTextViewResourceId,
                 lavatorySearchResults.getLavatories());
@@ -58,13 +71,18 @@ public class LavatorySearchResultsAdapter extends ArrayAdapter<LavatoryData> {
         } else {
             view = new LavatorySearchResultsListItemView(getContext());
         }
-        
+
         ((LavatorySearchResultsListItemView) view).updateView(currentItem);
 
         return view;
     }
-    
-    // needed for because versions below Android 3.0 don't have this method
+
+    /**
+     * This method exists in Android 3.0 and above, but not older versions.
+     * 
+     * @see android.widget.ArrayAdapter#addAll(java.util.Collection)
+     */
+    @Override
     public void addAll(Collection<? extends LavatoryData> collection) {
         for (LavatoryData lavatoryData : collection) {
             add(lavatoryData);
