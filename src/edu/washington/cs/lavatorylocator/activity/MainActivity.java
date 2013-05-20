@@ -1,8 +1,6 @@
 package edu.washington.cs.lavatorylocator.activity;
 
 import static junit.framework.Assert.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,7 +11,6 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.Gravity;
@@ -54,14 +51,15 @@ import edu.washington.cs.lavatorylocator.location.LocationUtils;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 import edu.washington.cs.lavatorylocator.model.LavatoryMapMarkerOptionsFactory;
 import edu.washington.cs.lavatorylocator.model.LavatorySearchResults;
+import edu.washington.cs.lavatorylocator.network.Got2goRequest;
 import edu.washington.cs.lavatorylocator.network.LavatorySearchRequest;
 
 /**
- * {@code Activity} first displayed when LavatoryLocator is opened. Shows a map
+ * {@link Activity} first displayed when LavatoryLocator is opened. Shows a map
  * and list of nearby lavatories.
  * 
- * @author Keith Miller
  * @author Chris Rovillos
+ * @author Keith Miller
  * 
  */
 public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
@@ -71,32 +69,53 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
     // --------------------------------------------------------------------------------------------
     // CONSTANTS
     // --------------------------------------------------------------------------------------------
+    /**
+     * Intent identifier for sending {@link LavatoryData} objects to
+     * {@link LavatoryDetailActivity}.
+     */
     public static final String LAVATORY_DATA = "lavatoryData";
 
     /**
-     * The search radius for the Got2Go feature, in meters.
+     * Key for caching lavatory search results.
      */
-    private static final int GOT2GO_SEARCH_RADIUS = 100;
+    private static final String SEARCH_RESULTS_JSON_CACHE_KEY = "lavatorySearchResultsJson";
 
-    private static final String JSON_CACHE_KEY = "lavatorySearchResultsJson";
+    /**
+     * Key for caching the result from a Got2Go request.
+     */
+    private static final String GOT2GO_JSON_CACHE_KEY = "got2goResultJson";
+
+    /**
+     * Cache duration, in milliseconds.
+     */
     private static final long JSON_CACHE_DURATION = DurationInMillis.ONE_MINUTE;
 
-    private static final int SEARCH_ACTIVITY_RESULT = 0;
+    /**
+     * Request identifier for the {@link Intent} sent to {@link SearchActivity}.
+     */
+    private static final int SEARCH_PARAMETERS_REQUEST = 0;
 
     // --------------------------------------------------------------------------------------------
     // INSTANCE VARIABLES
     // --------------------------------------------------------------------------------------------
-    private PopupWindow popup;
+    /**
+     * The login popup window displayed when the user wants to add a lavatory,
+     * but is not logged in.
+     */
+    private PopupWindow loginPopup;
 
-    // Mapping and location
+    // MAPPING AND LOCATION
     private GoogleMap mMap;
-    private LocationRequest mLocationRequest; // request to connect to Location
-                                              // Services
-    private LocationClient mLocationClient; // current instantiation of the
-                                            // location client
+    private LocationRequest mLocationRequest;
+    private LocationClient mLocationClient;
 
     private LavatorySearchResultsAdapter lavatorySearchResultsAdapter;
 
+    /**
+     * Map of {@code Marker}s to {@link LavatoryData} objects. Needed to send
+     * the {@link LavatoryData} objects to the {@link LavatoryDetailActivity}
+     * when the user taps on a map marker info window.
+     */
     private HashMap<Marker, LavatoryData> markerLavatoryDataMap;
 
     // --------------------------------------------------------------------------------------------
@@ -126,30 +145,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
     public void onStart() {
         super.onStart();
 
-        Intent i = getIntent();
-        Bundle searchResultsBundle = i
-                .getParcelableExtra(SearchActivity.SEARCH_RESULTS);
-
-        if (searchResultsBundle == null) { // the user hasn't requested a search
-            loadAllLavatories();
-        } else {
-            // TODO: do the searching network request from within this activity;
-            // right now there's duplicate request code
-            List<Parcelable> searchResultsListParcelable = Arrays
-                    .asList(searchResultsBundle.getParcelableArray("results"));
-
-            if (!searchResultsListParcelable.isEmpty()) {
-                // cast Parcelable to LavatoryData
-                List<LavatoryData> searchResults = new ArrayList<LavatoryData>();
-                for (Parcelable searchResultParcelable : searchResultsListParcelable) {
-                    searchResults.add((LavatoryData) searchResultParcelable);
-                }
-                updateLavatorySearchResults(searchResults);
-            } else {
-                Toast.makeText(this, "No results found.", Toast.LENGTH_LONG)
-                        .show();
-            }
-        }
+        loadAllLavatories();
     }
 
     @Override
@@ -175,29 +171,6 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         }
     }
 
-    // --------------------------------------------------------------------------------------------
-    // EVENT HANDLERS
-    // --------------------------------------------------------------------------------------------
-    /**
-     * Activates the "Got2Go" feature, showing the user the nearest highly-rated
-     * lavatory.
-     * 
-     * @param item
-     *            the <code>MenuItem</code> that was selected
-     */
-    public void activateGot2go(MenuItem item) {
-        Location currentLocation = mLocationClient.getLastLocation();
-        if (currentLocation != null) {
-            double currentLatitude = currentLocation.getLatitude();
-            double currentLongitude = currentLocation.getLongitude();
-            searchForLavatories(currentLatitude, currentLongitude,
-                    GOT2GO_SEARCH_RADIUS);
-        } else {
-            String message = "Location information is currently not available. Got2Go requires location information to show you the nearest lavatory.";
-            Toast.makeText(this, message, Toast.LENGTH_LONG);
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -205,16 +178,73 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         menuInflater.inflate(R.menu.main, menu);
 
         // Calling super after populating the menu is necessary here to ensure
-        // that the
-        // action bar helpers have a chance to handle this event.
+        // that the action bar helpers have a chance to handle this event.
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) { // in case there are more activity requests in
+                               // the future
+        case SEARCH_PARAMETERS_REQUEST:
+            if (resultCode == RESULT_OK) {
+                String building = data
+                        .getStringExtra(SearchActivity.BUILDING_PARAMETER);
+                String floor = data
+                        .getStringExtra(SearchActivity.FLOOR_PARAMETER);
+                String room = data
+                        .getStringExtra(SearchActivity.ROOM_PARAMETER);
+                double minRating = data.getDoubleExtra(
+                        SearchActivity.MIN_RATING_PARAMETER, 0.0);
+
+                String radius = data
+                        .getStringExtra(SearchActivity.RADIUS_PARAMETER);
+                String latitude = data
+                        .getStringExtra(SearchActivity.LATITUDE_PARAMETER);
+                String longitude = data
+                        .getStringExtra(SearchActivity.LONGITUDE_PARAMETER);
+                char type = data.getCharExtra(SearchActivity.TYPE_PARAMETER,
+                        'M');
+
+                searchForLavatories(building, floor, room, minRating, type,
+                        latitude, longitude, radius);
+            }
+
+            break;
+        }
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // VIEW EVENT HANDLERS
+    // --------------------------------------------------------------------------------------------
+    /**
+     * Activates the Got2Go feature, showing the user the nearest highly-rated
+     * lavatory.
+     * 
+     * @param item
+     *            the {@link MenuItem} that was selected
+     */
+    public void activateGot2go(MenuItem item) {
+        Location currentLocation = mLocationClient.getLastLocation();
+        if (currentLocation != null) {
+            double currentLatitude = currentLocation.getLatitude();
+            double currentLongitude = currentLocation.getLongitude();
+            getSpiceManager().execute(
+                    new Got2goRequest(currentLatitude, currentLongitude),
+                    GOT2GO_JSON_CACHE_KEY, JSON_CACHE_DURATION,
+                    new Got2goRequestListener());
+        } else {
+            // TODO: move to the string resource XML file
+            String message = "Location information is currently not available. Got2Go requires location information to show you the nearest lavatory.";
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
      * Goes to the <code>AboutActivity</code>.
      * 
      * @param item
-     *            the <code>MenuItem</code> that was selected
+     *            the {@link MenuItem} that was selected
      */
     public void goToAboutActivity(MenuItem item) {
         Intent intent = new Intent(this, AboutActivity.class);
@@ -226,9 +256,10 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
      * to add a lavatory to the LavatoryLocator service.
      * 
      * @param item
-     *            the <code>MenuItem</code> that was selected
+     *            the {@link MenuItem} that was selected
      */
     public void goToAddLavatoryActivity(MenuItem item) {
+        // TODO: move to Facebook authentication system
         SharedPreferences userDetails = getApplicationContext()
                 .getSharedPreferences("User", MODE_PRIVATE);
         Boolean loggedIn = userDetails.getBoolean("isLoggedIn", false);
@@ -239,8 +270,8 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
             View layout = inflater.inflate(R.layout.login_popup,
                     (ViewGroup) findViewById(R.id.login_popup_layout));
 
-            popup = new PopupWindow(layout, 350, 250, true);
-            popup.showAtLocation(layout, Gravity.CENTER, 0, 0);
+            loginPopup = new PopupWindow(layout, 350, 250, true);
+            loginPopup.showAtLocation(layout, Gravity.CENTER, 0, 0);
         } else {
             Intent intent = new Intent(this, AddLavatoryActivity.class);
             startActivityForResult(intent, 0);
@@ -248,108 +279,25 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
     }
 
     /**
-     * Logs the user in so that they can add missing lavatories
-     * 
-     * @param target
-     */
-    public void loginUser(View target) {
-        SharedPreferences userDetails = getApplicationContext()
-                .getSharedPreferences("User", MODE_PRIVATE);
-        userDetails.edit().putBoolean("isLoggedIn", true).commit();
-        dismissLoginPrompt(target);
-    }
-
-    /**
-     * Closes the popup window
-     * 
-     * @param target
-     */
-    public void dismissLoginPrompt(View target) {
-        popup.dismiss();
-    }
-
-    /*
-     * Called by Location Services if the connection to the location client
-     * drops because of an error.
-     */
-    @Override
-    public void onDisconnected() {
-        Toast.makeText(this, "Disconnected. Please re-connect.",
-                Toast.LENGTH_SHORT).show();
-        // TODO: show button for user to reconnecy
-    }
-
-    /*
-     * Called by Location Services if the attempt to Location Services fails.
-     */
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
-        /*
-         * Google Play services can resolve some errors it detects. If the error
-         * has a resolution, try sending an Intent to start a Google Play
-         * services activity that can resolve error.
-         */
-        if (connectionResult.hasResolution()) {
-            try {
-
-                // Start an Activity that tries to resolve the error
-                connectionResult.startResolutionForResult(this,
-                        LocationUtils.CONNECTION_FAILURE_RESOLUTION_REQUEST);
-
-                /*
-                 * Thrown if Google Play services canceled the original
-                 * PendingIntent
-                 */
-
-            } catch (IntentSender.SendIntentException e) {
-
-                // Log the error
-                e.printStackTrace();
-            }
-        } else {
-
-            // If no resolution is available, display a dialog to the user with
-            // the error.
-            showErrorDialog(connectionResult.getErrorCode());
-        }
-    }
-
-    /**
-     * Called when the user's location changes.
-     * 
-     * @param location
-     *            The updated location.
-     */
-    @Override
-    public void onLocationChanged(Location location) {
-        // Nothing to do.
-    }
-
-    /**
-     * Called by Location Services when the request to connect the client
-     * finishes successfully. At this point, you can request the current
-     * location or start periodic updates
-     * 
-     * Callback called when connected to GCore. Implementation of
-     * {@link ConnectionCallbacks}.
-     */
-    @Override
-    public void onConnected(Bundle connectionHint) {
-        mLocationClient.requestLocationUpdates(mLocationRequest, this); // LocationListener
-
-        centerMapOnCurrentLocation();
-    }
-
-    /**
      * Shows the search action view.
      * 
      * @param view
-     *            the <code>MenuItem</code> that was selected
+     *            the {@link MenuItem} that was selected
      */
     public void goToSearchActivity(MenuItem item) {
         Intent intent = new Intent(this, SearchActivity.class);
-        startActivityForResult(intent, SEARCH_ACTIVITY_RESULT);
+        startActivityForResult(intent, SEARCH_PARAMETERS_REQUEST);
+    }
+    
+    /**
+     * Logs the user in.
+     */
+    public void loginUser(View target) {
+        // TODO: move to Facebook authentication system
+        SharedPreferences userDetails = getApplicationContext()
+                .getSharedPreferences("User", MODE_PRIVATE);
+        userDetails.edit().putBoolean("isLoggedIn", true).commit();
+        dismissLoginPrompt();
     }
 
     @Override
@@ -361,50 +309,115 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
     }
 
     // --------------------------------------------------------------------------------------------
-    // PRIVATE HELPER METHODS
+    // MAPPING AND LOCATION METHODS
     // --------------------------------------------------------------------------------------------
-    private void loadAllLavatories() {
-        setProgressBarIndeterminateVisibility(true);
+    /**
+     * Centers and animates the map on the user's current location.
+     */
+    private void centerMapOnCurrentLocation() {
+        Location currentLocation = mLocationClient.getLastLocation();
+        if (currentLocation != null) {
+            double currentLatitude = currentLocation.getLatitude();
+            double currentLongitude = currentLocation.getLongitude();
 
-        getSpiceManager().execute(new LavatorySearchRequest(), JSON_CACHE_KEY,
-                JSON_CACHE_DURATION, new LavatorySearchListener());
+            LatLng currentLatLng = new LatLng(currentLatitude, currentLongitude);
+
+            CameraUpdate cameraUpdateToCurrentLocation = CameraUpdateFactory
+                    .newLatLng(currentLatLng);
+
+            mMap.animateCamera(cameraUpdateToCurrentLocation);
+        } else {
+            // TODO: move string to resources XML file
+            String message = "Your current location could not be found. Try again later.";
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
     }
 
-    private void searchForLavatories(double latitude, double longitude,
-            double radius) {
-        setProgressBarIndeterminateVisibility(true);
-
-        getSpiceManager().execute(
-                new LavatorySearchRequest(latitude, longitude, radius),
-                JSON_CACHE_KEY, JSON_CACHE_DURATION,
-                new LavatorySearchListener());
+    /**
+     * Called by Location Services if the connection to the location client
+     * drops because of an error.
+     */
+    @Override
+    public void onDisconnected() {
+        // TODO: move to string resource XML file
+        Toast.makeText(this, "Disconnected. Please re-connect.",
+                Toast.LENGTH_SHORT).show();
+        // TODO: show button for user to reconnect
     }
 
-    private void setUpLavatorySearchResultsListView() {
-        lavatorySearchResultsAdapter = new LavatorySearchResultsAdapter(this,
-                R.layout.search_result_item,
-                R.id.search_result_item_lavatory_name);
-
-        ListView searchResultsListView = (ListView) findViewById(R.id.activity_main_search_results);
-
-        searchResultsListView
-                .setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view,
-                            int position, long id) {
-                        final LavatoryData selectedLavatory = (LavatoryData) parent
-                                .getItemAtPosition(position);
-                        Intent intent = new Intent(parent.getContext(),
-                                LavatoryDetailActivity.class);
-                        intent.putExtra(LAVATORY_DATA, selectedLavatory);
-                        startActivity(intent);
-                    }
-                });
-
-        searchResultsListView.setAdapter(lavatorySearchResultsAdapter);
+    /**
+     * Called by Location Services if the attempt to Location Services fails.
+     * 
+     * @param connectionResult
+     *            the connection result
+     */
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        // Google Play services can resolve some errors it detects. If the error
+        // has a resolution, try sending an Intent to start a Google Play
+        // services activity that can resolve the error.
+        if (connectionResult.hasResolution()) {
+            try {
+                // Start an Activity that tries to resolve the error
+                connectionResult.startResolutionForResult(this,
+                        LocationUtils.CONNECTION_FAILURE_RESOLUTION_REQUEST);
+            } catch (IntentSender.SendIntentException e) { // thrown if Google
+                                                           // Play services
+                                                           // canceled the
+                                                           // original
+                                                           // PendingIntent
+                Log.e(getLocalClassName(), e.getMessage());
+            }
+        } else {
+            // if no resolution is available, display a dialog to the user with
+            // the error
+            showErrorDialog(connectionResult.getErrorCode());
+        }
     }
 
+    /**
+     * Called when the user's location changes.
+     * 
+     * @param location
+     *            the updated location
+     */
+    @Override
+    public void onLocationChanged(Location location) {
+        // Nothing to do.
+    }
+
+    /**
+     * Called by Location Services when the request to connect the client
+     * finishes successfully.
+     * 
+     * Callback called when connected to GCore. Implementation of
+     * {@link ConnectionCallbacks}.
+     * 
+     * @param connectionHint
+     *            a {@link Bundle} with information about the connection
+     */
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        mLocationClient.requestLocationUpdates(mLocationRequest, this); // LocationListener
+
+        centerMapOnCurrentLocation();
+    }
+
+    /**
+     * Sets up the global {@code LocationClient} with the appropriate
+     * parameters.
+     */
+    private void setUpLocationClientIfNeeded() {
+        if (mLocationClient == null) {
+            mLocationClient = new LocationClient(getApplicationContext(), this, // ConnectionCallbacks
+                    this); // OnConnectionFailedListener
+        }
+    }
+
+    /**
+     * Sets up the global {@code LocationRequest} with the appropriate
+     * parameters.
+     */
     private void setUpLocationRequest() {
         // create a new global location parameters object
         mLocationRequest = LocationRequest.create();
@@ -419,31 +432,6 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         // Set the interval ceiling to one minute
         mLocationRequest
                 .setFastestInterval(LocationUtils.FAST_INTERVAL_CEILING_IN_MILLISECONDS);
-    }
-
-    private void updateLavatorySearchResults(List<LavatoryData> searchResults) {
-        assertNotNull(searchResults);
-
-        addLavatoriesToMap(searchResults);
-        addLavatoriesToList(searchResults);
-    }
-
-    private void addLavatoriesToMap(List<LavatoryData> lavatories) {
-        if (mMap != null) { // the map can be null (for example, when running in
-                            // the emulator on or a phone without Google Play
-                            // services)
-            for (LavatoryData lavatoryData : lavatories) {
-                MarkerOptions lavatoryMarkerOptions = LavatoryMapMarkerOptionsFactory
-                        .createLavatoryMapMarkerOptions(lavatoryData);
-                Marker marker = mMap.addMarker(lavatoryMarkerOptions);
-                markerLavatoryDataMap.put(marker, lavatoryData);
-            }
-        }
-    }
-
-    private void addLavatoriesToList(List<LavatoryData> lavatories) {
-        lavatorySearchResultsAdapter.addAll(lavatories);
-        lavatorySearchResultsAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -465,15 +453,14 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
      * method in {@link #onResume()} to guarantee that it will be called.
      */
     private void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the
-        // map.
+        // do a null check to confirm that we have not already instantiated the
+        // map
         if (mMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
-            SupportMapFragment test = ((SupportMapFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.map));
+            // try to obtain the map from the SupportMapFragment
             mMap = ((SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map)).getMap();
-            // Check if we were successful in obtaining the map.
+
+            // check if we were successful in obtaining the map
             if (mMap != null) {
                 mMap.setMyLocationEnabled(true);
 
@@ -482,43 +469,14 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         }
     }
 
-    private void setUpLocationClientIfNeeded() {
-        if (mLocationClient == null) {
-            mLocationClient = new LocationClient(getApplicationContext(), this, // ConnectionCallbacks
-                    this); // OnConnectionFailedListener
-        }
-    }
-
     /**
-     * Centers and animates the map on the user's current location.
-     */
-    private void centerMapOnCurrentLocation() {
-        Location currentLocation = mLocationClient.getLastLocation();
-        if (currentLocation != null) {
-            double currentLatitude = currentLocation.getLatitude();
-            double currentLongitude = currentLocation.getLongitude();
-
-            LatLng currentLatLng = new LatLng(currentLatitude, currentLongitude);
-
-            CameraUpdate cameraUpdateToCurrentLocation = CameraUpdateFactory
-                    .newLatLng(currentLatLng);
-
-            mMap.animateCamera(cameraUpdateToCurrentLocation);
-        } else {
-            String message = "Your current location could not be found. Try again later.";
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    /**
-     * Show a dialog returned by Google Play services for the connection error
-     * code
+     * Show a dialog returned by Google Play services for the provided
+     * connection error code.
      * 
      * @param errorCode
-     *            An error code returned from onConnectionFailed
+     *            an error code returned from {@code onConnectionFailed}
      */
     private void showErrorDialog(int errorCode) {
-
         // Get the error dialog from Google Play services
         Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(errorCode,
                 this, LocationUtils.CONNECTION_FAILURE_RESOLUTION_REQUEST);
@@ -538,6 +496,152 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         }
     }
 
+    // --------------------------------------------------------------------------------------------
+    // PRIVATE HELPER METHODS
+    // --------------------------------------------------------------------------------------------
+    /**
+     * Dismisses the login prompt.
+     */
+    private void dismissLoginPrompt() {
+        // TODO: move to Facebook authentication system
+        loginPopup.dismiss();
+    }
+
+    /**
+     * Displays the given list of lavatories in the map and list.
+     * 
+     * @param lavatories
+     *            the lavatories to display
+     */
+    private void displayLavatories(List<LavatoryData> lavatories) {
+        assertNotNull(lavatories);
+
+        if (lavatories.isEmpty()) {
+            String message = "No lavatories found!";
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show(); // TODO:
+                                                                     // move
+                                                                     // string
+                                                                     // to
+                                                                     // resources
+                                                                     // xml file
+        }
+
+        displayLavatoriesOnMap(lavatories);
+        displayLavatoriesOnList(lavatories);
+    }
+
+    /**
+     * Displays the given set of lavatories on the list.
+     * 
+     * @param lavatories
+     *            the lavatories to display on the list
+     */
+    private void displayLavatoriesOnList(List<LavatoryData> lavatories) {
+        lavatorySearchResultsAdapter.clear();
+        lavatorySearchResultsAdapter.addAll(lavatories);
+        lavatorySearchResultsAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Displays the given set of lavatories on the map.
+     * 
+     * @param lavatories
+     *            the lavatories to display on the map
+     */
+    private void displayLavatoriesOnMap(List<LavatoryData> lavatories) {
+        if (mMap != null) { // the map can be null (for example, when running in
+                            // the emulator on or a phone without Google Play
+                            // services)
+            mMap.clear();
+            for (LavatoryData lavatoryData : lavatories) {
+                MarkerOptions lavatoryMarkerOptions = LavatoryMapMarkerOptionsFactory
+                        .createLavatoryMapMarkerOptions(lavatoryData);
+                Marker marker = mMap.addMarker(lavatoryMarkerOptions);
+                markerLavatoryDataMap.put(marker, lavatoryData);
+            }
+        }
+    }
+
+    /**
+     * Loads all the lavatories in the LavatoryLocator service and displays
+     * them.
+     */
+    private void loadAllLavatories() {
+        setProgressBarIndeterminateVisibility(true);
+
+        getSpiceManager().execute(new LavatorySearchRequest(),
+                SEARCH_RESULTS_JSON_CACHE_KEY, JSON_CACHE_DURATION,
+                new LavatorySearchListener());
+    }
+
+    /**
+     * Sends a search request to the LavatoryLocator service with the given
+     * parameters.
+     * 
+     * @param building
+     *            the building the lavatory is in
+     * @param floor
+     *            the floor the lavatory is on
+     * @param room
+     *            the lavatory's room number
+     * @param minRating
+     *            the minimum rating of lavatories to be returned
+     * @param type
+     *            the type of lavatory
+     * @param latitude
+     *            the latitude of the search request point
+     * @param longitude
+     *            the longitude of the search request point
+     * @param radius
+     *            the radius of lavatories to return, as measured from the
+     *            search request point
+     */
+    private void searchForLavatories(String building, String floor,
+            String room, double minRating, char type, String latitude,
+            String longitude, String radius) {
+        setProgressBarIndeterminateVisibility(true);
+
+        LavatorySearchRequest lavatorySearchRequest = new LavatorySearchRequest(
+                building, floor, room, minRating, type, latitude, longitude,
+                radius);
+
+        getSpiceManager().execute(lavatorySearchRequest,
+                SEARCH_RESULTS_JSON_CACHE_KEY, JSON_CACHE_DURATION,
+                new LavatorySearchListener());
+    }
+
+    /**
+     * Sets up the {@link ListView} and accompanying {@link Adapter} for
+     * displaying lavatory search results.
+     */
+    private void setUpLavatorySearchResultsListView() {
+        lavatorySearchResultsAdapter = new LavatorySearchResultsAdapter(this,
+                R.layout.search_result_item,
+                R.id.search_result_item_lavatory_name);
+
+        ListView searchResultsListView = (ListView) findViewById(R.id.activity_main_search_results);
+
+        searchResultsListView
+                .setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                            int position, long id) {
+                        final LavatoryData selectedLavatory = (LavatoryData) parent
+                                .getItemAtPosition(position);
+                        showLavatoryDetail(selectedLavatory);
+                    }
+                });
+
+        searchResultsListView.setAdapter(lavatorySearchResultsAdapter);
+    }
+
+    /**
+     * Goes to the {@link LavatoryDetailActivity} for the given
+     * {@link LavatoryData}.
+     * 
+     * @param lavatoryData
+     *            the data to show in the {@link LavatoryDetailActivity}
+     */
     private void showLavatoryDetail(LavatoryData lavatoryData) {
         Intent intent = new Intent(this, LavatoryDetailActivity.class);
         intent.putExtra(LAVATORY_DATA, lavatoryData);
@@ -547,23 +651,31 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
     // --------------------------------------------------------------------------------------------
     // PRIVATE INNER CLASSES
     // --------------------------------------------------------------------------------------------
+    /**
+     * {@code RequestListener} for search results from the LavatoryLocator
+     * service.
+     * 
+     * @author Chris Rovillos
+     * 
+     */
     private class LavatorySearchListener implements
             RequestListener<LavatorySearchResults> {
 
         @Override
         public void onRequestFailure(SpiceException spiceException) {
+            // TODO: move to string resources XML file
             String errorMessage = "Lavatory search request failed: "
                     + spiceException.getMessage();
 
             Log.e(getLocalClassName(), errorMessage);
-            Toast.makeText(getApplicationContext(), errorMessage,
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG)
+                    .show();
             MainActivity.this.setProgressBarIndeterminateVisibility(false);
         }
 
         @Override
         public void onRequestSuccess(LavatorySearchResults lavatorySearchResults) {
-            MainActivity.this.updateLavatorySearchResults(lavatorySearchResults
+            MainActivity.this.displayLavatories(lavatorySearchResults
                     .getLavatories());
 
             MainActivity.this.setProgressBarIndeterminateVisibility(false);
@@ -571,16 +683,45 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
     }
 
     /**
-     * Define a DialogFragment to display the error dialog generated in
-     * showErrorDialog.
+     * {@code RequestListener} for the Got2Go lavatory returned from the
+     * LavatoryLocator service.
+     * 
+     * @author Chris Rovillos
+     * 
+     */
+    private class Got2goRequestListener implements
+            RequestListener<LavatoryData> {
+
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            // TODO: move to string resources XML file
+
+            String errorMessage = "Got2Go request failed: "
+                    + spiceException.getMessage();
+
+            Log.e(getLocalClassName(), errorMessage);
+            Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG)
+                    .show();
+            MainActivity.this.setProgressBarIndeterminateVisibility(false);
+        }
+
+        @Override
+        public void onRequestSuccess(LavatoryData got2goLavatory) {
+            MainActivity.this.setProgressBarIndeterminateVisibility(false);
+
+            showLavatoryDetail(got2goLavatory);
+        }
+    }
+
+    /**
+     * {@link DialogFragment} to display the error dialog generated in
+     * {@link showErrorDialog}.
      */
     private static class ErrorDialogFragment extends DialogFragment {
-
-        // Global field to contain the error dialog
         private Dialog mDialog;
 
         /**
-         * Default constructor. Sets the dialog field to null
+         * Default constructor. Sets the dialog field to null.
          */
         public ErrorDialogFragment() {
             super();
@@ -588,18 +729,15 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         }
 
         /**
-         * Set the dialog to display
+         * Set the dialog to display.
          * 
          * @param dialog
-         *            An error dialog
+         *            the dialog to display
          */
         public void setDialog(Dialog dialog) {
             mDialog = dialog;
         }
 
-        /*
-         * This method must return a Dialog to the DialogFragment.
-         */
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             return mDialog;
