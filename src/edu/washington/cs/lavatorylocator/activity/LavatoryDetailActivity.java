@@ -261,7 +261,7 @@ public class LavatoryDetailActivity extends SherlockFragmentActivity
         editor.putString("RoomNumber", lav.getRoom());
         editor.putFloat("Long", (float)lav.getLongitude());
         editor.putFloat("Lat", (float)lav.getLatitude());
-        editor.putInt("NumReviews", lav.getReviewCount());
+        editor.putInt("NumReviews", lav.getReviews());
         editor.putFloat("Average", (float)lav.getAvgRating());
         editor.commit();
     }

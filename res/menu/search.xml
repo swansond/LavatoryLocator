@@ -4,7 +4,7 @@
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_action_new"
-        android:onClick="searchLava"
+        android:onClick="submitSearchParameters"
         android:showAsAction="always"
         android:title="@string/action_search">
     </item>

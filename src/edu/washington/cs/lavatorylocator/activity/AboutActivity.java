@@ -7,16 +7,22 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import edu.washington.cs.lavatorylocator.R;
-import edu.washington.cs.lavatorylocator.R.id;
-import edu.washington.cs.lavatorylocator.R.layout;
-import edu.washington.cs.lavatorylocator.R.menu;
 
 import android.os.Bundle;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
+/**
+ * {@link android.app.Activity} for displaying information about LavatoryLocator.
+ * 
+ * @author Chris Rovillos
+ * 
+ */
 public class AboutActivity extends SherlockActivity {
 
+    // --------------------------------------------------------------------------------------------
+    // ACTIVITY LIFECYCLE
+    // --------------------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

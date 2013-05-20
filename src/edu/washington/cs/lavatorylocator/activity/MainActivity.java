@@ -55,7 +55,7 @@ import edu.washington.cs.lavatorylocator.network.Got2goRequest;
 import edu.washington.cs.lavatorylocator.network.LavatorySearchRequest;
 
 /**
- * {@link Activity} first displayed when LavatoryLocator is opened. Shows a map
+ * {@link android.app.Activity} first displayed when LavatoryLocator is opened. Shows a map
  * and list of nearby lavatories.
  * 
  * @author Chris Rovillos

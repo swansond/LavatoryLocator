@@ -5,7 +5,7 @@ import com.octo.android.robospice.JacksonSpringAndroidSpiceService;
 import com.octo.android.robospice.SpiceManager;
 
 /**
- * Base class for {@link Activity}s that use the RoboSpice library along with
+ * Base class for {@link android.app.Activity}s that use the RoboSpice library along with
  * the SherlockActionBar library. This class uses a {@code Jackson}
  * {@code SpiceManager} for transforming JSON into plain Java objects.
  * <p>

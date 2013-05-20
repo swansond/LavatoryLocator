@@ -23,15 +23,11 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import edu.washington.cs.lavatorylocator.R;
-import edu.washington.cs.lavatorylocator.R.id;
-import edu.washington.cs.lavatorylocator.R.layout;
-import edu.washington.cs.lavatorylocator.R.menu;
 import edu.washington.cs.lavatorylocator.util.RESTLoader;
 import edu.washington.cs.lavatorylocator.util.RESTLoader.RESTResponse;
-import edu.washington.cs.lavatorylocator.util.RESTLoader.requestType;
 
 /**
- * <code>Activity</code> for adding a new lavatory into LavatoryLocator.
+ * {@link android.app.Activity} for adding a new lavatory into the LavatoryLocator service.
  *
  * @author Chris Rovillos
  *
@@ -46,7 +42,6 @@ public class AddLavatoryActivity extends SherlockFragmentActivity
     private PopupWindow connectionPopup;
     private ProgressDialog loadingScreen;
 
-
     //stored data in case we need to repeat a query
     private String lastUid;
     private String lastBldg;
@@ -54,9 +49,6 @@ public class AddLavatoryActivity extends SherlockFragmentActivity
     private String lastLocLat;
     private String lastLocLong;
     private String lastFlr;
-
-
-
 
     /**
      * Starts submitting the new lavatory to the LavatoryLocator service.

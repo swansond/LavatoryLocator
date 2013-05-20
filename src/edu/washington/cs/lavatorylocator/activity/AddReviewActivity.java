@@ -30,7 +30,7 @@ import edu.washington.cs.lavatorylocator.util.RESTLoader;
 import edu.washington.cs.lavatorylocator.util.RESTLoader.RESTResponse;
 
 /**
- * <code>Activity</code> for adding a review on a lavatory.
+ * {@link android.app.Activity} for adding a review on a lavatory.
  *
  * @author Chris Rovillos
  *

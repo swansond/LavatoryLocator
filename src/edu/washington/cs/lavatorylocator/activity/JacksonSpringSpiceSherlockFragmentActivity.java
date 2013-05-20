@@ -5,9 +5,10 @@ import com.octo.android.robospice.JacksonSpringAndroidSpiceService;
 import com.octo.android.robospice.SpiceManager;
 
 /**
- * Base class for {@link FragmentActivity}s that use the RoboSpice library along
- * with the SherlockActionBar library. This class uses a {@code Jackson}
- * {@code SpiceManager} for transforming JSON into plain Java objects.
+ * Base class for {@link android.support.v4.app.FragmentActivity}s that use the
+ * RoboSpice library along with the SherlockActionBar library. This class uses a
+ * {@code Jackson} {@code SpiceManager} for transforming JSON into plain Java
+ * objects.
  * <p>
  * This class cannot be instantiated; instead it must be subclassed.
  * 
