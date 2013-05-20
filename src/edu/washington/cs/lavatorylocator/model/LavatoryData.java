@@ -31,7 +31,7 @@ public class LavatoryData implements Parcelable {
     private double longitude;
 
     private int reviews;
-    private double avgRating;
+    private float avgRating;
 
     // --------------------------------------------------------------------------------------------
     // CONSTRUCTORS AND CREATORS
@@ -94,7 +94,7 @@ public class LavatoryData implements Parcelable {
      */
     public LavatoryData(int id, char type, String building, String floor,
             String room, double latitude, double longitude, int reviewCount,
-            double avgRating) {
+            float avgRating) {
         this.lid = id;
         this.type = type;
         this.building = building;
@@ -121,7 +121,7 @@ public class LavatoryData implements Parcelable {
         longitude = source.readDouble();
         latitude = source.readDouble();
         reviews = source.readInt();
-        avgRating = source.readDouble();
+        avgRating = source.readFloat();
     }
 
     // --------------------------------------------------------------------------------------------
@@ -132,7 +132,7 @@ public class LavatoryData implements Parcelable {
      * 
      * @return this lavatory’s average rating
      */
-    public double getAvgRating() {
+    public float getAvgRating() {
         return avgRating;
     }
 
@@ -226,7 +226,7 @@ public class LavatoryData implements Parcelable {
      * @param avgRating
      *            this lavatory’s average rating
      */
-    public void setAvgRating(double avgRating) {
+    public void setAvgRating(float avgRating) {
         this.avgRating = avgRating;
     }
 
@@ -335,7 +335,7 @@ public class LavatoryData implements Parcelable {
         out.writeDouble(longitude);
         out.writeDouble(latitude);
         out.writeInt(reviews);
-        out.writeDouble(avgRating);
+        out.writeFloat(avgRating);
     }
 
     // --------------------------------------------------------------------------------------------

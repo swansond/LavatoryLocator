@@ -59,7 +59,7 @@ public class AddReviewActivity extends SherlockFragmentActivity
      */
     public void addReview(MenuItem item) {
         Intent intent = getIntent();
-        LavatoryData ld = intent.getParcelableExtra("LAVATORY");
+        LavatoryData ld = intent.getParcelableExtra(LavatoryDetailActivity.LAVATORY_DATA);
         RatingBar ratingbar = ((RatingBar) findViewById(R.id.add_review_rating));
         float rating = ratingbar.getRating();
         EditText reviewText = ((EditText) findViewById(R.id.add_review_text));
@@ -143,7 +143,7 @@ public class AddReviewActivity extends SherlockFragmentActivity
     public void onLoadFinished(Loader<RESTResponse> loader,
             RESTResponse response) {
         loadingScreen.dismiss();
-        getLoaderManager().destroyLoader(loader.getId());
+        getSupportLoaderManager().destroyLoader(loader.getId());
         if (response.getCode() == HttpStatus.SC_OK) {
             Toast.makeText(this, "Thank you for your submission",
                     Toast.LENGTH_SHORT).show();

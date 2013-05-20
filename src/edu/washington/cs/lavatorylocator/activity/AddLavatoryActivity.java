@@ -154,7 +154,7 @@ public class AddLavatoryActivity extends SherlockFragmentActivity
     public void onLoadFinished(Loader<RESTResponse> loader,
             RESTResponse response) {
         loadingScreen.dismiss();
-        getLoaderManager().destroyLoader(loader.getId());
+        getSupportLoaderManager().destroyLoader(loader.getId());
         if (response.getCode() == HttpStatus.SC_OK) {
             Toast.makeText(this, "Thank you for your submission",
                     Toast.LENGTH_SHORT).show();

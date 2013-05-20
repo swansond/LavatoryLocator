@@ -33,8 +33,8 @@ public class LavatorySearchResults {
      * Sets the {@link List} of lavatories that represent the search results
      * from a query to the LavatoryLocator service.
      * 
-     * @param a
-     *            {@link List} of lavatories that represent the search results
+     * @param lavatories
+     *            a {@link List} of lavatories that represent the search results
      *            from a query to the LavatoryLocator service
      */
     public void setLavatories(List<LavatoryData> lavatories) {

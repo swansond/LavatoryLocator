@@ -1,38 +1,181 @@
 package edu.washington.cs.lavatorylocator.model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 /**
- * The Review class is an immutable representation of the data related to
- * any one review. This includes its database ID number, the database ID number
- * of the user who wrote it, the database ID number of the bathroom it is a
- * review of, the rating it gives, and the review itself.
- * that bathroom.
+ * The {@link Review} class is an representation of the data related to any one
+ * review. This includes its database ID number, the database ID number of the
+ * user who wrote it, the database ID number of the bathroom it is a review of,
+ * the rating it gives, and the review itself. that bathroom.
  * 
- * @author Wil
- *
+ * @author Wil Sunseri
+ * @author Chris Rovillos
+ * 
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ReviewData {
-    public final int reviewID;
-    public final int authorID;
-    public final int bathroomID;
-    public final int rating;
-    public final String review;
     
-    
-    public ReviewData(int reviewID, int authorID, int bathroomID, int rating,
-            String review) {
-        this.reviewID = reviewID;
-        this.authorID = authorID;
-        this.bathroomID = bathroomID;
+    // --------------------------------------------------------------------------------------------
+    // INSTANCE VARIABLES
+    // --------------------------------------------------------------------------------------------
+    private int lid;
+    private int uid;
+    private String datetime;
+    private String review;
+    private float rating;
+    private int helpfulness;
+    private int uservote;
+
+    // --------------------------------------------------------------------------------------------
+    // CONSTRUCTORS AND CREATORS
+    // --------------------------------------------------------------------------------------------
+    /**
+     * Constructs an empty {@link ReviewData} object.
+     */
+    public ReviewData() {
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // GETTERS
+    // --------------------------------------------------------------------------------------------
+    /**
+     * Returns this review's author.
+     * 
+     * @return this review's author
+     */
+    public String getAuthor() {
+        return "User " + uid;
+    }
+
+    /**
+     * Returns this review's date and time.
+     * 
+     * @return this review's date and time, as represented in a String
+     */
+    public String getDatetime() {
+        return datetime;
+    }
+
+    /**
+     * Returns this review's helpfulness.
+     * 
+     * @return this review's helpfulness
+     */
+    public int getHelpfulness() {
+        return helpfulness;
+    }
+
+    /**
+     * Returns this review's lavatory ID, as stored in the LavatoryLocator
+     * service.
+     * 
+     * @return this review's lavatory ID, as stored in the LavatoryLocator
+     *         service
+     */
+    public int getLid() {
+        return lid;
+    }
+
+    /**
+     * Returns this review's rating.
+     * 
+     * @return this review's rating
+     */
+    public float getRating() {
+        return rating;
+    }
+
+    /**
+     * Returns this review's text.
+     * 
+     * @return this review's text
+     */
+    public String getReview() {
+        return review;
+    }
+
+    /**
+     * Returns this review's uservote.
+     * 
+     * @return this review's uservote
+     */
+    public int getUservote() {
+        return uservote;
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // SETTERS
+    // --------------------------------------------------------------------------------------------
+    /**
+     * Sets this review's date and time.
+     * 
+     * @param datetime
+     *            this review's date and time, as represented in a String
+     */
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
+    }
+
+    /**
+     * Sets this review's helpfulness.
+     * 
+     * @param helpfulness
+     *            this review's helpfulness
+     */
+    public void setHelpfulness(int helpfulness) {
+        this.helpfulness = helpfulness;
+    }
+
+    /**
+     * Sets this review's lavatory ID, as stored in the LavatoryLocator service
+     * 
+     * @param lid
+     *            this review's lavatory ID, as stored in the LavatoryLocator
+     *            service
+     */
+    public void setLid(int lid) {
+        this.lid = lid;
+    }
+
+    /**
+     * Sets this review's rating.
+     * 
+     * @param rating
+     *            this review's rating
+     */
+    public void setRating(float rating) {
         this.rating = rating;
+    }
+
+    /**
+     * Sets this review's text.
+     * 
+     * @param review
+     *            this review's text
+     */
+    public void setReview(String review) {
         this.review = review;
     }
-    
-    @Override
-    public String toString() {
-        return "Review ID: " + reviewID + "\n\t" +
-            "Author ID: " + authorID + "\n\t" +
-            "Bathroom ID: " + bathroomID + "\n\t" +
-            "Rating: " + rating + "\n\t" +
-            "Review Text: " + review;
+
+    /**
+     * Sets this review's author ID, as stored in the LavatoryLocator service.
+     * 
+     * @param uid
+     *            this review's author ID, as stored in the LavatoryLocator
+     *            service
+     */
+    public void setUid(int uid) {
+        this.uid = uid;
     }
+
+    /**
+     * Sets this review's uservote.
+     * 
+     * @param uservote
+     *            this review's uservote
+     */
+    public void setUservote(int uservote) {
+        this.uservote = uservote;
+    }
+
 }
