@@ -10,7 +10,7 @@ import android.os.Parcelable;
  * particular lavatory. This includes its ID in the database, type, building,
  * floor, room latitude and longitude, review count, and average rating.
  *
- * @author Wilkes Sunseri
+ * @author Wil Sunseri
  * @author David Swanson
  * @author Chris Rovillos
  */

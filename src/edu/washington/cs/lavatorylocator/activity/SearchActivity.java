@@ -20,7 +20,7 @@ import edu.washington.cs.lavatorylocator.R;
  * to fill out with search parameters, which are sent back to the
  * {@link MainActivity}.
  * 
- * @author Wilkes Sunseri
+ * @author Wil Sunseri
  * @author Keith Miller
  * @author Chris Rovillos
  * 

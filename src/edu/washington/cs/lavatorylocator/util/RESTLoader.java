@@ -40,7 +40,7 @@ import android.util.Log;
  * to the Activity to be processed.
  *
  *
- * @author Wilkes Sunseri
+ * @author Wil Sunseri
  *
  */
 public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
