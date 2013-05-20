@@ -79,7 +79,7 @@
                 android:value="edu.washington.cs.lavatorylocator.activity.LavatoryDetailActivity" />
         </activity>
         <activity
-            android:name="edu.washington.cs.lavatorylocator.activity.AddLavatoryActivity"
+            android:name="edu.washington.cs.lavatorylocator.activity.EditLavatoryDetailActivity"
             android:label="@string/title_activity_add_lavatory"
             android:parentActivityName="edu.washington.cs.lavatorylocator.activity.MainActivity"
             android:screenOrientation="portrait"

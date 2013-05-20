@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddLavatoryActivity" >
+    tools:context=".EditLavatoryDetailActivity" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,8 +25,8 @@
 
             <requestFocus />
         </EditText>
-
-        <EditText
+        
+         <EditText
             android:id="@+id/activity_add_lavatory_floor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,11 +36,11 @@
             android:singleLine="true" />
 
         <EditText
-            android:id="@+id/activity_add_lavatory_room_number"
+            android:id="@+id/activity_add_lavatory_room"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/room_number"
+            android:hint="@string/room"
             android:imeOptions="actionNext"
             android:singleLine="true" />
 

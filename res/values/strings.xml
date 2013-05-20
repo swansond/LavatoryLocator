@@ -17,7 +17,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="building_name">Building Name</string>
     <string name="floor">Floor</string>
-    <string name="room_number">Room Number</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="latitude">Latitude</string>
@@ -35,5 +34,9 @@
     <!-- Latitude, longitude format -->
     <string name="latitude_longitude">%1$.8f, %2$.8f</string>
     <string name="title_activity_search">Lavatory Search</string>
+    <string name="submit">Submit</string>
+    <string name="room">Room</string>
+    <string name="title_add_lavatory">Add Lavatory</string>
+    <string name="title_edit_lavatory_detail">Edit Lavatory Detail</string>
     
 </resources>
