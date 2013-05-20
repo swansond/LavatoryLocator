@@ -88,7 +88,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
     /**
      * Cache duration, in milliseconds.
      */
-    private static final long JSON_CACHE_DURATION = DurationInMillis.ONE_MINUTE;
+    private static final long JSON_CACHE_DURATION = DurationInMillis.ALWAYS_EXPIRED;
 
     /**
      * Request identifier for the {@link Intent} sent to {@link SearchActivity}.
@@ -136,16 +136,17 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         setUpLocationRequest();
 
         markerLavatoryDataMap = new HashMap<Marker, LavatoryData>();
-        setUpMapIfNeeded();
 
         setUpLavatorySearchResultsListView();
+        
+        loadAllLavatories();
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        loadAllLavatories();
+        setUpMapIfNeeded();
     }
 
     @Override
@@ -203,8 +204,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
                         .getStringExtra(SearchActivity.LATITUDE_PARAMETER);
                 String longitude = data
                         .getStringExtra(SearchActivity.LONGITUDE_PARAMETER);
-                char type = data.getCharExtra(SearchActivity.TYPE_PARAMETER,
-                        'M');
+                String type = data.getStringExtra(SearchActivity.TYPE_PARAMETER);
 
                 searchForLavatories(building, floor, room, minRating, type,
                         latitude, longitude, radius);
@@ -597,7 +597,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
      *            search request point
      */
     private void searchForLavatories(String building, String floor,
-            String room, double minRating, char type, String latitude,
+            String room, double minRating, String type, String latitude,
             String longitude, String radius) {
         setProgressBarIndeterminateVisibility(true);
 

@@ -3,6 +3,7 @@ package edu.washington.cs.lavatorylocator.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
@@ -15,8 +16,9 @@ import com.actionbarsherlock.view.MenuItem;
 import edu.washington.cs.lavatorylocator.R;
 
 /**
- * {@link android.app.Activity} displayed to search for lavatories. Shows a form to fill out
- * with search parameters, which are sent back to the {@link MainActivity}.
+ * {@link android.app.Activity} displayed to search for lavatories. Shows a form
+ * to fill out with search parameters, which are sent back to the
+ * {@link MainActivity}.
  * 
  * @author Wilkes Sunseri
  * @author Keith Miller
@@ -87,37 +89,40 @@ public class SearchActivity extends SherlockActivity {
      */
     public void submitSearchParameters(MenuItem item) {
         String building = ((EditText) findViewById(R.id.activity_search_building_name))
-                .getText().toString();
+                .getText().toString().trim();
         String room = ((EditText) findViewById(R.id.activity_search_room_number))
-                .getText().toString();
+                .getText().toString().trim();
         String floor = ((EditText) findViewById(R.id.activity_search_floor))
-                .getText().toString();
+                .getText().toString().trim();
         String longitude = ((EditText) findViewById(R.id.activity_search_longitude))
-                .getText().toString();
+                .getText().toString().trim();
         String latitude = ((EditText) findViewById(R.id.activity_search_latitude))
-                .getText().toString();
+                .getText().toString().trim();
         String radiusText = ((EditText) findViewById(R.id.activity_search_max_distance))
-                .getText().toString();
+                .getText().toString().trim();
 
         double minRating = ((RatingBar) findViewById(R.id.activity_search_rating))
                 .getRating();
         int lavatoryTypeRadioButtonId = ((RadioGroup) findViewById(R.id.activity_search_type))
                 .getCheckedRadioButtonId();
 
-        char type;
+        String type = "";
         if (lavatoryTypeRadioButtonId == R.id.activity_search_male) {
-            type = 'M';
-        } else {
-            type = 'F';
+            type = "M";
+        } else if (lavatoryTypeRadioButtonId == R.id.activity_search_female) {
+            type = "F";
         }
 
-        boolean textParametersSpecified = !(building.isEmpty()
-                && !room.isEmpty() && floor.isEmpty());
-        boolean locationParametersSpecified = (!latitude.isEmpty()
-                && !longitude.isEmpty() && !radiusText.isEmpty());
+        boolean textParametersSpecified = (!TextUtils.isEmpty(building)
+                || !TextUtils.isEmpty(room) || !TextUtils.isEmpty(floor));
+        boolean locationParametersSpecified = (!TextUtils.isEmpty(latitude)
+                && !TextUtils.isEmpty(longitude) && !TextUtils
+                .isEmpty(radiusText));
+        boolean typeParametersSpecified = ((RadioGroup) findViewById(R.id.activity_search_type))
+                .getCheckedRadioButtonId() != -1;
 
-        if (textParametersSpecified || locationParametersSpecified) {
-
+        if (textParametersSpecified || locationParametersSpecified
+                || typeParametersSpecified) {
             Intent intent = getIntent();
             intent.putExtra(BUILDING_PARAMETER, building);
             intent.putExtra(FLOOR_PARAMETER, floor);
@@ -133,7 +138,7 @@ public class SearchActivity extends SherlockActivity {
         } else {
             // TODO: move to string resources XML file
             String message = "Enter some search parameters!";
-            Toast.makeText(this, message, Toast.LENGTH_SHORT);
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
     }
 
