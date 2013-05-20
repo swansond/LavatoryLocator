@@ -243,7 +243,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
     }
 
     /**
-     * Goes to the <code>AboutActivity</code>.
+     * Goes to the {@link AboutActivity}.
      * 
      * @param item
      *            the {@link MenuItem} that was selected
@@ -254,7 +254,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
     }
 
     /**
-     * Goes to the <code>AddLavatoryActivity</code> to allow the user to request
+     * Goes to the {@link AddLavatoryActivity} to allow the user to request
      * to add a lavatory to the LavatoryLocator service.
      * 
      * @param item
@@ -275,8 +275,9 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
             loginPopup = new PopupWindow(layout, 350, 250, true);
             loginPopup.showAtLocation(layout, Gravity.CENTER, 0, 0);
         } else {
-            Intent intent = new Intent(this, AddLavatoryActivity.class);
-            startActivityForResult(intent, 0);
+            Intent intent = new Intent(this, EditLavatoryDetailActivity.class);
+            intent.putExtra(EditLavatoryDetailActivity.USER_ID_KEY, 1); // TODO: change when user IDs are implemented
+            startActivity(intent);
         }
     }
 

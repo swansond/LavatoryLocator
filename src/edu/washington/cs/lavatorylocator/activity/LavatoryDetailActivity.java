@@ -61,6 +61,9 @@ public class LavatoryDetailActivity extends
      * Key for storing the loaded lavatory in persistent storage.
      */
     public static final String LAVATORY_DATA = "lavatoryData";
+    
+    // TODO: replace when user IDs are implemented
+    private static final int STUB_USER_ID = 1;
 
     // --------------------------------------------------------------------------------------------
     // INSTANCE VARIABLES
@@ -223,8 +226,9 @@ public class LavatoryDetailActivity extends
      *            the {@link MenuItem} that was selected
      */
     public void goToEditLavatoryDetailActivity(MenuItem item) {
-        Intent intent = new Intent(this, AddLavatoryActivity.class);
+        Intent intent = new Intent(this, EditLavatoryDetailActivity.class);
         intent.putExtra(LAVATORY_DATA, lavatory);
+        intent.putExtra(EditLavatoryDetailActivity.USER_ID_KEY, STUB_USER_ID);
         startActivity(intent);
     }
 
