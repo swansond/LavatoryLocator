@@ -14,9 +14,15 @@ public class LavatorySearchRequest extends
         SpringAndroidSpiceRequest<LavatorySearchResults> {
     private static final String LAVATORY_SEARCH_SERVICE_URL = "http://lavlocdb.herokuapp.com/lavasearch.php";
     
-    private double latitude;
-    private double longitude;
-    private double radius;
+    private String building;
+    private String floor;
+    private String room;
+    private double minRating;
+    private char type;
+    private String latitude;
+    private String longitude;
+    private String radius;
+    
     private boolean loadAllLavatories;
 
     /**
@@ -29,15 +35,30 @@ public class LavatorySearchRequest extends
     }
     
     /**
-     * Creates a new {@link LavatorySearchRequest}.
+     * @param building
+     * @param floor
+     * @param room
+     * @param minRating
+     * @param maxDistance
+     * @param type
+     * @param latitude
+     * @param longitude
+     * @param radius
+     * @param loadAllLavatories
      */
-    public LavatorySearchRequest(double latitude, double longitude, double radius) {
+    public LavatorySearchRequest(String building, String floor, String room, double minRating, char type, String latitude, String longitude,
+            String radius) {
         super(LavatorySearchResults.class);
         
+        this.building = building;
+        this.floor = floor;
+        this.room = room;
+        this.minRating = minRating;
+        this.type = type;
         this.latitude = latitude;
         this.longitude = longitude;
         this.radius = radius;
-        loadAllLavatories = false;
+        this.loadAllLavatories = false;
     }
 
     @Override
@@ -47,7 +68,8 @@ public class LavatorySearchRequest extends
                 LavatorySearchResults.class);
         } else {
             // TODO: use URL builder instead
-            String requestUrl = LAVATORY_SEARCH_SERVICE_URL + "?locationLat=" + latitude + "&locationLong=" + longitude + "&maxDist=" + radius;
+            String requestUrl = LAVATORY_SEARCH_SERVICE_URL + "?locationLat=" + latitude + "&locationLong=" + longitude +
+                    "&maxDist=" + radius + "&bldgName=" + building + "&floor=" + floor + "&room=" + room + "&minRating=" + minRating + "&lavaType=" + type;
             return getRestTemplate().getForObject(requestUrl, LavatorySearchResults.class);
         }
     }
