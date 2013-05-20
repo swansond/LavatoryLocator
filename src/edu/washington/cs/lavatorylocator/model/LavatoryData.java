@@ -123,7 +123,7 @@ public class LavatoryData implements Parcelable {
         reviews = source.readInt();
         avgRating = source.readDouble();
     }
-    
+
     // --------------------------------------------------------------------------------------------
     // GETTERS
     // --------------------------------------------------------------------------------------------
@@ -187,7 +187,7 @@ public class LavatoryData implements Parcelable {
      * @return this lavatory’s name
      */
     public String getName() {
-            return "Room " + getRoom() + ", " + getBuilding();
+        return "Room " + getRoom() + ", " + getBuilding();
     }
 
     /**
@@ -281,10 +281,12 @@ public class LavatoryData implements Parcelable {
     }
 
     /**
-     * Sets the number of reviews for this lavatory in the LavatoryLocator service.
+     * Sets the number of reviews for this lavatory in the LavatoryLocator
+     * service.
      * 
      * @param reviews
-     *            the number of reviews for this lavatory in the LavatoryLocator service
+     *            the number of reviews for this lavatory in the LavatoryLocator
+     *            service
      */
     public void setReviews(int reviews) {
         this.reviews = reviews;
