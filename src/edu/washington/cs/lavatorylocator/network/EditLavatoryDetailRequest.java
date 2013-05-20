@@ -1,9 +1,7 @@
 package edu.washington.cs.lavatorylocator.network;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -16,7 +14,8 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceRequest;
+import com.octo.android.robospice.request.
+    springandroid.SpringAndroidSpiceRequest;
 
 /**
  * Class for editing a lavatory's detail in the LavatoryLocator service.
@@ -26,7 +25,8 @@ import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceReques
  */
 public class EditLavatoryDetailRequest extends
         SpringAndroidSpiceRequest<ResponseEntity> {
-    private static final String EDIT_LAVATORY_SERVICE_URL = "http://lavlocdb.herokuapp.com/updatelava.php";
+    private static final String EDIT_LAVATORY_SERVICE_URL = 
+            "http://lavlocdb.herokuapp.com/updatelava.php";
 
     private static final String LAVATORY_ID_SERVER_KEY = "lid";
     private static final String USER_ID_SERVER_KEY = "uid";
@@ -81,7 +81,8 @@ public class EditLavatoryDetailRequest extends
 
     @Override
     public ResponseEntity loadDataFromNetwork() throws Exception {
-        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, String> parameters = 
+                new LinkedMultiValueMap<String, String>();
         parameters.add(LAVATORY_ID_SERVER_KEY, Integer.toString(lid));
         parameters.add(USER_ID_SERVER_KEY, Integer.toString(uid));
         parameters.add(BUILDING_SERVER_KEY, building);
@@ -90,17 +91,21 @@ public class EditLavatoryDetailRequest extends
         parameters.add(LONGITUDE_SERVER_KEY, Double.toString(longitude));
         parameters.add(TYPE_SERVER_KEY, Character.toString(type));
 
-        HttpHeaders headers = new HttpHeaders();
+        final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        HttpMessageConverter<String> stringConverter = new StringHttpMessageConverter();
-        FormHttpMessageConverter formConverter = new FormHttpMessageConverter();
-        List<HttpMessageConverter<?>> msgConverters = new ArrayList<HttpMessageConverter<?>>();
+        final HttpMessageConverter<String> stringConverter = 
+                new StringHttpMessageConverter();
+        final FormHttpMessageConverter formConverter = 
+                new FormHttpMessageConverter();
+        final List<HttpMessageConverter<?>> msgConverters = 
+                new ArrayList<HttpMessageConverter<?>>();
         msgConverters.add(formConverter);
         msgConverters.add(stringConverter);
         getRestTemplate().setMessageConverters(msgConverters);
 
-        HttpEntity<?> httpEntity = new HttpEntity<Object>(parameters, headers);
+        final HttpEntity<?> httpEntity =
+                new HttpEntity<Object>(parameters, headers);
 
         return getRestTemplate().exchange(EDIT_LAVATORY_SERVICE_URL,
                 HttpMethod.POST, httpEntity, ResponseEntity.class);

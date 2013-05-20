@@ -284,8 +284,10 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
             loginPopup = new PopupWindow(layout, 350, 250, true);
             loginPopup.showAtLocation(layout, Gravity.CENTER, 0, 0);
         } else {
-            final Intent intent = new Intent(this, EditLavatoryDetailActivity.class);
-            intent.putExtra(EditLavatoryDetailActivity.USER_ID_KEY, 1); // TODO: change when user IDs are implemented
+            final Intent intent = new Intent(
+                    this, EditLavatoryDetailActivity.class);
+            intent.putExtra(EditLavatoryDetailActivity.USER_ID_KEY, 1); 
+            // TODO: change when user IDs are implemented
             startActivity(intent);
         }
     }

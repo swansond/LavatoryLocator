@@ -14,7 +14,8 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceRequest;
+import com.octo.android.robospice.request.
+    springandroid.SpringAndroidSpiceRequest;
 
 /**
  * Class for adding a lavatory to the LavatoryLocator service.
@@ -24,7 +25,8 @@ import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceReques
  */
 public class AddLavatoryRequest extends
         SpringAndroidSpiceRequest<ResponseEntity> {
-    private static final String ADD_LAVATORY_SERVICE_URL = "http://lavlocdb.herokuapp.com/addlava.php";
+    private static final String ADD_LAVATORY_SERVICE_URL = 
+            "http://lavlocdb.herokuapp.com/addlava.php";
 
     private static final String USER_ID_SERVER_KEY = "uid";
     private static final String BUILDING_SERVER_KEY = "buildingName";
@@ -72,7 +74,8 @@ public class AddLavatoryRequest extends
 
     @Override
     public ResponseEntity loadDataFromNetwork() throws Exception {
-        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, String> parameters = 
+                new LinkedMultiValueMap<String, String>();
         parameters.add(USER_ID_SERVER_KEY, Integer.toString(uid));
         parameters.add(BUILDING_SERVER_KEY, building);
         parameters.add(FLOOR_SERVER_KEY, floor);
@@ -80,17 +83,21 @@ public class AddLavatoryRequest extends
         parameters.add(LONGITUDE_SERVER_KEY, Double.toString(longitude));
         parameters.add(TYPE_SERVER_KEY, Character.toString(type));
 
-        HttpHeaders headers = new HttpHeaders();
+        final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        HttpMessageConverter<String> stringConverter = new StringHttpMessageConverter();
-        FormHttpMessageConverter formConverter = new FormHttpMessageConverter();
-        List<HttpMessageConverter<?>> msgConverters = new ArrayList<HttpMessageConverter<?>>();
+        final HttpMessageConverter<String> stringConverter = 
+                new StringHttpMessageConverter();
+        final FormHttpMessageConverter formConverter = 
+                new FormHttpMessageConverter();
+        final List<HttpMessageConverter<?>> msgConverters = 
+                new ArrayList<HttpMessageConverter<?>>();
         msgConverters.add(formConverter);
         msgConverters.add(stringConverter);
         getRestTemplate().setMessageConverters(msgConverters);
 
-        HttpEntity<?> httpEntity = new HttpEntity<Object>(parameters, headers);
+        final HttpEntity<?> httpEntity = 
+                new HttpEntity<Object>(parameters, headers);
 
         return getRestTemplate().exchange(ADD_LAVATORY_SERVICE_URL,
                 HttpMethod.POST, httpEntity, ResponseEntity.class);

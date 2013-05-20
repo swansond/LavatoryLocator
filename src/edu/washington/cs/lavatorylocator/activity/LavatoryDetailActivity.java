@@ -227,7 +227,8 @@ public class LavatoryDetailActivity extends
      *            the {@link MenuItem} that was selected
      */
     public void goToEditLavatoryDetailActivity(MenuItem item) {
-        final Intent intent = new Intent(this, EditLavatoryDetailActivity.class);
+        final Intent intent = new Intent(
+                this, EditLavatoryDetailActivity.class);
         intent.putExtra(LAVATORY_DATA, lavatory);
         intent.putExtra(EditLavatoryDetailActivity.USER_ID_KEY, STUB_USER_ID);
         startActivity(intent);
