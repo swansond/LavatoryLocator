@@ -2,27 +2,25 @@
 <checkstyle version="5.6">
 <file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/activity/AboutActivity.java">
 </file>
-<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/activity/AddLavatoryActivity.java">
-<error line="182" column="55" severity="error" message="&apos;350&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
-<error line="182" column="60" severity="error" message="&apos;250&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
-</file>
 <file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/activity/AddReviewActivity.java">
 <error line="161" column="55" severity="error" message="&apos;350&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
 <error line="161" column="60" severity="error" message="&apos;250&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/activity/EditLavatoryDetailActivity.java">
 </file>
 <file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/activity/JacksonSpringSpiceSherlockActivity.java">
 </file>
 <file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/activity/JacksonSpringSpiceSherlockFragmentActivity.java">
 </file>
 <file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/activity/LavatoryDetailActivity.java">
-<error line="179" column="32" severity="error" message="Expected @param tag for &apos;target&apos;." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
-<error line="211" column="45" severity="error" message="&apos;350&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
-<error line="211" column="50" severity="error" message="&apos;250&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="182" column="32" severity="error" message="Expected @param tag for &apos;target&apos;." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+<error line="214" column="45" severity="error" message="&apos;350&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="214" column="50" severity="error" message="&apos;250&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
 </file>
 <file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/activity/MainActivity.java">
 <error line="284" column="50" severity="error" message="&apos;350&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
 <error line="284" column="55" severity="error" message="&apos;250&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
-<error line="305" column="32" severity="error" message="Expected @param tag for &apos;target&apos;." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+<error line="308" column="32" severity="error" message="Expected @param tag for &apos;target&apos;." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
 </file>
 <file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/activity/SearchActivity.java">
 </file>
@@ -56,9 +54,11 @@
 </file>
 <file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/model/Reviews.java">
 </file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/network/AddLavatoryRequest.java">
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/network/EditLavatoryDetailRequest.java">
+</file>
 <file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/network/GetLavatoryReviewsRequest.java">
-<error line="10" severity="error" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck"/>
-<error line="28" column="5" severity="error" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
 </file>
 <file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/network/Got2goRequest.java">
 </file>

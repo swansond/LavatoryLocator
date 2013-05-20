@@ -690,7 +690,8 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
             Log.e(getLocalClassName(), errorMessage);
             Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG)
                 .show();
-            MainActivity.this.getSherlock().setProgressBarIndeterminateVisibility(false);
+            MainActivity.this.getSherlock().
+                setProgressBarIndeterminateVisibility(false);
         }
 
         @Override
@@ -699,7 +700,8 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
             MainActivity.this.displayLavatories(lavatorySearchResults
                     .getLavatories());
 
-            MainActivity.this.getSherlock().setProgressBarIndeterminateVisibility(false);
+            MainActivity.this.getSherlock().
+                setProgressBarIndeterminateVisibility(false);
         }
     }
 
@@ -723,12 +725,14 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
             Log.e(getLocalClassName(), errorMessage);
             Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG)
                 .show();
-            MainActivity.this.getSherlock().setProgressBarIndeterminateVisibility(false);
+            MainActivity.this.getSherlock().
+                setProgressBarIndeterminateVisibility(false);
         }
 
         @Override
         public void onRequestSuccess(LavatoryData got2goLavatory) {
-            MainActivity.this.getSherlock().setProgressBarIndeterminateVisibility(false);
+            MainActivity.this.getSherlock().
+                setProgressBarIndeterminateVisibility(false);
 
             showLavatoryDetail(got2goLavatory);
         }
