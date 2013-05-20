@@ -1,5 +1,6 @@
 # Set behaviour for all files, in case developers don't have core.autocrlf set.
-* binary
+*.jar binary
+*.png binary
 *.java text
 *.xml text
 *.properties text

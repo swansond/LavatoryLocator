@@ -15,5 +15,8 @@ gen/
 # Local configuration file (sdk path, etc)
 local.properties
 
+# Temporary files
+*.*~
+
 .DS_Store
 checkstyle-result.xml
