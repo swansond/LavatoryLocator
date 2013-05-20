@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="LavatoryLocatorTests/src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+	<classpathentry kind="src" path="LavatoryLocatorTests/src"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry exported="true" kind="lib" path="libs/commons-io-1.3.2.jar"/>
@@ -19,6 +18,8 @@
 	<classpathentry exported="true" kind="lib" path="libs/simple-xml-2.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/spring-android-core-1.0.1.RELEASE.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/spring-android-rest-template-1.0.1.RELEASE.jar"/>
-	<classpathentry kind="lib" path="libs/checkstyle.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/checkstyle.jar"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/actionbarsherlock"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/google-play-services_lib"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

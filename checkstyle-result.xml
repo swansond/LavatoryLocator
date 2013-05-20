@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="5.6">
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/activity/AboutActivity.java">
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/activity/AddLavatoryActivity.java">
+<error line="182" column="55" severity="error" message="&apos;350&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="182" column="60" severity="error" message="&apos;250&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/activity/AddReviewActivity.java">
+<error line="161" column="55" severity="error" message="&apos;350&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="161" column="60" severity="error" message="&apos;250&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/activity/JacksonSpringSpiceSherlockActivity.java">
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/activity/JacksonSpringSpiceSherlockFragmentActivity.java">
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/activity/LavatoryDetailActivity.java">
+<error line="179" column="32" severity="error" message="Expected @param tag for &apos;target&apos;." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+<error line="211" column="45" severity="error" message="&apos;350&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="211" column="50" severity="error" message="&apos;250&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/activity/MainActivity.java">
+<error line="284" column="50" severity="error" message="&apos;350&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="284" column="55" severity="error" message="&apos;250&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="305" column="32" severity="error" message="Expected @param tag for &apos;target&apos;." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/activity/SearchActivity.java">
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/adapter/LavatorySearchResultsAdapter.java">
+<error line="54" column="8" severity="error" message="Unused @param tag for &apos;reviews&apos;." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+<error line="59" column="35" severity="error" message="Expected @param tag for &apos;lavatorySearchResults&apos;." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+<error line="86" column="59" severity="error" message="Expected @param tag for &apos;collection&apos;." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/adapter/ReviewsListAdapter.java">
+<error line="27" column="8" severity="error" message="Unused @param tag for &apos;reviewRowResource&apos;." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+<error line="36" column="52" severity="error" message="Expected @param tag for &apos;reviewRowResourceId&apos;." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/location/LocationServiceErrorMessages.java">
+<error line="29" severity="error" message="Type Javadoc comment is missing an @author tag." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck"/>
+<error line="37" column="5" severity="error" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/location/LocationUtils.java">
+<error line="27" severity="error" message="Type Javadoc comment is missing an @author tag." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck"/>
+<error line="83" column="44" severity="error" message="Expected @param tag for &apos;context&apos;." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/model/LavatoryData.java">
+<error line="114" column="8" severity="error" message="Unused @param tag for &apos;the&apos;." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+<error line="117" column="32" severity="error" message="Expected @param tag for &apos;source&apos;." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+<error line="351" severity="error" message="Expected an @return tag." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/model/LavatoryMapMarkerOptionsFactory.java">
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/model/LavatorySearchResults.java">
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/model/ReviewData.java">
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/model/Reviews.java">
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/network/GetLavatoryReviewsRequest.java">
+<error line="10" severity="error" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck"/>
+<error line="28" column="5" severity="error" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/network/Got2goRequest.java">
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/network/LavatorySearchRequest.java">
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/util/RESTLoader.java">
+<error line="49" severity="error" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck"/>
+<error line="55" severity="error" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck"/>
+<error line="75" column="40" severity="error" message="Expected @param tag for &apos;data&apos;." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+<error line="75" column="50" severity="error" message="Expected @param tag for &apos;code&apos;." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+<error line="191" column="29" severity="error" message="&apos;5000&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="192" column="71" severity="error" message="&apos;5000&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="280" column="5" severity="error" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/util/RequestAddLavTask.java">
+<error line="38" column="5" severity="error" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/view/LavatorySearchResultsListItemView.java">
+</file>
+<file name="/Users/davidswanson/Documents/cs/403/LavatoryLocator/src/edu/washington/cs/lavatorylocator/view/ReviewListItemView.java">
+<error line="11" severity="error" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck"/>
+<error line="29" column="5" severity="error" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+</file>
+</checkstyle>

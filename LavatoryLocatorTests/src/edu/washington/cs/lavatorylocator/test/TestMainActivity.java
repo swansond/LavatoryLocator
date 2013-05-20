@@ -8,13 +8,13 @@ import android.test.ActivityInstrumentationTestCase2;
  * @author David Swanson
  *
  */
-public class MainActivityTest extends 
+public class TestMainActivity extends 
         ActivityInstrumentationTestCase2<MainActivity> {
 
     /**
      * Required constructor.
      */
-    public MainActivityTest() {
+    public TestMainActivity() {
         super(MainActivity.class);
     }
     

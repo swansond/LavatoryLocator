@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="MainActivity" default="help">
+<project>
 
     <!-- The local.properties file is created and updated by the 'android' tool.
          It contains the path to the SDK. It should *NOT* be checked into
@@ -88,6 +88,8 @@
     -->
     <!-- version-tag: custom -->
     <import file="${sdk.dir}/tools/ant/build.xml" />
+
+    <property name="coverage.dir" value="${basedir}/emma" />
     <taskdef resource="checkstyletask.properties" classpath="${basedir}/libs/checkstyle.jar" />
     <target name="checkstyle">
         <checkstyle config="checkstyle_checks.xml">

@@ -1,7 +1,5 @@
 package edu.washington.cs.lavatorylocator.test;
 
-import org.junit.Test;
-
 import android.content.Context;
 import android.test.ActivityInstrumentationTestCase2;
 
@@ -16,7 +14,7 @@ import edu.washington.cs.lavatorylocator.location.LocationServiceErrorMessages;
  * @author David Swanson
  *
  */
-public class ErrorMessageTest extends 
+public class TestErrorMessage extends 
         ActivityInstrumentationTestCase2<MainActivity> {
 
     private MainActivity a;
@@ -25,7 +23,7 @@ public class ErrorMessageTest extends
     /**
      * Constructs a new ErrorMessageTest.
      */
-    public ErrorMessageTest() {
+    public TestErrorMessage() {
         super(null);
         a = getActivity();
         context = a;
@@ -34,7 +32,6 @@ public class ErrorMessageTest extends
     /**
      * Tests the developer error.
      */
-    @Test
     public void testDeveloper() {
         assertTrue(testMessage(ConnectionResult.DEVELOPER_ERROR, 
                 context.getString(R.string.connection_error_misconfigured)));
@@ -43,7 +40,6 @@ public class ErrorMessageTest extends
     /**
      * Tests the internal connection error.
      */
-    @Test
     public void testInternal() {
         assertTrue(testMessage(ConnectionResult.INTERNAL_ERROR, 
                 context.getString(R.string.connection_error_internal)));
@@ -52,7 +48,7 @@ public class ErrorMessageTest extends
     /**
      * Tests for the invalid account error.
      */
-    @Test
+    
     public void testAccount() {
         assertTrue(testMessage(ConnectionResult.INVALID_ACCOUNT, 
                 context.getString(R.string.connection_error_invalid_account)));
@@ -61,7 +57,6 @@ public class ErrorMessageTest extends
     /**
      * Tests the license check error.
      */
-    @Test
     public void testLicense() {
         assertTrue(testMessage(
                 ConnectionResult.LICENSE_CHECK_FAILED, 
@@ -72,7 +67,6 @@ public class ErrorMessageTest extends
     /**
      * Tests the network connection error.
      */
-    @Test
     public void testNetwork() {
         assertTrue(testMessage(ConnectionResult.NETWORK_ERROR, 
                 context.getString(R.string.connection_error_network)));
@@ -81,7 +75,6 @@ public class ErrorMessageTest extends
     /**
      * Tests the connection error resolution request error.
      */
-    @Test
     public void testResolution() {
         assertTrue(testMessage(ConnectionResult.RESOLUTION_REQUIRED, 
                 context.getString(R.string.connection_error_needs_resolution)));
@@ -90,7 +83,6 @@ public class ErrorMessageTest extends
     /**
      * Tests the service disabled error.
      */
-    @Test
     public void testDisabled() {
         assertTrue(testMessage(ConnectionResult.SERVICE_DISABLED, 
                 context.getString(R.string.connection_error_disabled)));
@@ -99,7 +91,6 @@ public class ErrorMessageTest extends
     /**
      * Tests the invalid connection error.
      */
-    @Test
     public void testInvalid() {
         assertTrue(testMessage(ConnectionResult.SERVICE_INVALID, 
                 context.getString(R.string.connection_error_invalid)));
@@ -108,7 +99,7 @@ public class ErrorMessageTest extends
     /**
      * Tests the missing service error.
      */
-    @Test
+    
     public void testMissing() {
         assertTrue(testMessage(ConnectionResult.SERVICE_MISSING, 
                 context.getString(R.string.connection_error_missing)));
@@ -117,7 +108,7 @@ public class ErrorMessageTest extends
     /**
      * Tests the update required error.
      */
-    @Test
+    
     public void testUpdate() {
         assertTrue(testMessage(
                 ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 
@@ -127,7 +118,6 @@ public class ErrorMessageTest extends
     /**
      * Tests the not signed in error.
      */
-    @Test
     public void testSignin() {
         assertTrue(testMessage(ConnectionResult.SIGN_IN_REQUIRED, 
                 context.getString(R.string.connection_error_sign_in_required)));

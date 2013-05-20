@@ -1,14 +1,9 @@
 package edu.washington.cs.lavatorylocator.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-
+import junit.framework.TestCase;
 import android.test.mock.MockContext;
 import android.view.View;
 import edu.washington.cs.lavatorylocator.adapter.LavatorySearchResultsAdapter;
@@ -21,7 +16,7 @@ import edu.washington.cs.lavatorylocator.view.LavatorySearchResultsListItemView;
  * @author David Swanson
  *
  */
-public class AdapterTest {
+public class TestAdapter extends TestCase {
     private LavatorySearchResultsAdapter adapter;
     private LavatorySearchResults results;
     
@@ -33,7 +28,6 @@ public class AdapterTest {
     /**
      * Setup method to prepare for testing.
      */
-    @Before
     public void setUp() {
 
         results = new LavatorySearchResults(); 
@@ -50,7 +44,6 @@ public class AdapterTest {
     /**
      * Tests if the adapter can handle null values.
      */
-    @Test
     public void testGetViewNull() {
         assertNotNull("GetView properly returns " 
                 + "a non-null value when input is null", 
@@ -60,7 +53,6 @@ public class AdapterTest {
     /**
      * Tests if the adapter returns the proper view.
      */
-    @Test
     public void testGetView() {
         final View v = new LavatorySearchResultsListItemView(new MockContext());
         final View newView = adapter.getView(0, v, null);
