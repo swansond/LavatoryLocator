@@ -108,7 +108,7 @@ public class EditLavatoryDetailActivity extends
      *            the {@link MenuItem} that was selected
      */
     public void submit(MenuItem item) {
-        setProgressBarIndeterminateVisibility(true);
+        getSherlock().setProgressBarIndeterminateVisibility(true);
 
         final String building = ((EditText) findViewById(
                 R.id.activity_add_lavatory_building_name))
@@ -225,13 +225,13 @@ public class EditLavatoryDetailActivity extends
             Toast.makeText(EditLavatoryDetailActivity.this, errorMessage,
                     Toast.LENGTH_LONG).show();
             EditLavatoryDetailActivity.this
-                    .setProgressBarIndeterminateVisibility(false);
+                    .getSherlock().setProgressBarIndeterminateVisibility(false);
         }
 
         @Override
         public void onRequestSuccess(ResponseEntity responseEntity) {
             EditLavatoryDetailActivity.this
-                    .setProgressBarIndeterminateVisibility(false);
+                    .getSherlock().setProgressBarIndeterminateVisibility(false);
 
             // TODO: move to string resources XML file
             final String message = "Submitted!";

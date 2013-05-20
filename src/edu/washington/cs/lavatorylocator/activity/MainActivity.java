@@ -130,7 +130,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
 
         // prepare for the indeterminate progress indicator in the action bar
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setProgressBarIndeterminateVisibility(false);
+        getSherlock().setProgressBarIndeterminateVisibility(false);
 
         // the content view must be set before the following methods, as they
         // access the items within the view
@@ -584,7 +584,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
      * them.
      */
     private void loadAllLavatories() {
-        setProgressBarIndeterminateVisibility(true);
+        getSherlock().setProgressBarIndeterminateVisibility(true);
 
         getSpiceManager().execute(new LavatorySearchRequest(),
                 SEARCH_RESULTS_JSON_CACHE_KEY, JSON_CACHE_DURATION,
@@ -616,7 +616,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
     private void searchForLavatories(String building, String floor,
             String room, double minRating, String type, String latitude,
             String longitude, String radius) {
-        setProgressBarIndeterminateVisibility(true);
+        getSherlock().setProgressBarIndeterminateVisibility(true);
 
         final LavatorySearchRequest lavatorySearchRequest = 
                 new LavatorySearchRequest(
@@ -690,7 +690,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
             Log.e(getLocalClassName(), errorMessage);
             Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG)
                 .show();
-            MainActivity.this.setProgressBarIndeterminateVisibility(false);
+            MainActivity.this.getSherlock().setProgressBarIndeterminateVisibility(false);
         }
 
         @Override
@@ -699,7 +699,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
             MainActivity.this.displayLavatories(lavatorySearchResults
                     .getLavatories());
 
-            MainActivity.this.setProgressBarIndeterminateVisibility(false);
+            MainActivity.this.getSherlock().setProgressBarIndeterminateVisibility(false);
         }
     }
 
@@ -723,12 +723,12 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
             Log.e(getLocalClassName(), errorMessage);
             Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG)
                 .show();
-            MainActivity.this.setProgressBarIndeterminateVisibility(false);
+            MainActivity.this.getSherlock().setProgressBarIndeterminateVisibility(false);
         }
 
         @Override
         public void onRequestSuccess(LavatoryData got2goLavatory) {
-            MainActivity.this.setProgressBarIndeterminateVisibility(false);
+            MainActivity.this.getSherlock().setProgressBarIndeterminateVisibility(false);
 
             showLavatoryDetail(got2goLavatory);
         }

@@ -287,7 +287,7 @@ public class LavatoryDetailActivity extends
      */
     private void loadReviews(String userId, String lavatoryId, String page,
             String sortParam, String sortDirection) {
-        setProgressBarIndeterminateVisibility(true);
+        getSherlock().setProgressBarIndeterminateVisibility(true);
 
         getSpiceManager().execute(
                 new GetLavatoryReviewsRequest(userId, lavatoryId, page,
@@ -334,7 +334,7 @@ public class LavatoryDetailActivity extends
             Toast.makeText(LavatoryDetailActivity.this, errorMessage,
                     Toast.LENGTH_LONG).show();
             LavatoryDetailActivity.this
-            .setProgressBarIndeterminateVisibility(false);
+            .getSherlock().setProgressBarIndeterminateVisibility(false);
         }
 
         @Override
@@ -342,7 +342,7 @@ public class LavatoryDetailActivity extends
             LavatoryDetailActivity.this.displayReviews(reviews.getReviews());
 
             LavatoryDetailActivity.this
-            .setProgressBarIndeterminateVisibility(false);
+            .getSherlock().setProgressBarIndeterminateVisibility(false);
         }
     }
 
