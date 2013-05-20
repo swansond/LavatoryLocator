@@ -75,21 +75,21 @@ public class LavatoryData implements Parcelable {
      * 
      * @param id
      *            the lavatory's id number in the database
-     * @param gender
+     * @param type
      *            the gender allowed to use the lavatory (M/F/U)
-     * @param bldg
+     * @param building
      *            the building the lavatory is in
-     * @param flr
+     * @param floor
      *            the floor the lavatory is on
-     * @param rmNo
+     * @param room
      *            the lavatory's room number
-     * @param lng
-     *            the longitude of the lavatory
-     * @param lat
+     * @param latitude
      *            the latitude of the lavatory
-     * @param numRev
+     * @param longitude
+     *            the longitude of the lavatory
+     * @param reviewCount
      *            the number of reviews the lavatory has
-     * @param rating
+     * @param avgRating
      *            the average rating of the lavatory
      */
     public LavatoryData(int id, char type, String building, String floor,
