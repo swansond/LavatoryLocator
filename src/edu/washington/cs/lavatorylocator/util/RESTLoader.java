@@ -39,19 +39,25 @@ import android.util.Log;
  * its parent Activity to send to the server. It then sends the response back
  * to the Activity to be processed.
  *
- *
  * @author Wil Sunseri
  *
  */
 public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
-    // Our app handles two types or requests, GET and POST
 
+    public static final int TIMEOUT = 5000;
+
+    /**
+     * Our app handles two types or requests, GET and POST
+     */
     public enum requestType {
         GET,
         POST
     }
 
-    // A wrapper that contains the server's response as well as its status code
+    /**
+     * A wrapper that contains the server's response as well as its status
+     * code.
+     */
     public static class RESTResponse implements Parcelable {
         private HttpEntity responseData;
         private int responseCode;
@@ -69,7 +75,9 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
          * Creates a RESTResponse with data and the status code from the server.
          *
          * @param data
+         *              The data sent from the server
          * @param code
+         *              The status code from the server
          */
 
         public RESTResponse(HttpEntity data, int code) {
@@ -188,10 +196,10 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
 
                     final HttpParams httpParameters = new BasicHttpParams();
                     HttpConnectionParams.setConnectionTimeout(httpParameters,
-                            5000);
-                    HttpConnectionParams.setSoTimeout(httpParameters, 5000);
+                            TIMEOUT);
+                    HttpConnectionParams.setSoTimeout(httpParameters, TIMEOUT);
 
-                    final HttpClient client = 
+                    final HttpClient client =
                             new DefaultHttpClient(httpParameters);
 
                     Log.i("tagged", "about to load");
@@ -275,8 +283,14 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
         onStopLoading();
     }
 
-    // private helper method that converts a Bundle of parameters into a List
-    // of pairs that can be used more easily
+    /**
+     * Private helper method that converts a Bundle of parameters into a List
+     * of pairs that can be used more easily.
+     * @param params
+     *              The bundle of parmeters to convert.
+     * @return
+     *              A list of parameters (which are name, value pairs)
+     */
     private List<BasicNameValuePair> makeParamList(Bundle params) {
         final List<BasicNameValuePair> paramList =
                 new LinkedList<BasicNameValuePair>();

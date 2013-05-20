@@ -30,17 +30,20 @@ import edu.washington.cs.lavatorylocator.util.RESTLoader.RESTResponse;
 
 /**
  * {@link android.app.Activity} for adding a review on a lavatory.
- * 
+ *
  * @author Chris Rovillos
  * @author Wil Sunseri
- * 
+ *
  */
 public class AddReviewActivity extends SherlockFragmentActivity implements
         LoaderCallbacks<RESTLoader.RESTResponse> {
 
-    private static final String SUBMIT_REVIEW = 
+    private static final String SUBMIT_REVIEW =
             "http://lavlocdb.herokuapp.com/submitreview.php";
     private static final int MANAGER_ID = 3;
+
+    public static final int POPUP_WIDTH = 350;
+    public static final int POPUP_HEIGHT = 250;
 
     private ProgressDialog loadingScreen;
     private PopupWindow connectionPopup;
@@ -53,7 +56,7 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
 
     /**
      * Starts submitting the entered review to the LavatoryLocator service.
-     * 
+     *
      * @param item
      *            the {@link MenuItem} that was selected
      */
@@ -118,12 +121,12 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
     /**
      * Returns a new Loader to this activity's LoaderManager. NOTE: We never
      * need to call this directly as it is done automatically.
-     * 
+     *
      * @param id
      *            the id of the LoaderManager
      * @param args
      *            the Bundle of arguments to be passed to the Loader
-     * 
+     *
      * @return A Loader to submit a review
      */
     @Override
@@ -136,9 +139,9 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
     /**
      * Thanks the user for their submission if it is successful, or prompts them
      * to try again otherwise.
-     * 
+     *
      * This is called automatically when the load finishes.
-     * 
+     *
      * @param loader
      *            the Loader that did the submission request
      * @param response
@@ -158,7 +161,8 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
             final View layout = inflater.inflate(R.layout.no_connection_popup,
                     (ViewGroup) findViewById(R.id.no_connection_layout));
 
-            connectionPopup = new PopupWindow(layout, 350, 250, true);
+            connectionPopup = new PopupWindow(layout, POPUP_WIDTH,
+                    POPUP_HEIGHT, true);
             connectionPopup.showAtLocation(layout, Gravity.CENTER, 0, 0);
         }
 
@@ -167,7 +171,7 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
     /**
      * Nullifies the data of the Loader being reset so that it can be garbage
      * collected. NOTE: This is called automatically when the Loader is reset.
-     * 
+     *
      * @param loader
      *            the Loader being reset
      */
@@ -178,7 +182,7 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
 
     /**
      * Sends a new review to the server.
-     * 
+     *
      * @param uid
      *            the ID of the user making the review
      * @param lid
@@ -220,7 +224,7 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
 
     /**
      * Retries the previous request and dismisses the popup box.
-     * 
+     *
      * @param target
      *            the popup box View to be dismissed
      */
@@ -231,7 +235,7 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
 
     /**
      * Dismisses the popup box.
-     * 
+     *
      * @param target
      *            the popup box View to be dismissed
      */
