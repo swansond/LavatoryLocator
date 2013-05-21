@@ -14,7 +14,8 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceRequest;
+import com.octo.android.robospice.request.
+    springandroid.SpringAndroidSpiceRequest;
 
 /**
  * Class for updating a review's helpfulness in the LavatoryLocator service.

@@ -69,6 +69,7 @@ public class ReviewListItemView extends RelativeLayout {
         reviewTextView = ((TextView) findViewById(R.id.review_text));
         promptHelpfulText = ((TextView) findViewById(R.id.was_helpful_text));
         markHelpfulButton = ((Button) findViewById(R.id.was_helpful_button));
-        markNotHelpfulButton = ((Button) findViewById(R.id.was_not_helpful_button));
+        markNotHelpfulButton = ((Button) findViewById(
+                R.id.was_not_helpful_button));
     }
 }
