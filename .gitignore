@@ -20,5 +20,6 @@ local.properties
 
 # Checkstyle stuff
 checkstyle-result.xml
+.checkstyle
 
 .DS_Store
