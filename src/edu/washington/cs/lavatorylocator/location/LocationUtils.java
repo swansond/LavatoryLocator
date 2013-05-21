@@ -18,11 +18,11 @@ package edu.washington.cs.lavatorylocator.location;
 
 import android.content.Context;
 import android.location.Location;
-
 import edu.washington.cs.lavatorylocator.R;
 
 /**
  * Defines app-wide constants and utilities.
+ * @author Chris Rovillos
  */
 public final class LocationUtils {
 
@@ -31,7 +31,7 @@ public final class LocationUtils {
      */
     private LocationUtils() {
     }
-    
+
     // Debugging tag for the application
     public static final String APPTAG = "LocationSample";
 
@@ -76,9 +76,13 @@ public final class LocationUtils {
      * Get the latitude and longitude from the Location object returned by
      * Location Services.
      *
-     * @param currentLocation A Location object containing the current location
-     * @return The latitude and longitude of the current location, or null if no
-     * location is available.
+     * @param context
+     *          The context in which this method is called
+     * @param currentLocation
+     *          A Location object containing the current location
+     * @return
+     *          The latitude and longitude of the current location, or null if
+     *          no location is available.
      */
     public static String getLatLng(Context context, Location currentLocation) {
         // If the location is valid

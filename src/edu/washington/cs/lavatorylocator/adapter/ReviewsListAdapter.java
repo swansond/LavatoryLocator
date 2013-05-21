@@ -12,19 +12,19 @@ import edu.washington.cs.lavatorylocator.view.ReviewListItemView;
 /**
  * Custom {@link Adapter} for displaying an array of{@link ReviewData}
  * objects. Inflates the custom {@link View} for each row.
- * 
+ *
  * @author Chris Rovillos
- * 
+ *
  */
 public class ReviewsListAdapter extends ArrayAdapter<ReviewData> {
-    
+
     /**
      * Constructs a new {@code ReviewsListAdapter} with the given
      * {@link List} of {@link ReviewData} objects.
-     * 
+     *
      * @param context
      *            the current context
-     * @param reviewRowResource
+     * @param reviewRowResourceId
      *            the resource ID for a layout file containing the ReviewData
      *            row layout to use when instantiating views
      * @param reviewAuthorTextViewResourceId

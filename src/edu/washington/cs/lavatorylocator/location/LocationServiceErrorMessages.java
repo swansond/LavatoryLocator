@@ -16,24 +16,35 @@
 
 package edu.washington.cs.lavatorylocator.location;
 
-import com.google.android.gms.common.ConnectionResult;
-
 import android.content.Context;
 import android.content.res.Resources;
+
+import com.google.android.gms.common.ConnectionResult;
 
 import edu.washington.cs.lavatorylocator.R;
 
 /**
  * Map error codes to error messages.
+ *
+ * @author Chris Rovillos
  */
 public final class LocationServiceErrorMessages {
 
     /**
-     *  Don't allow instantiation
+     *  Don't allow instantiation.
      */
     private LocationServiceErrorMessages() {
     }
 
+    /**
+     * Returns the error string to print.
+     * @param context
+     *              The context in which the message is to appear
+     * @param errorCode
+     *              The code of the error
+     * @return
+     *              An appropriate error string
+     */
     public static String getErrorString(Context context, int errorCode) {
 
         // Get a handle to resources, to allow the method to retrieve messages.

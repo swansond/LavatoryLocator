@@ -39,10 +39,10 @@ import edu.washington.cs.lavatorylocator.network.UpdateHelpfulnessRequest;
 /**
  * {@link android.app.Activity} for viewing information about a specific
  * lavatory.
- * 
+ *
  * @author Chris Rovillos
  * @author Wil Sunseri
- * 
+ *
  */
 public class LavatoryDetailActivity extends
         JacksonSpringSpiceSherlockFragmentActivity {
@@ -65,9 +65,12 @@ public class LavatoryDetailActivity extends
      * Key for storing the loaded lavatory in persistent storage.
      */
     public static final String LAVATORY_DATA = "lavatoryData";
-    
+
     // TODO: replace when user IDs are implemented
     private static final int STUB_USER_ID = 1;
+
+    public static final int POPUP_WIDTH = 350;
+    public static final int POPUP_HEIGHT = 250;
 
     // ------------------------------------------------------------------
     // INSTANCE VARIABLES
@@ -145,7 +148,7 @@ public class LavatoryDetailActivity extends
         editor.putFloat("Long", (float) lavatory.getLongitude());
         editor.putFloat("Lat", (float) lavatory.getLatitude());
         editor.putInt("NumReviews", lavatory.getReviews());
-        editor.putFloat("Average", (float) lavatory.getAvgRating());
+        editor.putFloat("Average", lavatory.getAvgRating());
         editor.commit();
     }
 
@@ -217,9 +220,7 @@ public class LavatoryDetailActivity extends
             final View layout = inflater.inflate(R.layout.login_popup,
                     (ViewGroup) findViewById(R.id.login_popup_layout));
 
-            final int width = 350;
-            final int height = 250;
-            popup = new PopupWindow(layout, width, height, true);
+            popup = new PopupWindow(layout, POPUP_WIDTH, POPUP_HEIGHT, true);
             popup.showAtLocation(layout, Gravity.CENTER, 0, 0);
         } else {
             final Intent intent = new Intent(this, AddReviewActivity.class);
@@ -403,7 +404,7 @@ public class LavatoryDetailActivity extends
         ((TextView) headerView.findViewById(R.id.lavatory_detail_building_text))
         .setText(lavatory.getBuilding());
         ((RatingBar) headerView.findViewById(R.id.lavatory_detail_rating))
-        .setRating((float) lavatory.getAvgRating());
+        .setRating(lavatory.getAvgRating());
 
         final ListView listView = (ListView) findViewById(
                 R.id.lavatory_detail_list_view);

@@ -2,29 +2,29 @@ package edu.washington.cs.lavatorylocator.adapter;
 
 import java.util.Collection;
 
-import edu.washington.cs.lavatorylocator.model.LavatoryData;
-import edu.washington.cs.lavatorylocator.model.LavatorySearchResults;
-import edu.washington.cs.lavatorylocator.view.LavatorySearchResultsListItemView;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import edu.washington.cs.lavatorylocator.model.LavatoryData;
+import edu.washington.cs.lavatorylocator.model.LavatorySearchResults;
+import edu.washington.cs.lavatorylocator.view.LavatorySearchResultsListItemView;
 
 /**
  * Custom {@link Adapter} for displaying an array of{@link LavatoryData}
  * objects. Inflates the custom {@link View} for each row.
- * 
+ *
  * @author Keith Miller
  * @author Chris Rovillos
- * 
+ *
  */
 public class LavatorySearchResultsAdapter extends ArrayAdapter<LavatoryData> {
 
     /**
      * Constructs a new {@code LavatorySearchResultsAdapter} with no data.
-     * 
+     *
      * @param context
      *            the current context
      * @param resultRowResourceId
@@ -42,7 +42,7 @@ public class LavatorySearchResultsAdapter extends ArrayAdapter<LavatoryData> {
     /**
      * Constructs a new <code>LavatorySearchResultsAdapter</code> with given
      * <code>List</code> of <code>LavatoryData</code>s.
-     * 
+     *
      * @param context
      *            the current context
      * @param resultRowResourceId
@@ -51,8 +51,8 @@ public class LavatorySearchResultsAdapter extends ArrayAdapter<LavatoryData> {
      * @param lavatoryDataNameTextViewResourceId
      *            the id of the {@link TextView} for displaying the
      *            LavatoryData's name in each row
-     * @param reviews
-     *            a {@link List} of {@link ReviewData} objects to display
+     * @param lavatorySearchResults
+     *            a {@link List} of {@link LavatoryData} objects to display
      */
     public LavatorySearchResultsAdapter(Context context,
             int resultRowResourceId, int lavatoryDataNameTextViewResourceId,
@@ -79,8 +79,10 @@ public class LavatorySearchResultsAdapter extends ArrayAdapter<LavatoryData> {
 
     /**
      * This method exists in Android 3.0 and above, but not older versions.
-     * 
+     *
      * @see android.widget.ArrayAdapter#addAll(java.util.Collection)
+     * @param collection
+     *              The collection of LavatoryData to add
      */
     @Override
     public void addAll(Collection<? extends LavatoryData> collection) {

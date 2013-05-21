@@ -18,4 +18,8 @@ local.properties
 # Temporary files
 *.*~
 
+# Checkstyle stuff
+checkstyle-result.xml
+.checkstyle
+
 .DS_Store

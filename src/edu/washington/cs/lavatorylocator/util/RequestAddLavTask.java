@@ -11,9 +11,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.os.AsyncTask;
 
 /**
- * This class sends to the server the data for the bathroom whose addition to 
+ * This class sends to the server the data for the bathroom whose addition to
  * the database is requested.
- * 
+ *
  * @author Wil
  *
  */
@@ -34,7 +34,12 @@ public class RequestAddLavTask extends AsyncTask<HttpPost, Void, HttpResponse> {
         }
     }
 
-    //executes when it finishes the server communication
+    /**
+     * Executes when it finishes the server communication
+     * @param hr
+     *          the response from the server
+     */
+    @Override
     protected void onPostExecute(HttpResponse hr) {
         //toast goes here
     }
