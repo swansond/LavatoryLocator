@@ -24,7 +24,7 @@ public class TestLavatorySearchRequest extends TestCase {
      * Tests constructor.
      * @black
      */
-    public void testConstructor() {
+    public void test_constructor_fullArgs_notNull() {
         lsr = new LavatorySearchRequest(building, floor, room, minRating,
                 type, latitude, longitude, radius);
         assertNotNull(lsr);

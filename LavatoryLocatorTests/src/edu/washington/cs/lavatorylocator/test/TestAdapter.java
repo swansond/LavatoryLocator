@@ -46,7 +46,7 @@ public class TestAdapter extends AndroidTestCase {
      * Tests if the adapter can handle null values.
      * @black
      */
-    public void testGetViewNull() {
+    public void test_getView_inputNull_getNull() {
         assertNotNull("GetView properly returns "
                 + "a non-null value when input is null",
                 adapter.getView(0, null, null));
@@ -56,7 +56,7 @@ public class TestAdapter extends AndroidTestCase {
      * Tests if the adapter returns the proper view.
      * @black
      */
-    public void testGetView() {
+    public void test_getView_usualCase_getNewView() {
         final View v = new LavatorySearchResultsListItemView(getContext());
         final View newView = adapter.getView(0, v, null);
         assertEquals("GetView retains view if valid", v, newView);

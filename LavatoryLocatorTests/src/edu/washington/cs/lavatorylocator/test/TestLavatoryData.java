@@ -23,22 +23,21 @@ public class TestLavatoryData extends TestCase {
     private final float avgRating = (float) 3.14;
 
     /**
-     * Tests the basic constructor.
+     * Tests that the full constructor does not return null
      * @black
      */
-    public void testBasicConstructor() {
-        ld = new LavatoryData();
+    public void test_constructor_fullArgs_notNull() {
+        ld = new LavatoryData(lid, type, building, floor, room,
+                latitude, longitude, reviews, avgRating);
         assertNotNull(ld);
     }
-
     /**
      * Tests the full constructor and getters.
      * @black
      */
-    public void testFullConstructor() {
+    public void test_getters_usualCase_expectedValues() {
         ld = new LavatoryData(lid, type, building, floor, room,
                     latitude, longitude, reviews, avgRating);
-        assertNotNull(ld);
         assertEquals(lid, ld.getLid());
         assertEquals(type, ld.getType());
         assertEquals(building, ld.getBuilding());
@@ -92,7 +91,7 @@ public class TestLavatoryData extends TestCase {
      * Tests the built name.
      * @white
      */
-    public void testGetName() {
+    public void test_getName_usualCase_expectedValue() {
         ld = new LavatoryData(lid, type, building, floor, room,
                     latitude, longitude, reviews, avgRating);
         final String name = "Room " + room + ", " + type + ", Floor " + floor
@@ -104,7 +103,7 @@ public class TestLavatoryData extends TestCase {
      * Test parceling.
      * @black
      */
-    public void testParcelable() {
+    public void test_parceling_usualCase_expectedValue() {
         final Bundle b = new Bundle();
         final int testLid = 403;
         final LavatoryData c = new LavatoryData();

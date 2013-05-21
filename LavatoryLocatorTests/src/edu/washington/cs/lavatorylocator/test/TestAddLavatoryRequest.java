@@ -23,7 +23,7 @@ public class TestAddLavatoryRequest extends TestCase {
      * Tests constructor.
      * @black
      */
-    public void testConstructor() {
+    public void test_constructor_usualCase_newRequest() {
         uid = 0;
         building = "CSE";
         floor = "B";

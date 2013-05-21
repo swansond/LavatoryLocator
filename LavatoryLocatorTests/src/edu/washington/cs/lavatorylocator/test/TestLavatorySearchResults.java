@@ -18,7 +18,7 @@ public class TestLavatorySearchResults extends TestCase {
      * Test basic get and set.
      * @black
      */
-    public void testGetAndSet() {
+    public void test_gettersSetters_usualCase_expectedValues() {
         final LavatorySearchResults lsr = new LavatorySearchResults();
         final List<LavatoryData> exp = new LinkedList<LavatoryData>();
         lsr.setLavatories(exp);

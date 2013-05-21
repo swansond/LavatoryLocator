@@ -39,7 +39,7 @@ public class TestErrorMessage extends
      * Tests the developer error.
      * @black
      */
-    public void testDeveloper() {
+    public void test_developerError_getExpectedString() {
         assertTrue(testMessage(ConnectionResult.DEVELOPER_ERROR,
                 context.getString(R.string.connection_error_misconfigured)));
     }
@@ -48,7 +48,7 @@ public class TestErrorMessage extends
      * Tests the internal connection error.
      * @black
      */
-    public void testInternal() {
+    public void test_internalConnectError_getExpectedString() {
         assertTrue(testMessage(ConnectionResult.INTERNAL_ERROR,
                 context.getString(R.string.connection_error_internal)));
     }
@@ -58,7 +58,7 @@ public class TestErrorMessage extends
      * @black
      */
 
-    public void testAccount() {
+    public void test_invalidAccountError_getExpectedString() {
         assertTrue(testMessage(ConnectionResult.INVALID_ACCOUNT,
                 context.getString(R.string.connection_error_invalid_account)));
     }
@@ -67,7 +67,7 @@ public class TestErrorMessage extends
      * Tests the license check error.
      * @black
      */
-    public void testLicense() {
+    public void test_licenseCheckError_getExpectedString() {
         assertTrue(testMessage(
                 ConnectionResult.LICENSE_CHECK_FAILED,
                 context.getString(
@@ -78,16 +78,16 @@ public class TestErrorMessage extends
      * Tests the network connection error.
      * @black
      */
-    public void testNetwork() {
+    public void test_networkConnectionError_getExpectedString() {
         assertTrue(testMessage(ConnectionResult.NETWORK_ERROR,
                 context.getString(R.string.connection_error_network)));
     }
 
     /**
-     * Tests the connection error resolution request error.
+     * Tests the resolution request error.
      * @black
      */
-    public void testResolution() {
+    public void test_resolutionRequestError_getExpectedString() {
         assertTrue(testMessage(ConnectionResult.RESOLUTION_REQUIRED,
                 context.getString(R.string.connection_error_needs_resolution)));
     }
@@ -96,7 +96,7 @@ public class TestErrorMessage extends
      * Tests the service disabled error.
      * @black
      */
-    public void testDisabled() {
+    public void test_serviceDisabledError_getExpectedString() {
         assertTrue(testMessage(ConnectionResult.SERVICE_DISABLED,
                 context.getString(R.string.connection_error_disabled)));
     }
@@ -105,7 +105,7 @@ public class TestErrorMessage extends
      * Tests the invalid connection error.
      * @black
      */
-    public void testInvalid() {
+    public void test_invalidConnectionError_getExpectedString() {
         assertTrue(testMessage(ConnectionResult.SERVICE_INVALID,
                 context.getString(R.string.connection_error_invalid)));
     }
@@ -115,7 +115,7 @@ public class TestErrorMessage extends
      * @black
      */
 
-    public void testMissing() {
+    public void test_missingServicError_getExpectedString() {
         assertTrue(testMessage(ConnectionResult.SERVICE_MISSING,
                 context.getString(R.string.connection_error_missing)));
     }
@@ -125,7 +125,7 @@ public class TestErrorMessage extends
      * @black
      */
 
-    public void testUpdate() {
+    public void test_updateRequiredError_getExpectedString() {
         assertTrue(testMessage(
                 ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED,
                 context.getString(R.string.connection_error_outdated)));
@@ -135,7 +135,7 @@ public class TestErrorMessage extends
      * Tests the not signed in error.
      * @black
      */
-    public void testSignin() {
+    public void test_notSignedInError_getExpectedString() {
         assertTrue(testMessage(ConnectionResult.SIGN_IN_REQUIRED,
                 context.getString(R.string.connection_error_sign_in_required)));
     }
