@@ -23,3 +23,4 @@ checkstyle-result.xml
 .checkstyle
 
 .DS_Store
+unit_tests_log.txt
