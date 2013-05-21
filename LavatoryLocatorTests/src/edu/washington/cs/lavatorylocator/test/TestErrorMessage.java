@@ -24,9 +24,9 @@ public class TestErrorMessage extends
      * Constructs a new ErrorMessageTest.
      */
     public TestErrorMessage() {
-        super(null);
-        a = getActivity();
-        context = a;
+        super(MainActivity.class);
+        a = this.getActivity();
+        context = a.getBaseContext();
     }
 
     /**
