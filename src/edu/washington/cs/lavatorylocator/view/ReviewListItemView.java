@@ -2,7 +2,6 @@ package edu.washington.cs.lavatorylocator.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;

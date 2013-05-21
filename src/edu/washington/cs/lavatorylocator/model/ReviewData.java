@@ -191,7 +191,7 @@ public class ReviewData {
     /**
      * Sets this review's ID number.
      * 
-     * @param datetime
+     * @param reviewId
      *            this review's ID number, as represented in an int
      */
     public void setReviewId(int reviewId) {

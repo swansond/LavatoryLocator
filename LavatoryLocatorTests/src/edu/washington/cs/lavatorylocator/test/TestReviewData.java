@@ -54,6 +54,9 @@ public class TestReviewData extends TestCase {
                 helpfulnessTestReviewData.getHelpfulness());
     }
     
+    /**
+     * Tests the lid stuff.
+     */
     public void test_getLid_lidIs403_gets403() {
         final ReviewData lidTestReviewData = new ReviewData();
         final int expectedTestLid = 403;
@@ -61,6 +64,9 @@ public class TestReviewData extends TestCase {
         assertEquals(expectedTestLid, lidTestReviewData.getLid());
     }
     
+    /**
+     * Tests the get rating feature.
+     */
     public void test_getRating_ratingIs4point03_gets4point03() {
         final ReviewData ratingTestReviewData = new ReviewData();
         final float expectedTestRating = 4.03f;
@@ -69,6 +75,9 @@ public class TestReviewData extends TestCase {
                 ratingTestReviewData.getRating());
     }
     
+    /**
+     * Tests the get review system.
+     */
     public void test_getReview_reviewIsSoUnhelpful_getsSoUnhelpful() {
         final ReviewData reviewTestReviewData = new ReviewData();
         final String expectedTestReview = "So unhelpful";
@@ -76,6 +85,9 @@ public class TestReviewData extends TestCase {
         assertEquals(expectedTestReview, reviewTestReviewData.getReview());
     }
     
+    /**
+     * Tests the uservoting system.
+     */
     public void test_getUservote_uservoteIs403_gets403() {
         final ReviewData uservoteTestReviewData = new ReviewData();
         final int expectedTestUservote = 403;
