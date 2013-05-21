@@ -17,6 +17,7 @@ public class TestLavatoryMapMarkerOptionsFactory extends TestCase {
 
     /**
      * Tests the creation method if passed a null parameter.
+     * @black
      */
     public void test_createLavatoryMapMarkerOptions_null_throwsException() {
         final LavatoryData nullData = null;
@@ -35,6 +36,7 @@ public class TestLavatoryMapMarkerOptionsFactory extends TestCase {
 
     /**
      * Tests the usual case with a generic lavatorydata object.
+     * @black
      */
     public void test_createLavatoryMapMarkerOptions_usual_returnsExpected() {
         final LavatoryData toParse;

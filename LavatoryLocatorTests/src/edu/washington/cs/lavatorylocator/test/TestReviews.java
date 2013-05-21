@@ -15,15 +15,16 @@ import junit.framework.TestCase;
 public class TestReviews extends TestCase {
 
     private Reviews revs;
-    
+
     /**
      * Test the basic getting and setting.
+     * @black
      */
-    public void testGetAndSet() {
+    public void test_gettersSetters_usualCase_expectedValues() {
         revs = new Reviews();
         final List<ReviewData> expected = new LinkedList<ReviewData>();
         revs.setReviews(expected);
         assertEquals(expected, revs.getReviews());
     }
-    
+
 }

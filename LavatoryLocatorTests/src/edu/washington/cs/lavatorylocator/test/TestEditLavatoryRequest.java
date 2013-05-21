@@ -1,38 +1,39 @@
 package edu.washington.cs.lavatorylocator.test;
 
-import edu.washington.cs.lavatorylocator.network.AddLavatoryRequest;
 import junit.framework.TestCase;
+import edu.washington.cs.lavatorylocator.network.EditLavatoryDetailRequest;
 
 /**
- * Tests for AddLavatoryRequest class.
- * @author Aasav Prakash
- *
+ * Tests for EditLavatoryRequest class.
+ * @author David Swanson
+ * @black
  */
-public class TestAddLavatoryRequest extends TestCase {
+public class TestEditLavatoryRequest extends TestCase {
 
-    private AddLavatoryRequest alr;
+    private EditLavatoryDetailRequest eldr;
     private int uid;
+    private int lid;
     private String building;
     private String floor;
     private String room;
     private char type;
     private double latitude;
     private double longitude;
-
+    
     /**
      * Tests constructor.
-     * @black
      */
-    public void test_constructor_usualCase_newRequest() {
+    public void testConstructor() {
         uid = 0;
+        lid = 0;
         building = "CSE";
         floor = "B";
         room = "B100";
         type = 'M';
         latitude = 00.00;
         longitude = 00.00;
-        alr = new AddLavatoryRequest(uid, building, floor, room, type,
-                latitude, longitude);
-        assertNotNull(alr);
+        eldr = new EditLavatoryDetailRequest(uid, lid, building, floor, 
+                room, type, latitude, longitude);
+        assertNotNull(eldr);
     }
 }
