@@ -51,7 +51,6 @@ public class ReviewsListAdapter extends ArrayAdapter<ReviewData> {
         }
 
         ((ReviewListItemView) view).updateView(currentItem);
-
         return view;
     }
 }

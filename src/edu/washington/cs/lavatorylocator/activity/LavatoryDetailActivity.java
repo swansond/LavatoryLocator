@@ -268,18 +268,12 @@ public class LavatoryDetailActivity extends
             getSherlock().setProgressBarIndeterminateVisibility(true);
             final int uid = STUB_USER_ID;  
             // TODO: change once facebook login works
-            final int reviewId = (Integer) v.getTag();
+            final int reviewId = (Integer) v.getId();
             final int helpful = 1;
 
-            Toast.makeText(this, "uid: " + uid + " reviewId: " + reviewId
+            /*Toast.makeText(this, "uid: " + uid + " reviewId: " + reviewId
                     + " helpful: " + helpful,
-                    Toast.LENGTH_LONG).show();
-            try { 
-                final int len = 1000;
-                Thread.sleep(len); 
-            } catch (Exception e) { 
-                e.printStackTrace();
-            }
+                    Toast.LENGTH_LONG).show();*/ // for debugging
             SpringAndroidSpiceRequest<ResponseEntity> request;
 
             request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
@@ -313,18 +307,12 @@ public class LavatoryDetailActivity extends
             getSherlock().setProgressBarIndeterminateVisibility(true);
             // TODO: change once facebook login works
             final int uid = STUB_USER_ID; 
-            final int reviewId = (Integer) v.getTag();
+            final int reviewId = (Integer) v.getId();
             final int helpful = -1;
             SpringAndroidSpiceRequest<ResponseEntity> request;
-            Toast.makeText(this, "uid: " + uid + " reviewId: " + reviewId
+            /*Toast.makeText(this, "uid: " + uid + " reviewId: " + reviewId
                     + " helpful: " + helpful,
-                    Toast.LENGTH_LONG).show();
-            try { 
-                final int len = 1000;
-                Thread.sleep(len); 
-            } catch (Exception e) { 
-                e.printStackTrace();
-            }
+                    Toast.LENGTH_LONG).show();*/ // for debugging
             request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
             getSpiceManager().execute(request,
                     new UpdateHelpfulnessRequestListener());
