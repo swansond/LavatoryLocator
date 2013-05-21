@@ -1,8 +1,6 @@
 package edu.washington.cs.lavatorylocator.test;
 
 import junit.framework.TestCase;
-import android.os.Bundle;
-import edu.washington.cs.lavatorylocator.model.LavatoryData;
 
 /**
  * Tests for the main activity.
