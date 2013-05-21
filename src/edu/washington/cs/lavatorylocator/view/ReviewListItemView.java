@@ -51,7 +51,9 @@ public class ReviewListItemView extends RelativeLayout {
         
         // Set up the call-backs for the helpfulness buttons
         markHelpfulButton.setTag(new Integer(reviewId));
+        markHelpfulButton.setId(reviewId);
         markNotHelpfulButton.setTag(new Integer(reviewId));
+        markNotHelpfulButton.setId(reviewId);
     }
 
     /**
