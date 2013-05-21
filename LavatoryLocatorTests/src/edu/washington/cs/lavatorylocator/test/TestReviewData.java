@@ -11,13 +11,20 @@ import junit.framework.TestCase;
  */
 public class TestReviewData extends TestCase {
     
-    private final int FOUROHTHREE = 403;
+    private static final int FOUROHTHREE = 403;
+    private static final float FOURPOINTOHTHREE = 4.03f;
     
+    /**
+     * Tests the constructor.
+     */
     public void test_reviewDataConstructor_new_isNotNull() {
         final ReviewData constructorTestReviewData = new ReviewData();
         assertTrue(constructorTestReviewData != null);
     }
     
+    /**
+     * Tests the getAuthor method.
+     */
     public void test_getAuthor_idIs403_getsUser403() {
         final ReviewData uidTestReviewData = new ReviewData();
         final String expectedTestUid = "User 403";
@@ -25,6 +32,9 @@ public class TestReviewData extends TestCase {
         assertEquals(expectedTestUid, uidTestReviewData.getAuthor());
     }
     
+    /**
+     * Tests the getDatetime method.
+     */
     public void test_getDatetime_datetimeIsToday_getsToday() {
         final ReviewData datetimeTestReviewData = new ReviewData();
         final String expectedTestDatetime = "Today";
@@ -33,6 +43,9 @@ public class TestReviewData extends TestCase {
                 datetimeTestReviewData.getDatetime());
     }
     
+    /**
+     * Tests the getHelpfulness method.
+     */
     public void test_getHelpfulness_helpfulnessIs403_gets403() {
         final ReviewData helpfulnessTestReviewData = new ReviewData();
         final int expectedTestHelpfulness = 403;
@@ -51,7 +64,7 @@ public class TestReviewData extends TestCase {
     public void test_getRating_ratingIs4point03_gets4point03() {
         final ReviewData ratingTestReviewData = new ReviewData();
         final float expectedTestRating = 4.03f;
-        ratingTestReviewData.setRating(4.03f);
+        ratingTestReviewData.setRating(FOURPOINTOHTHREE);
         assertEquals(expectedTestRating,
                 ratingTestReviewData.getRating());
     }
