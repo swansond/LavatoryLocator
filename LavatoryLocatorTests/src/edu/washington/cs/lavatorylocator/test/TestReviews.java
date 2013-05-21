@@ -15,9 +15,10 @@ import junit.framework.TestCase;
 public class TestReviews extends TestCase {
 
     private Reviews revs;
-    
+
     /**
      * Test the basic getting and setting.
+     * @black
      */
     public void testGetAndSet() {
         revs = new Reviews();
@@ -25,5 +26,5 @@ public class TestReviews extends TestCase {
         revs.setReviews(expected);
         assertEquals(expected, revs.getReviews());
     }
-    
+
 }

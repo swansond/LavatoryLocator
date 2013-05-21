@@ -14,14 +14,15 @@ import edu.washington.cs.lavatorylocator.location.LocationServiceErrorMessages;
  * @author David Swanson
  *
  */
-public class TestErrorMessage extends 
+public class TestErrorMessage extends
         ActivityInstrumentationTestCase2<MainActivity> {
 
     private MainActivity a;
     private Context context;
-    
+
     /**
      * Constructs a new ErrorMessageTest.
+     * @black
      */
     public TestErrorMessage() {
         super(MainActivity.class);
@@ -32,102 +33,113 @@ public class TestErrorMessage extends
         a = getActivity();
         context = a.getBaseContext();
     }
-    
-    
+
+
     /**
      * Tests the developer error.
+     * @black
      */
     public void testDeveloper() {
-        assertTrue(testMessage(ConnectionResult.DEVELOPER_ERROR, 
+        assertTrue(testMessage(ConnectionResult.DEVELOPER_ERROR,
                 context.getString(R.string.connection_error_misconfigured)));
     }
-    
+
     /**
      * Tests the internal connection error.
+     * @black
      */
     public void testInternal() {
-        assertTrue(testMessage(ConnectionResult.INTERNAL_ERROR, 
+        assertTrue(testMessage(ConnectionResult.INTERNAL_ERROR,
                 context.getString(R.string.connection_error_internal)));
     }
-    
+
     /**
      * Tests for the invalid account error.
+     * @black
      */
-    
+
     public void testAccount() {
-        assertTrue(testMessage(ConnectionResult.INVALID_ACCOUNT, 
+        assertTrue(testMessage(ConnectionResult.INVALID_ACCOUNT,
                 context.getString(R.string.connection_error_invalid_account)));
     }
-    
+
     /**
      * Tests the license check error.
+     * @black
      */
     public void testLicense() {
         assertTrue(testMessage(
-                ConnectionResult.LICENSE_CHECK_FAILED, 
+                ConnectionResult.LICENSE_CHECK_FAILED,
                 context.getString(
                         R.string.connection_error_license_check_failed)));
     }
-    
+
     /**
      * Tests the network connection error.
+     * @black
      */
     public void testNetwork() {
-        assertTrue(testMessage(ConnectionResult.NETWORK_ERROR, 
+        assertTrue(testMessage(ConnectionResult.NETWORK_ERROR,
                 context.getString(R.string.connection_error_network)));
     }
-    
+
     /**
      * Tests the connection error resolution request error.
+     * @black
      */
     public void testResolution() {
-        assertTrue(testMessage(ConnectionResult.RESOLUTION_REQUIRED, 
+        assertTrue(testMessage(ConnectionResult.RESOLUTION_REQUIRED,
                 context.getString(R.string.connection_error_needs_resolution)));
     }
-    
+
     /**
      * Tests the service disabled error.
+     * @black
      */
     public void testDisabled() {
-        assertTrue(testMessage(ConnectionResult.SERVICE_DISABLED, 
+        assertTrue(testMessage(ConnectionResult.SERVICE_DISABLED,
                 context.getString(R.string.connection_error_disabled)));
     }
-    
+
     /**
      * Tests the invalid connection error.
+     * @black
      */
     public void testInvalid() {
-        assertTrue(testMessage(ConnectionResult.SERVICE_INVALID, 
+        assertTrue(testMessage(ConnectionResult.SERVICE_INVALID,
                 context.getString(R.string.connection_error_invalid)));
     }
-    
+
     /**
      * Tests the missing service error.
+     * @black
      */
-    
+
     public void testMissing() {
-        assertTrue(testMessage(ConnectionResult.SERVICE_MISSING, 
+        assertTrue(testMessage(ConnectionResult.SERVICE_MISSING,
                 context.getString(R.string.connection_error_missing)));
     }
-    
+
     /**
      * Tests the update required error.
+     * @black
      */
-    
+
     public void testUpdate() {
         assertTrue(testMessage(
-                ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 
+                ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED,
                 context.getString(R.string.connection_error_outdated)));
     }
-    
+
     /**
      * Tests the not signed in error.
+     * @black
      */
     public void testSignin() {
-        assertTrue(testMessage(ConnectionResult.SIGN_IN_REQUIRED, 
+        assertTrue(testMessage(ConnectionResult.SIGN_IN_REQUIRED,
                 context.getString(R.string.connection_error_sign_in_required)));
     }
-    
+
     /**
      * Helper method for testing an error.
      * @param errorCode The error code to test

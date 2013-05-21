@@ -16,6 +16,7 @@ public class TestLavatorySearchResults extends TestCase {
 
     /**
      * Test basic get and set.
+     * @black
      */
     public void testGetAndSet() {
         final LavatorySearchResults lsr = new LavatorySearchResults();
@@ -23,5 +24,5 @@ public class TestLavatorySearchResults extends TestCase {
         lsr.setLavatories(exp);
         assertEquals(exp, lsr.getLavatories());
     }
-    
+
 }
