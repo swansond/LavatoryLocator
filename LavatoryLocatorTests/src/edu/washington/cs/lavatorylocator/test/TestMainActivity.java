@@ -14,12 +14,12 @@ public class TestMainActivity extends TestCase {
      */
     public TestMainActivity() {
     }
-    
+
     /**
      * Basic test for testing testing.
      */
     public void testCreation() {
         assertTrue("Hello" != null);
     }
-    
+
 }

@@ -18,11 +18,12 @@ public class TestAddLavatoryRequest extends TestCase {
     private char type;
     private double latitude;
     private double longitude;
-    
+
     /**
      * Tests constructor.
+     * @black
      */
-    public void testConstructor() {
+    public void test_constructor_usualCase_newRequest() {
         uid = 0;
         building = "CSE";
         floor = "B";
@@ -30,7 +31,7 @@ public class TestAddLavatoryRequest extends TestCase {
         type = 'M';
         latitude = 00.00;
         longitude = 00.00;
-        alr = new AddLavatoryRequest(uid, building, floor, room, type, 
+        alr = new AddLavatoryRequest(uid, building, floor, room, type,
                 latitude, longitude);
         assertNotNull(alr);
     }
