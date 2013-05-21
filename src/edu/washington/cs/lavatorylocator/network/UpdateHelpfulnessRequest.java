@@ -17,13 +17,13 @@ import org.springframework.util.MultiValueMap;
 import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceRequest;
 
 /**
- * Class for updating a review's helpfulness in the LavatoryLocator service
+ * Class for updating a review's helpfulness in the LavatoryLocator service.
  * 
  * @author Keith Miller
  *
  */
 public class UpdateHelpfulnessRequest extends
-        SpringAndroidSpiceRequest<ResponseEntity>{
+        SpringAndroidSpiceRequest<ResponseEntity> {
     
     private static final String MARK_HELPFUL_SERVICE_URL = 
             "http://lavlocdb.herokuapp.com/submithelpful.php";
@@ -47,7 +47,7 @@ public class UpdateHelpfulnessRequest extends
      * @param helpful
      *            the helpfulness value to update
      */
-    public UpdateHelpfulnessRequest(int uid, int reviewId, int helpful){
+    public UpdateHelpfulnessRequest(int uid, int reviewId, int helpful) {
         super(ResponseEntity.class);
         
         this.uid = uid;
