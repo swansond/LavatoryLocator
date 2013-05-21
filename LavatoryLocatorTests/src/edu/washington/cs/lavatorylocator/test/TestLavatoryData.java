@@ -23,7 +23,7 @@ public class TestLavatoryData extends TestCase {
     private final float avgRating = (float) 3.14;
 
     /**
-     * Tests that the full constructor does not return null
+     * Tests that the full constructor does not return null.
      * @black
      */
     public void test_constructor_fullArgs_notNull() {
