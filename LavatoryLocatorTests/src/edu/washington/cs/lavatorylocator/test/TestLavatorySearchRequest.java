@@ -11,15 +11,22 @@ import junit.framework.TestCase;
 public class TestLavatorySearchRequest extends TestCase {
 
     private LavatorySearchRequest lsr;
-    private String building;
-    private String floor;
-    private String room;
-    private double minRating;
-    private String type;
-    private String latitude;
-    private String longitude;
-    private String radius;
+    private final String building = "CSE";
+    private final String floor = "B";
+    private final String room = "B100";
+    private final double minRating = 1.0;
+    private final String type = "M";
+    private final String latitude = "42.42";
+    private final String longitude = "42.42";
+    private final String radius = "1.0";
     
-    
+    /**
+     * Tests constructor.
+     */
+    public void testConstructor() {
+        lsr = new LavatorySearchRequest(building, floor, room, minRating,
+                type, latitude, longitude, radius);
+        assertNotNull(lsr);
+    }
     
 }
