@@ -3,62 +3,71 @@ package edu.washington.cs.lavatorylocator.test;
 import edu.washington.cs.lavatorylocator.model.ReviewData;
 import junit.framework.TestCase;
 
-
+/**
+ * TestReviewData class contains tests for the ReviewData class.
+ * 
+ * @author Wil
+ *
+ */
 public class TestReviewData extends TestCase {
     
+    private final int FOUROHTHREE = 403;
+    
     public void test_reviewDataConstructor_new_isNotNull() {
-        ReviewData constructorTestReviewData = new ReviewData();
+        final ReviewData constructorTestReviewData = new ReviewData();
         assertTrue(constructorTestReviewData != null);
     }
     
     public void test_getAuthor_idIs403_getsUser403() {
-        ReviewData uidTestReviewData = new ReviewData();
-        String expectedTestUid = "User 403";
-        uidTestReviewData.setUid(403);
+        final ReviewData uidTestReviewData = new ReviewData();
+        final String expectedTestUid = "User 403";
+        uidTestReviewData.setUid(FOUROHTHREE);
         assertEquals(expectedTestUid, uidTestReviewData.getAuthor());
     }
     
     public void test_getDatetime_datetimeIsToday_getsToday() {
-        ReviewData datetimeTestReviewData = new ReviewData();
-        String expectedTestDatetime = "Today";
+        final ReviewData datetimeTestReviewData = new ReviewData();
+        final String expectedTestDatetime = "Today";
         datetimeTestReviewData.setDatetime("Today");
-        assertEquals(expectedTestDatetime, datetimeTestReviewData
-                .getDatetime());
+        assertEquals(expectedTestDatetime, 
+                datetimeTestReviewData.getDatetime());
     }
     
     public void test_getHelpfulness_helpfulnessIs403_gets403() {
-        ReviewData helpfulnessTestReviewData = new ReviewData();
-        int expectedTestHelpfulness = 403;
-        helpfulnessTestReviewData.setHelpfulness(403);
-        assertEquals(expectedTestHelpfulness, helpfulnessTestReviewData
-                .getHelpfulness());
+        final ReviewData helpfulnessTestReviewData = new ReviewData();
+        final int expectedTestHelpfulness = 403;
+        helpfulnessTestReviewData.setHelpfulness(FOUROHTHREE);
+        assertEquals(expectedTestHelpfulness, 
+                helpfulnessTestReviewData.getHelpfulness());
     }
     
     public void test_getLid_lidIs403_gets403() {
-        ReviewData lidTestReviewData = new ReviewData();
-        int expectedTestLid = 403;
-        lidTestReviewData.setLid(403);
+        final ReviewData lidTestReviewData = new ReviewData();
+        final int expectedTestLid = 403;
+        lidTestReviewData.setLid(FOUROHTHREE);
         assertEquals(expectedTestLid, lidTestReviewData.getLid());
     }
     
     public void test_getRating_ratingIs4point03_gets4point03() {
-        ReviewData ratingTestReviewData = new ReviewData();
-        float expectedTestRating = 4.03f;
+        final ReviewData ratingTestReviewData = new ReviewData();
+        final float expectedTestRating = 4.03f;
         ratingTestReviewData.setRating(4.03f);
-        assertEquals(expectedTestRating, ratingTestReviewData.getRating());
+        assertEquals(expectedTestRating,
+                ratingTestReviewData.getRating());
     }
     
     public void test_getReview_reviewIsSoUnhelpful_getsSoUnhelpful() {
-        ReviewData reviewTestReviewData = new ReviewData();
-        String expectedTestReview = "So unhelpful";
+        final ReviewData reviewTestReviewData = new ReviewData();
+        final String expectedTestReview = "So unhelpful";
         reviewTestReviewData.setReview("So unhelpful");
         assertEquals(expectedTestReview, reviewTestReviewData.getReview());
     }
     
     public void test_getUservote_uservoteIs403_gets403() {
-        ReviewData uservoteTestReviewData = new ReviewData();
-        int expectedTestUservote = 403;
-        uservoteTestReviewData.setUservote(403);
-        assertEquals(expectedTestUservote, uservoteTestReviewData.getUservote());
+        final ReviewData uservoteTestReviewData = new ReviewData();
+        final int expectedTestUservote = 403;
+        uservoteTestReviewData.setUservote(FOUROHTHREE);
+        assertEquals(expectedTestUservote, 
+                uservoteTestReviewData.getUservote());
     }
 }
