@@ -20,15 +20,17 @@ public class TestLavatoryMapMarkerOptionsFactory extends TestCase {
      */
     public void test_createLavatoryMapMarkerOptions_null_throwsException() {
         final LavatoryData nullData = null;
-
+        boolean flag = true;
         try {
             LavatoryMapMarkerOptionsFactory
                 .createLavatoryMapMarkerOptions(nullData);
         } catch (NullPointerException e) {
             assertTrue(true);
+            flag = false;
         }
-
-        assertTrue(false);
+        if (flag) {
+            fail();
+        }
     }
 
     /**
@@ -50,7 +52,7 @@ public class TestLavatoryMapMarkerOptionsFactory extends TestCase {
         actual = LavatoryMapMarkerOptionsFactory
                 .createLavatoryMapMarkerOptions(toParse);
 
-        assertEquals(expected, actual);
+        assertEquals(expected.getPosition(), actual.getPosition());
     }
 
 }

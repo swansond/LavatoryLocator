@@ -25,10 +25,15 @@ public class TestErrorMessage extends
      */
     public TestErrorMessage() {
         super(MainActivity.class);
-        a = this.getActivity();
-        context = a.getBaseContext();
     }
 
+    @Override
+    public void setUp() {
+        a = getActivity();
+        context = a.getBaseContext();
+    }
+    
+    
     /**
      * Tests the developer error.
      */

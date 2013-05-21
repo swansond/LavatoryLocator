@@ -3,8 +3,8 @@ package edu.washington.cs.lavatorylocator.test;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
-import android.test.mock.MockContext;
+import android.content.Context;
+import android.test.AndroidTestCase;
 import android.view.View;
 import edu.washington.cs.lavatorylocator.adapter.LavatorySearchResultsAdapter;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
@@ -16,7 +16,7 @@ import edu.washington.cs.lavatorylocator.view.LavatorySearchResultsListItemView;
  * @author David Swanson
  *
  */
-public class TestAdapter extends TestCase {
+public class TestAdapter extends AndroidTestCase {
     private LavatorySearchResultsAdapter adapter;
     private LavatorySearchResults results;
     
@@ -29,7 +29,7 @@ public class TestAdapter extends TestCase {
      * Setup method to prepare for testing.
      */
     public void setUp() {
-
+        final Context context = getContext();
         results = new LavatorySearchResults(); 
         final List<LavatoryData> list = new ArrayList<LavatoryData>();
         list.add(new LavatoryData(
@@ -38,7 +38,7 @@ public class TestAdapter extends TestCase {
                 TEST_INT_ONE, TEST_INT_TWO));
         results.setLavatories(list);
         adapter = new LavatorySearchResultsAdapter(
-                new MockContext(), 0, TEST_INT_ONE, results);
+                context, 0, TEST_INT_ONE, results);
     }
 
     /**
@@ -54,7 +54,7 @@ public class TestAdapter extends TestCase {
      * Tests if the adapter returns the proper view.
      */
     public void testGetView() {
-        final View v = new LavatorySearchResultsListItemView(new MockContext());
+        final View v = new LavatorySearchResultsListItemView(getContext());
         final View newView = adapter.getView(0, v, null);
         assertEquals("GetView retains view if valid", v, newView);
     }

@@ -89,6 +89,8 @@
     <!-- version-tag: custom -->
     <import file="${sdk.dir}/tools/ant/build.xml" />
 
+    <property name="coverage.dir" value="${basedir}/emma" />
+
     <target name="unittests" depends="debug,install" >
         <property name="unittestlog.file" value="unit_tests_log.txt" />
         <record name="${unittestlog.file}" action="start" />

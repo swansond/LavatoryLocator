@@ -19,7 +19,7 @@ public class TestMainActivity extends TestCase {
      * Basic test for testing testing.
      */
     public void testCreation() {
-        assertTrue("Hello" == null);
+        assertTrue("Hello" != null);
     }
     
 }

@@ -89,7 +89,6 @@
     <!-- version-tag: custom -->
     <import file="${sdk.dir}/tools/ant/build.xml" />
 
-    <property name="coverage.dir" value="${basedir}/emma" />
     <taskdef resource="checkstyletask.properties" classpath="${basedir}/libs/checkstyle.jar" />
     <target name="checkstyle">
         <checkstyle config="checkstyle_checks.xml">
