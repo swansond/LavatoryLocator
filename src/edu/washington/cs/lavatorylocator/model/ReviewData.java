@@ -25,6 +25,7 @@ public class ReviewData {
     private float rating;
     private int helpfulness;
     private int uservote;
+    private int reviewId;
 
     // -----------------------------------------------------------
     // CONSTRUCTORS AND CREATORS
@@ -102,6 +103,15 @@ public class ReviewData {
     public int getUservote() {
         return uservote;
     }
+    
+    /**
+     * Returns this review's ID number.
+     * 
+     * @return this review's ID number.
+     */
+    public int getReviewId() {
+        return reviewId;
+    }
 
     // --------------------------------------------------------------
     // SETTERS
@@ -176,6 +186,16 @@ public class ReviewData {
      */
     public void setUservote(int uservote) {
         this.uservote = uservote;
+    }
+    
+    /**
+     * Sets this review's ID number.
+     * 
+     * @param datetime
+     *            this review's ID number, as represented in an int
+     */
+    public void setReviewId(int reviewId) {
+        this.reviewId = reviewId;
     }
 
 }

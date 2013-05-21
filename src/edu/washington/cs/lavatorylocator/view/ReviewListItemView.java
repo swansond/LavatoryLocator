@@ -2,6 +2,8 @@ package edu.washington.cs.lavatorylocator.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,6 +19,9 @@ public class ReviewListItemView extends RelativeLayout {
     private TextView reviewAuthorTextView;
     private RatingBar ratingBar;
     private TextView reviewTextView;
+    private TextView promptHelpfulText;
+    private Button markHelpfulButton;
+    private Button markNotHelpfulButton;
 
     /**
      * Constructs a new {@link LavatorySearchResultsListItemView} with the given
@@ -39,10 +44,15 @@ public class ReviewListItemView extends RelativeLayout {
         final String reviewAuthor = review.getAuthor();
         final float rating = review.getRating();
         final String reviewText = review.getReview();
+        final int reviewId = review.getReviewId();
 
         reviewAuthorTextView.setText(reviewAuthor);
         ratingBar.setRating(rating);
         reviewTextView.setText(reviewText);
+        
+        // Set up the call-backs for the helpfulness buttons
+        markHelpfulButton.setTag(new Integer(reviewId));
+        markNotHelpfulButton.setTag(new Integer(reviewId));
     }
 
     /**
@@ -58,5 +68,8 @@ public class ReviewListItemView extends RelativeLayout {
         reviewAuthorTextView = ((TextView) findViewById(R.id.review_author));
         ratingBar = ((RatingBar) findViewById(R.id.review_stars));
         reviewTextView = ((TextView) findViewById(R.id.review_text));
+        promptHelpfulText = ((TextView) findViewById(R.id.was_helpful_text));
+        markHelpfulButton = ((Button) findViewById(R.id.was_helpful_button));
+        markNotHelpfulButton = ((Button) findViewById(R.id.was_not_helpful_button));
     }
 }

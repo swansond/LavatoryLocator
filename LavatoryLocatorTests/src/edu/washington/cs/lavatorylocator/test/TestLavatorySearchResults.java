@@ -7,16 +7,21 @@ import junit.framework.TestCase;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 import edu.washington.cs.lavatorylocator.model.LavatorySearchResults;
 
+/**
+ * Tests LavatorySearchResults class.
+ * @author Aasav Prakash
+ *
+ */
 public class TestLavatorySearchResults extends TestCase {
 
-	/**
-	 * Test basic get and set
-	 */
-	public void testGetAndSet() {
-		LavatorySearchResults lsr = new LavatorySearchResults();
-		List<LavatoryData> exp = new LinkedList<LavatoryData>();
-		lsr.setLavatories(exp);
-		assertEquals(exp, lsr.getLavatories());
-	}
-	
+    /**
+     * Test basic get and set.
+     */
+    public void testGetAndSet() {
+        final LavatorySearchResults lsr = new LavatorySearchResults();
+        final List<LavatoryData> exp = new LinkedList<LavatoryData>();
+        lsr.setLavatories(exp);
+        assertEquals(exp, lsr.getLavatories());
+    }
+    
 }
