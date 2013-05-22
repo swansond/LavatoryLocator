@@ -19,14 +19,15 @@ public class TestLavatorySearchRequest extends TestCase {
     private final String latitude = "42.42";
     private final String longitude = "42.42";
     private final String radius = "1.0";
-    
+
     /**
      * Tests constructor.
+     * @black
      */
-    public void testConstructor() {
+    public void test_constructor_fullArgs_notNull() {
         lsr = new LavatorySearchRequest(building, floor, room, minRating,
                 type, latitude, longitude, radius);
         assertNotNull(lsr);
     }
-    
+
 }
