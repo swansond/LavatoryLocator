@@ -41,5 +41,6 @@
     <string name="helpful_prompt">Was this review helpful?</string>
     <string name="was_helpful">Yes</string>
     <string name="was_not_helpful">No</string>
+    <string name="action_request_delete_lavatory">Request Deletion</string>
     
 </resources>
