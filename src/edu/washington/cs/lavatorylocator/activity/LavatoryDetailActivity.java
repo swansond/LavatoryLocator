@@ -33,6 +33,7 @@ import edu.washington.cs.lavatorylocator.adapter.ReviewsListAdapter;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 import edu.washington.cs.lavatorylocator.model.ReviewData;
 import edu.washington.cs.lavatorylocator.model.Reviews;
+import edu.washington.cs.lavatorylocator.network.DeleteLavatoryRequest;
 import edu.washington.cs.lavatorylocator.network.GetLavatoryReviewsRequest;
 import edu.washington.cs.lavatorylocator.network.UpdateHelpfulnessRequest;
 
@@ -71,7 +72,7 @@ public class LavatoryDetailActivity extends
 
     public static final int POPUP_WIDTH = 350;
     public static final int POPUP_HEIGHT = 250;
-
+    
     // ------------------------------------------------------------------
     // INSTANCE VARIABLES
     // ------------------------------------------------------------------
@@ -241,6 +242,20 @@ public class LavatoryDetailActivity extends
         intent.putExtra(LAVATORY_DATA, lavatory);
         intent.putExtra(EditLavatoryDetailActivity.USER_ID_KEY, STUB_USER_ID);
         startActivity(intent);
+    }
+    
+    /**
+     * Requests that the current lavatory be deleted from the database.
+     * 
+     * @param item
+     *            the {@link MenuItem} that was selected
+     */
+    public final void requestDeletion(final MenuItem item) {
+        getSherlock().setProgressBarIndeterminateVisibility(true);
+        DeleteLavatoryRequest request =
+                new DeleteLavatoryRequest(lavatory.getLid(), STUB_USER_ID);
+        getSpiceManager().execute(request,
+                new DeleteRequestListener());
     }
     
     /**
@@ -461,6 +476,39 @@ public class LavatoryDetailActivity extends
                     .getSherlock().setProgressBarIndeterminateVisibility(false);
 
             // TODO: move to string resources XML file
+            final String message = "Submitted!";
+            Toast.makeText(LavatoryDetailActivity.this, message,
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+    
+    /** 
+     * {@code RequestListener} for requests to have a lavatory deleted.
+     * 
+     * @author Wilkes Sunseri
+     *
+     */
+    private class DeleteRequestListener implements
+            RequestListener<ResponseEntity> {
+        
+        @Override
+        public void onRequestFailure(final SpiceException spiceException) {
+            // TODO: move to string resources XML file
+            final String errorMessage =
+                    "Request failed: " + spiceException.getMessage();
+            Log.e(getLocalClassName(), errorMessage);
+            Toast.makeText(LavatoryDetailActivity.this, errorMessage,
+                    Toast.LENGTH_LONG).show();
+            LavatoryDetailActivity.this.getSherlock()
+                    .setProgressBarIndeterminateVisibility(false);
+        }
+        
+        @Override
+        public void onRequestSuccess(final ResponseEntity responseEntity) {
+            LavatoryDetailActivity.this.getSherlock()
+                    .setProgressBarIndeterminateVisibility(false);
+            
+            //TODO: move to string resources XML file
             final String message = "Submitted!";
             Toast.makeText(LavatoryDetailActivity.this, message,
                     Toast.LENGTH_LONG).show();
