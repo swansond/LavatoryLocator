@@ -252,7 +252,7 @@ public class LavatoryDetailActivity extends
      */
     public final void requestDeletion(final MenuItem item) {
         getSherlock().setProgressBarIndeterminateVisibility(true);
-        DeleteLavatoryRequest request =
+        final DeleteLavatoryRequest request =
                 new DeleteLavatoryRequest(lavatory.getLid(), STUB_USER_ID);
         getSpiceManager().execute(request,
                 new DeleteRequestListener());
