@@ -153,7 +153,4 @@
     <property name="format" value="\s+$"/>
     <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
   </module>
-  <module name="SuppressionFilter">
-    <property name="file" value="checkstyle_suppressions.xml"/>
-  </module>
 </module>
