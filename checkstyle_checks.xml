@@ -5,7 +5,7 @@
     This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-    Checkstyle-Configuration: LavatoryLocatorStyle
+    Checkstyle-Configuration: Bla
     Description: none
 -->
 <module name="Checker">
@@ -152,5 +152,8 @@
     <property name="severity" value="ignore"/>
     <property name="format" value="\s+$"/>
     <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+  </module>
+  <module name="SuppressionFilter">
+    <property name="file" value="${config_loc}/checkstyle_suppressions.xml"/>
   </module>
 </module>
