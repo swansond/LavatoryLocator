@@ -253,7 +253,7 @@ public class LavatoryDetailActivity extends
      */
     public final void requestDeletion(final MenuItem item) {
         getSherlock().setProgressBarIndeterminateVisibility(true);
-        DeleteLavatoryRequest request =
+        final DeleteLavatoryRequest request =
                 new DeleteLavatoryRequest(lavatory.getLid(), STUB_USER_ID);
         getSpiceManager().execute(request,
                 new DeleteRequestListener());
@@ -293,7 +293,8 @@ public class LavatoryDetailActivity extends
             SpringAndroidSpiceRequest<ResponseEntity> request;
 
             request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
-            ReviewListItemView thisView = (ReviewListItemView) v.getParent();
+            final ReviewListItemView thisView =
+                    (ReviewListItemView) v.getParent().getParent();
             getSpiceManager().execute(request,
                     new UpdateHelpfulnessRequestListener(thisView));
         }
@@ -331,7 +332,8 @@ public class LavatoryDetailActivity extends
                     + " helpful: " + helpful,
                     Toast.LENGTH_LONG).show();*/ // for debugging
             request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
-            ReviewListItemView thisView = (ReviewListItemView) v.getParent();
+            final ReviewListItemView thisView =
+                    (ReviewListItemView) v.getParent().getParent();
             getSpiceManager().execute(request,
                     new UpdateHelpfulnessRequestListener(thisView));
         }
@@ -462,6 +464,13 @@ public class LavatoryDetailActivity extends
 
         private ReviewListItemView thisReview;
 
+        /**
+         * Creates a new UpdateHelpfulnessRequestListener.
+         * 
+         * @param review
+         *              the ReviewListItem whose helpfulness button launched
+         *              this request
+         */
         public UpdateHelpfulnessRequestListener(ReviewListItemView review) {
             super();
             thisReview = review;
