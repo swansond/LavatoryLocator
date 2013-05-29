@@ -34,7 +34,7 @@ public class TestMainActivity extends
     protected void setUp() throws Exception {
         super.setUp();
         solo = new Solo(getInstrumentation(), getActivity());
-        
+
         TestUtils.dismissGooglePlayServicesErrorDialog(solo);
     }
 
@@ -63,9 +63,8 @@ public class TestMainActivity extends
         solo.clickOnActionBarItem(R.id.action_about);
 
         solo.assertCurrentActivity(
-                "Not on AboutActivity after About action bar menu item is " +
-                "clicked",
-                AboutActivity.class);
+                "Not on AboutActivity after About action bar menu item is "
+                        + "clicked", AboutActivity.class);
     }
 
     /**
@@ -76,8 +75,8 @@ public class TestMainActivity extends
         solo.clickInList(0);
 
         solo.assertCurrentActivity(
-                "Not on LavatoryDetailActivity after clicking on an search " +
-                "result item in the list",
+                "Not on LavatoryDetailActivity after clicking on an search "
+                        + "result item in the list",
                 LavatoryDetailActivity.class, true);
     }
 
