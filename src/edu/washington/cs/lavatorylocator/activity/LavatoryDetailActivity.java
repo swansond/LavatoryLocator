@@ -324,12 +324,11 @@ public class LavatoryDetailActivity extends
             SpringAndroidSpiceRequest<ResponseEntity> request;
 
             request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
-<<<<<<< HEAD
 
             Log.d(TAG, "executing UpdateHelpfulnessRequest...");
-=======
-            ReviewListItemView thisView = (ReviewListItemView) v.getParent();
->>>>>>> Added functionality to disable helpfulness rating buttons upon
+
+            final ReviewListItemView thisView =
+                    (ReviewListItemView) v.getParent().getParent();
             getSpiceManager().execute(request,
                     new UpdateHelpfulnessRequestListener(thisView));
         }
@@ -371,12 +370,11 @@ public class LavatoryDetailActivity extends
                     + " helpful: " + helpful,
                     Toast.LENGTH_LONG).show();*/ // for debugging
             request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
-<<<<<<< HEAD
-
+            
             Log.d(TAG, "markHelpful: executing UpdateHelpfulnessRequest...");
-=======
-            ReviewListItemView thisView = (ReviewListItemView) v.getParent();
->>>>>>> Added functionality to disable helpfulness rating buttons upon
+
+            final ReviewListItemView thisView =
+                    (ReviewListItemView) v.getParent().getParent();
             getSpiceManager().execute(request,
                     new UpdateHelpfulnessRequestListener(thisView));
         }
@@ -522,6 +520,13 @@ public class LavatoryDetailActivity extends
 
         private ReviewListItemView thisReview;
 
+        /**
+         * Creates a new UpdateHelpfulnessRequestListener.
+         * 
+         * @param review
+         *              the ReviewListItem whose helpfulness button launched
+         *              this request
+         */
         public UpdateHelpfulnessRequestListener(ReviewListItemView review) {
             super();
             thisReview = review;
@@ -566,10 +571,7 @@ public class LavatoryDetailActivity extends
      */
     private class DeleteRequestListener implements
             RequestListener<ResponseEntity> {
-<<<<<<< HEAD
         private static final String TAG = "DeleteRequestListener";
-=======
->>>>>>> Added functionality to disable helpfulness rating buttons upon
 
         @Override
         public void onRequestFailure(final SpiceException spiceException) {
