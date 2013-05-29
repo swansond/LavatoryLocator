@@ -328,7 +328,7 @@ public class LavatoryDetailActivity extends
             Log.d(TAG, "executing UpdateHelpfulnessRequest...");
 
             final ReviewListItemView thisView =
-                    (ReviewListItemView) v.getParent().getParent();
+                    (ReviewListItemView) v.getParent().getParent().getParent();
             getSpiceManager().execute(request,
                     new UpdateHelpfulnessRequestListener(thisView));
         }
@@ -374,7 +374,7 @@ public class LavatoryDetailActivity extends
             Log.d(TAG, "markHelpful: executing UpdateHelpfulnessRequest...");
 
             final ReviewListItemView thisView =
-                    (ReviewListItemView) v.getParent().getParent();
+                    (ReviewListItemView) v.getParent().getParent().getParent();
             getSpiceManager().execute(request,
                     new UpdateHelpfulnessRequestListener(thisView));
         }
