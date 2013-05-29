@@ -7,14 +7,14 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
  * review. This includes its database ID number, the database ID number of the
  * user who wrote it, the database ID number of the bathroom it is a review of,
  * the rating it gives, and the review itself. that bathroom.
- * 
+ *
  * @author Wil Sunseri
  * @author Chris Rovillos
- * 
+ *
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReviewData {
-    
+
     // -----------------------------------------------------------
     // INSTANCE VARIABLES
     // -----------------------------------------------------------
@@ -41,7 +41,7 @@ public class ReviewData {
     // -----------------------------------------------------------
     /**
      * Returns this review's author.
-     * 
+     *
      * @return this review's author
      */
     public String getAuthor() {
@@ -50,7 +50,7 @@ public class ReviewData {
 
     /**
      * Returns this review's date and time.
-     * 
+     *
      * @return this review's date and time, as represented in a String
      */
     public String getDatetime() {
@@ -59,7 +59,7 @@ public class ReviewData {
 
     /**
      * Returns this review's helpfulness.
-     * 
+     *
      * @return this review's helpfulness
      */
     public int getHelpfulness() {
@@ -69,7 +69,7 @@ public class ReviewData {
     /**
      * Returns this review's lavatory ID, as stored in the LavatoryLocator
      * service.
-     * 
+     *
      * @return this review's lavatory ID, as stored in the LavatoryLocator
      *         service
      */
@@ -79,7 +79,7 @@ public class ReviewData {
 
     /**
      * Returns this review's rating.
-     * 
+     *
      * @return this review's rating
      */
     public float getRating() {
@@ -88,7 +88,7 @@ public class ReviewData {
 
     /**
      * Returns this review's text.
-     * 
+     *
      * @return this review's text
      */
     public String getReview() {
@@ -97,19 +97,19 @@ public class ReviewData {
 
     /**
      * Returns this review's uservote.
-     * 
+     *
      * @return this review's uservote
      */
     public int getUservote() {
         return uservote;
     }
-    
+
     /**
      * Returns this review's ID number.
-     * 
+     *
      * @return this review's ID number.
      */
-    public int getReviewId() {
+    public int getRid() {
         return reviewId;
     }
 
@@ -118,7 +118,7 @@ public class ReviewData {
     // --------------------------------------------------------------
     /**
      * Sets this review's date and time.
-     * 
+     *
      * @param datetime
      *            this review's date and time, as represented in a String
      */
@@ -128,7 +128,7 @@ public class ReviewData {
 
     /**
      * Sets this review's helpfulness.
-     * 
+     *
      * @param helpfulness
      *            this review's helpfulness
      */
@@ -138,7 +138,7 @@ public class ReviewData {
 
     /**
      * Sets this review's lavatory ID, as stored in the LavatoryLocator service.
-     * 
+     *
      * @param lid
      *            this review's lavatory ID, as stored in the LavatoryLocator
      *            service
@@ -149,7 +149,7 @@ public class ReviewData {
 
     /**
      * Sets this review's rating.
-     * 
+     *
      * @param rating
      *            this review's rating
      */
@@ -159,7 +159,7 @@ public class ReviewData {
 
     /**
      * Sets this review's text.
-     * 
+     *
      * @param review
      *            this review's text
      */
@@ -169,7 +169,7 @@ public class ReviewData {
 
     /**
      * Sets this review's author ID, as stored in the LavatoryLocator service.
-     * 
+     *
      * @param uid
      *            this review's author ID, as stored in the LavatoryLocator
      *            service
@@ -180,21 +180,21 @@ public class ReviewData {
 
     /**
      * Sets this review's uservote.
-     * 
+     *
      * @param uservote
      *            this review's uservote
      */
     public void setUservote(int uservote) {
         this.uservote = uservote;
     }
-    
+
     /**
      * Sets this review's ID number.
-     * 
+     *
      * @param reviewId
      *            this review's ID number, as represented in an int
      */
-    public void setReviewId(int reviewId) {
+    public void setRid(int reviewId) {
         this.reviewId = reviewId;
     }
 

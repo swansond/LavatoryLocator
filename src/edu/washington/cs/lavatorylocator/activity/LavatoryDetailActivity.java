@@ -36,6 +36,7 @@ import edu.washington.cs.lavatorylocator.model.Reviews;
 import edu.washington.cs.lavatorylocator.network.DeleteLavatoryRequest;
 import edu.washington.cs.lavatorylocator.network.GetLavatoryReviewsRequest;
 import edu.washington.cs.lavatorylocator.network.UpdateHelpfulnessRequest;
+import edu.washington.cs.lavatorylocator.view.ReviewListItemView;
 
 /**
  * {@link android.app.Activity} for viewing information about a specific
@@ -323,10 +324,14 @@ public class LavatoryDetailActivity extends
             SpringAndroidSpiceRequest<ResponseEntity> request;
 
             request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
+<<<<<<< HEAD
 
             Log.d(TAG, "executing UpdateHelpfulnessRequest...");
+=======
+            ReviewListItemView thisView = (ReviewListItemView) v.getParent();
+>>>>>>> Added functionality to disable helpfulness rating buttons upon
             getSpiceManager().execute(request,
-                    new UpdateHelpfulnessRequestListener());
+                    new UpdateHelpfulnessRequestListener(thisView));
         }
     }
 
@@ -366,10 +371,14 @@ public class LavatoryDetailActivity extends
                     + " helpful: " + helpful,
                     Toast.LENGTH_LONG).show();*/ // for debugging
             request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
+<<<<<<< HEAD
 
             Log.d(TAG, "markHelpful: executing UpdateHelpfulnessRequest...");
+=======
+            ReviewListItemView thisView = (ReviewListItemView) v.getParent();
+>>>>>>> Added functionality to disable helpfulness rating buttons upon
             getSpiceManager().execute(request,
-                    new UpdateHelpfulnessRequestListener());
+                    new UpdateHelpfulnessRequestListener(thisView));
         }
     }
 
@@ -511,6 +520,13 @@ public class LavatoryDetailActivity extends
         RequestListener<ResponseEntity> {
         private static final String TAG = "UpdateHelpfulnessRequestListener";
 
+        private ReviewListItemView thisReview;
+
+        public UpdateHelpfulnessRequestListener(ReviewListItemView review) {
+            super();
+            thisReview = review;
+        }
+
         @Override
         public void onRequestFailure(final SpiceException spiceException) {
             Log.d(TAG, "onRequestFailure called");
@@ -533,6 +549,8 @@ public class LavatoryDetailActivity extends
             LavatoryDetailActivity.this
                     .getSherlock().setProgressBarIndeterminateVisibility(false);
 
+            thisReview.disableHelpfulnessButtons();
+
             // TODO: move to string resources XML file
             final String message = "Submitted!";
             Toast.makeText(LavatoryDetailActivity.this, message,
@@ -548,7 +566,10 @@ public class LavatoryDetailActivity extends
      */
     private class DeleteRequestListener implements
             RequestListener<ResponseEntity> {
+<<<<<<< HEAD
         private static final String TAG = "DeleteRequestListener";
+=======
+>>>>>>> Added functionality to disable helpfulness rating buttons upon
 
         @Override
         public void onRequestFailure(final SpiceException spiceException) {
