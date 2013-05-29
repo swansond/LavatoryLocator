@@ -294,7 +294,7 @@ public class LavatoryDetailActivity extends
 
             request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
             final ReviewListItemView thisView =
-                    (ReviewListItemView) v.getParent().getParent();
+                    (ReviewListItemView) v.getParent().getParent().getParent();
             getSpiceManager().execute(request,
                     new UpdateHelpfulnessRequestListener(thisView));
         }
@@ -333,7 +333,7 @@ public class LavatoryDetailActivity extends
                     Toast.LENGTH_LONG).show();*/ // for debugging
             request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
             final ReviewListItemView thisView =
-                    (ReviewListItemView) v.getParent().getParent();
+                    (ReviewListItemView) v.getParent().getParent().getParent();
             getSpiceManager().execute(request,
                     new UpdateHelpfulnessRequestListener(thisView));
         }
