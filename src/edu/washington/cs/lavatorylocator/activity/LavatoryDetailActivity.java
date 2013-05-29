@@ -36,6 +36,7 @@ import edu.washington.cs.lavatorylocator.model.Reviews;
 import edu.washington.cs.lavatorylocator.network.DeleteLavatoryRequest;
 import edu.washington.cs.lavatorylocator.network.GetLavatoryReviewsRequest;
 import edu.washington.cs.lavatorylocator.network.UpdateHelpfulnessRequest;
+import edu.washington.cs.lavatorylocator.view.ReviewListItemView;
 
 /**
  * {@link android.app.Activity} for viewing information about a specific
@@ -292,8 +293,9 @@ public class LavatoryDetailActivity extends
             SpringAndroidSpiceRequest<ResponseEntity> request;
 
             request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
+            ReviewListItemView thisView = (ReviewListItemView) v.getParent();
             getSpiceManager().execute(request,
-                    new UpdateHelpfulnessRequestListener());
+                    new UpdateHelpfulnessRequestListener(thisView));
         }
     }
 
@@ -329,8 +331,9 @@ public class LavatoryDetailActivity extends
                     + " helpful: " + helpful,
                     Toast.LENGTH_LONG).show();*/ // for debugging
             request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
+            ReviewListItemView thisView = (ReviewListItemView) v.getParent();
             getSpiceManager().execute(request,
-                    new UpdateHelpfulnessRequestListener());
+                    new UpdateHelpfulnessRequestListener(thisView));
         }
     }
 
@@ -457,6 +460,13 @@ public class LavatoryDetailActivity extends
     private class UpdateHelpfulnessRequestListener implements
         RequestListener<ResponseEntity> {
 
+        private ReviewListItemView thisReview;
+
+        public UpdateHelpfulnessRequestListener(ReviewListItemView review) {
+            super();
+            thisReview = review;
+        }
+
         @Override
         public void onRequestFailure(final SpiceException spiceException) {
             // TODO: move to string resources XML file
@@ -475,22 +485,24 @@ public class LavatoryDetailActivity extends
             LavatoryDetailActivity.this
                     .getSherlock().setProgressBarIndeterminateVisibility(false);
 
+            thisReview.disableHelpfulnessButtons();
+
             // TODO: move to string resources XML file
             final String message = "Submitted!";
             Toast.makeText(LavatoryDetailActivity.this, message,
                     Toast.LENGTH_LONG).show();
         }
     }
-    
-    /** 
+
+    /**
      * {@code RequestListener} for requests to have a lavatory deleted.
-     * 
+     *
      * @author Wilkes Sunseri
      *
      */
     private class DeleteRequestListener implements
             RequestListener<ResponseEntity> {
-        
+
         @Override
         public void onRequestFailure(final SpiceException spiceException) {
             // TODO: move to string resources XML file
@@ -502,12 +514,12 @@ public class LavatoryDetailActivity extends
             LavatoryDetailActivity.this.getSherlock()
                     .setProgressBarIndeterminateVisibility(false);
         }
-        
+
         @Override
         public void onRequestSuccess(final ResponseEntity responseEntity) {
             LavatoryDetailActivity.this.getSherlock()
                     .setProgressBarIndeterminateVisibility(false);
-            
+
             //TODO: move to string resources XML file
             final String message = "Submitted!";
             Toast.makeText(LavatoryDetailActivity.this, message,

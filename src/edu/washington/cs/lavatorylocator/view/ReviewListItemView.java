@@ -43,12 +43,12 @@ public class ReviewListItemView extends RelativeLayout {
         final String reviewAuthor = review.getAuthor();
         final float rating = review.getRating();
         final String reviewText = review.getReview();
-        final int reviewId = review.getReviewId();
+        final int reviewId = review.getRid();
 
         reviewAuthorTextView.setText(reviewAuthor);
         ratingBar.setRating(rating);
         reviewTextView.setText(reviewText);
-        
+
         // Set up the call-backs for the helpfulness buttons
         markHelpfulButton.setTag(new Integer(reviewId));
         markHelpfulButton.setId(reviewId);
@@ -73,5 +73,13 @@ public class ReviewListItemView extends RelativeLayout {
         markHelpfulButton = ((Button) findViewById(R.id.was_helpful_button));
         markNotHelpfulButton = ((Button) findViewById(
                 R.id.was_not_helpful_button));
+    }
+
+    /**
+     * Disables this object's helpfullness rating buttons.
+     */
+    public final void disableHelpfulnessButtons() {
+        markHelpfulButton.setEnabled(false);
+        markNotHelpfulButton.setEnabled(false);
     }
 }
