@@ -29,10 +29,10 @@ import edu.washington.cs.lavatorylocator.network.EditLavatoryDetailRequest;
 /**
  * {@link android.app.Activity} for adding a new lavatory into the
  * LavatoryLocator service.
- * 
+ *
  * @author Chris Rovillos
  * @author Wil Sunseri
- * 
+ *
  */
 public class EditLavatoryDetailActivity extends
         JacksonSpringSpiceSherlockFragmentActivity {
@@ -43,11 +43,15 @@ public class EditLavatoryDetailActivity extends
 
     private static final int NO_ID = Integer.MIN_VALUE;
 
+    private static final String TAG = "EditLavatoryDetailActivity";
+
     // -------------------------------------------------------------------
     // ACTIVITY LIFECYCLE
     // -------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate called");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_lavatory);
         // Show the Up button in the action bar.
@@ -93,6 +97,8 @@ public class EditLavatoryDetailActivity extends
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "onCreateOptionsMenu called");
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getSupportMenuInflater().inflate(R.menu.edit_lavatory, menu);
         return true;
@@ -103,11 +109,13 @@ public class EditLavatoryDetailActivity extends
     // ----------------------------------------------------------------------
     /**
      * Starts submitting the new lavatory to the LavatoryLocator service.
-     * 
+     *
      * @param item
      *            the {@link MenuItem} that was selected
      */
     public void submit(MenuItem item) {
+        Log.d(TAG, "submit called");
+
         getSherlock().setProgressBarIndeterminateVisibility(true);
 
         final String building = ((EditText) findViewById(
@@ -164,6 +172,7 @@ public class EditLavatoryDetailActivity extends
                         type, latitude, longitude);
             }
 
+            Log.d(TAG, "submit: executing Add or Edit LavatoryRequest");
             getSpiceManager().execute(request,
                     new AddOrEditLavatoryDetailRequestListener());
         } else { // some fields not filled
@@ -175,6 +184,8 @@ public class EditLavatoryDetailActivity extends
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected called");
+
         switch (item.getItemId()) {
         case android.R.id.home:
             // This ID represents the Home or Up button. In the case of this
@@ -199,6 +210,8 @@ public class EditLavatoryDetailActivity extends
      * Set up the {@link android.app.ActionBar}.
      */
     private void setupActionBar() {
+        Log.d(TAG, "setupActionBar called");
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -208,15 +221,19 @@ public class EditLavatoryDetailActivity extends
     /**
      * {@code RequestListener} for result of submitting the lavatory to the
      * LavatoryLocator service.
-     * 
+     *
      * @author Chris Rovillos
-     * 
+     *
      */
     private class AddOrEditLavatoryDetailRequestListener implements
             RequestListener<ResponseEntity> {
+        private static final String TAG = "AddOrEditLavatory"
+                + "DetailRequestListener";
 
         @Override
         public void onRequestFailure(SpiceException spiceException) {
+            Log.d(TAG, "onRequestFailure called");
+
             // TODO: move to string resources XML file
             final String errorMessage = "Submission failed: "
                     + spiceException.getMessage();
@@ -230,6 +247,8 @@ public class EditLavatoryDetailActivity extends
 
         @Override
         public void onRequestSuccess(ResponseEntity responseEntity) {
+            Log.d(TAG, "onRequestSuccess called");
+
             EditLavatoryDetailActivity.this
                     .getSherlock().setProgressBarIndeterminateVisibility(false);
 
