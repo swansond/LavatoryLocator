@@ -277,7 +277,7 @@ public class LavatoryDetailActivity extends
         Log.d(TAG, "requestDeletion called");
 
         getSherlock().setProgressBarIndeterminateVisibility(true);
-        DeleteLavatoryRequest request =
+        final DeleteLavatoryRequest request =
                 new DeleteLavatoryRequest(lavatory.getLid(), STUB_USER_ID);
 
         Log.d(TAG, "requestDeletion: executing DeleteLavatoryRequest...");
