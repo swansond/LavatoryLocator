@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +46,8 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
     public static final int POPUP_WIDTH = 350;
     public static final int POPUP_HEIGHT = 250;
 
+    private static final String TAG = "AddReviewActivity";
+
     private ProgressDialog loadingScreen;
     private PopupWindow connectionPopup;
 
@@ -61,6 +64,8 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
      *            the {@link MenuItem} that was selected
      */
     public void addReview(MenuItem item) {
+        Log.d(TAG, "addReview called");
+
         final Intent intent = getIntent();
         final LavatoryData ld = intent
                 .getParcelableExtra(LavatoryDetailActivity.LAVATORY_DATA);
@@ -76,6 +81,8 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate called");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_review);
         // Show the Up button in the action bar.
@@ -86,11 +93,15 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
      * Set up the {@link android.app.ActionBar}.
      */
     private void setupActionBar() {
+        Log.d(TAG, "setupActionBar called");
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "onCreateOptionsMenu called");
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getSupportMenuInflater().inflate(R.menu.add_review, menu);
         return true;
@@ -98,6 +109,8 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected called");
+
         switch (item.getItemId()) {
         case android.R.id.home:
             // This ID represents the Home or Up button. In the case of this
@@ -131,6 +144,8 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
      */
     @Override
     public Loader<RESTResponse> onCreateLoader(int id, Bundle args) {
+        Log.d(TAG, "onCreateLoader called");
+
         final Uri searchAddress = Uri.parse(SUBMIT_REVIEW);
         return new RESTLoader(getApplicationContext(), searchAddress,
                 RESTLoader.requestType.POST, args);
@@ -150,12 +165,19 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
     @Override
     public void onLoadFinished(Loader<RESTResponse> loader,
             RESTResponse response) {
+        Log.d(TAG, "onLoadFinished called");
+
         loadingScreen.dismiss();
         getSupportLoaderManager().destroyLoader(loader.getId());
         if (response.getCode() == HttpStatus.SC_OK) {
+            Log.d(TAG, "onLoadFinished: 200 response received");
+
             Toast.makeText(this, "Thank you for your submission",
                     Toast.LENGTH_SHORT).show();
         } else {
+            Log.d(TAG, "onLoadFinished: " + response.getCode()
+                    + " response received");
+
             final LayoutInflater inflater = (LayoutInflater) this
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View layout = inflater.inflate(R.layout.no_connection_popup,
@@ -165,7 +187,6 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
                     POPUP_HEIGHT, true);
             connectionPopup.showAtLocation(layout, Gravity.CENTER, 0, 0);
         }
-
     }
 
     /**
@@ -194,6 +215,7 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
      */
     private void updateReview(String uid, String lid, String rating,
             String review) {
+        Log.d(TAG, "updateReview called");
 
         // save the search params in case we need them later
         lastUid = uid;
@@ -229,6 +251,8 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
      *            the popup box View to be dismissed
      */
     public void retryConnection(View target) {
+        Log.d(TAG, "retryConnection called");
+
         updateReview(lastUid, lastLid, lastRating, lastReview);
         dismissConnection(target);
     }
@@ -240,6 +264,8 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
      *            the popup box View to be dismissed
      */
     public void dismissConnection(View target) {
+        Log.d(TAG, "dismissConnection called");
+
         connectionPopup.dismiss();
     }
 }
