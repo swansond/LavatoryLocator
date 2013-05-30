@@ -18,6 +18,8 @@ import android.test.ActivityInstrumentationTestCase2;
  */
 public class TestMainActivity extends
         ActivityInstrumentationTestCase2<MainActivity> {
+    private static final int WAIT_TIME_MILLISECONDS = 5000;
+    
     private Solo solo;
 
     // --------------------------------------------------------------
@@ -72,6 +74,10 @@ public class TestMainActivity extends
      * goes to the {@link LavatoryDetailActivity}.
      */
     public void test_searchResultsList_goToLavatoryDetailActivity() {
+        // wait for the data to be loaded from the network
+        solo.sleep(WAIT_TIME_MILLISECONDS);
+        
+        // click the first element in the list
         solo.clickInList(0);
 
         solo.assertCurrentActivity(
