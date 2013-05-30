@@ -72,7 +72,9 @@ public class LavatoryDetailActivity extends
 
     public static final int POPUP_WIDTH = 350;
     public static final int POPUP_HEIGHT = 250;
-    
+
+    private static final String TAG = "LavatoryDetailActivity";
+
     // ------------------------------------------------------------------
     // INSTANCE VARIABLES
     // ------------------------------------------------------------------
@@ -84,6 +86,8 @@ public class LavatoryDetailActivity extends
     // -------------------------------------------------------------
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate called");
+
         super.onCreate(savedInstanceState);
         // Show the Up button in the action bar.
         setupActionBar();
@@ -134,6 +138,7 @@ public class LavatoryDetailActivity extends
 
     @Override
     protected void onPause() {
+        Log.d(TAG, "onPause called");
         super.onPause();
 
         final SharedPreferences settings =
@@ -155,12 +160,16 @@ public class LavatoryDetailActivity extends
 
     @Override
     protected void onSaveInstanceState(final Bundle outState) {
+        Log.d(TAG, "onSaveInstanceState called");
+
         super.onSaveInstanceState(outState);
         outState.putParcelable(MainActivity.LAVATORY_DATA, lavatory);
     }
 
     @Override
     protected void onRestoreInstanceState(final Bundle savedInstanceState) {
+        Log.d(TAG, "onRestoreInstanceState called");
+
         super.onRestoreInstanceState(savedInstanceState);
         lavatory = (LavatoryData) savedInstanceState
                 .get(MainActivity.LAVATORY_DATA);
@@ -170,11 +179,15 @@ public class LavatoryDetailActivity extends
      * Set up the {@link android.app.ActionBar}.
      */
     private void setupActionBar() {
+        Log.d(TAG, "setupActionBar called");
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
+        Log.d(TAG, "onCreateOptionsMenu called");
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getSupportMenuInflater().inflate(R.menu.lavatory_detail, menu);
         return true;
@@ -190,6 +203,8 @@ public class LavatoryDetailActivity extends
      *           the {@link View} that was selected
      */
     public final void loginUser(final View target) {
+        Log.d(TAG, "loginUser called");
+
         final SharedPreferences userDetails = getApplicationContext()
                 .getSharedPreferences("User", MODE_PRIVATE);
         userDetails.edit().putBoolean("isLoggedIn", true).commit();
@@ -200,6 +215,8 @@ public class LavatoryDetailActivity extends
      * Closes the popup window.
      */
     public final void dismissLoginPrompt() {
+        Log.d(TAG, "dismissLoginPrompt called");
+
         popup.dismiss();
     }
 
@@ -211,11 +228,15 @@ public class LavatoryDetailActivity extends
      *            the {@link MenuItem} that was selected
      */
     public final void goToAddReviewActivity(final MenuItem item) {
+        Log.d(TAG, "goToAddReviewActivity called");
+
         final SharedPreferences userDetails = getApplicationContext()
                 .getSharedPreferences("User", MODE_PRIVATE);
         final boolean loggedIn = userDetails.getBoolean("isLoggedIn", false);
 
         if (!loggedIn) {
+            Log.d(TAG, "goToAddReviewActivity: not logged in, prompting...");
+
             final LayoutInflater inflater = (LayoutInflater) this
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View layout = inflater.inflate(R.layout.login_popup,
@@ -237,27 +258,33 @@ public class LavatoryDetailActivity extends
      *            the {@link MenuItem} that was selected
      */
     public final void goToEditLavatoryDetailActivity(final MenuItem item) {
+        Log.d(TAG, "goToEditLavatoryDetailActivity called");
+
         final Intent intent = new Intent(
                 this, EditLavatoryDetailActivity.class);
         intent.putExtra(LAVATORY_DATA, lavatory);
         intent.putExtra(EditLavatoryDetailActivity.USER_ID_KEY, STUB_USER_ID);
         startActivity(intent);
     }
-    
+
     /**
      * Requests that the current lavatory be deleted from the database.
-     * 
+     *
      * @param item
      *            the {@link MenuItem} that was selected
      */
     public final void requestDeletion(final MenuItem item) {
+        Log.d(TAG, "requestDeletion called");
+
         getSherlock().setProgressBarIndeterminateVisibility(true);
         DeleteLavatoryRequest request =
                 new DeleteLavatoryRequest(lavatory.getLid(), STUB_USER_ID);
+
+        Log.d(TAG, "requestDeletion: executing DeleteLavatoryRequest...");
         getSpiceManager().execute(request,
                 new DeleteRequestListener());
     }
-    
+
     /**
      * Mark a review as being helpful.
      *
@@ -265,11 +292,15 @@ public class LavatoryDetailActivity extends
      *            the {@link View} that was selected
      */
     public final void markHelpful(final View v) {
+        Log.d(TAG, "markHelpful called");
+
         final SharedPreferences userDetails = getApplicationContext()
             .getSharedPreferences("User", MODE_PRIVATE);
         final boolean loggedIn = userDetails.getBoolean("isLoggedIn", false);
 
         if (!loggedIn) {
+            Log.d(TAG, "markHelpful: not logged in, prompting...");
+
             final LayoutInflater inflater = (LayoutInflater) this
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View layout = inflater.inflate(R.layout.login_popup,
@@ -281,9 +312,9 @@ public class LavatoryDetailActivity extends
             popup.showAtLocation(layout, Gravity.CENTER, 0, 0);
         } else {
             getSherlock().setProgressBarIndeterminateVisibility(true);
-            final int uid = STUB_USER_ID;  
+            final int uid = STUB_USER_ID;
             // TODO: change once facebook login works
-            final int reviewId = (Integer) v.getId();
+            final int reviewId = v.getId();
             final int helpful = 1;
 
             /*Toast.makeText(this, "uid: " + uid + " reviewId: " + reviewId
@@ -292,6 +323,8 @@ public class LavatoryDetailActivity extends
             SpringAndroidSpiceRequest<ResponseEntity> request;
 
             request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
+
+            Log.d(TAG, "executing UpdateHelpfulnessRequest...");
             getSpiceManager().execute(request,
                     new UpdateHelpfulnessRequestListener());
         }
@@ -304,11 +337,15 @@ public class LavatoryDetailActivity extends
      *            the {@link View} that was selected
      */
     public final void markNotHelpful(final View v) {
+        Log.d(TAG, "markNotHelpful called");
+
         final SharedPreferences userDetails = getApplicationContext()
                 .getSharedPreferences("User", MODE_PRIVATE);
         final boolean loggedIn = userDetails.getBoolean("isLoggedIn", false);
 
         if (!loggedIn) {
+            Log.d(TAG, "markNotHelpful: user not logged in, prompting...");
+
             final LayoutInflater inflater = (LayoutInflater) this
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View layout = inflater.inflate(R.layout.login_popup,
@@ -321,14 +358,16 @@ public class LavatoryDetailActivity extends
         } else {
             getSherlock().setProgressBarIndeterminateVisibility(true);
             // TODO: change once facebook login works
-            final int uid = STUB_USER_ID; 
-            final int reviewId = (Integer) v.getId();
+            final int uid = STUB_USER_ID;
+            final int reviewId = v.getId();
             final int helpful = -1;
             SpringAndroidSpiceRequest<ResponseEntity> request;
             /*Toast.makeText(this, "uid: " + uid + " reviewId: " + reviewId
                     + " helpful: " + helpful,
                     Toast.LENGTH_LONG).show();*/ // for debugging
             request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
+
+            Log.d(TAG, "markHelpful: executing UpdateHelpfulnessRequest...");
             getSpiceManager().execute(request,
                     new UpdateHelpfulnessRequestListener());
         }
@@ -336,6 +375,8 @@ public class LavatoryDetailActivity extends
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected called");
+
         switch (item.getItemId()) {
         case android.R.id.home:
             /* This ID represents the Home or Up button. In the case of this
@@ -363,6 +404,8 @@ public class LavatoryDetailActivity extends
      *            a {@link List} of reviews to display
      */
     private void displayReviews(final List<ReviewData> reviews) {
+        Log.d(TAG, "displayReviews called");
+
         final ReviewsListAdapter adapter = new ReviewsListAdapter(this,
                 R.layout.review_item, R.id.review_author, reviews);
 
@@ -388,8 +431,11 @@ public class LavatoryDetailActivity extends
     private void loadReviews(final String userId, final String lavatoryId,
             final String page, final String sortParam,
             final String sortDirection) {
+        Log.d(TAG, "loadReviews called");
+
         getSherlock().setProgressBarIndeterminateVisibility(true);
 
+        Log.d(TAG, "loadReviews: executing GetLavatoryReviewsRequest...");
         getSpiceManager().execute(
                 new GetLavatoryReviewsRequest(userId, lavatoryId, page,
                         sortParam, sortDirection), REVIEWS_JSON_CACHE_KEY,
@@ -400,6 +446,8 @@ public class LavatoryDetailActivity extends
      * Sets up the list view.
      */
     private void setUpListView() {
+        Log.d(TAG, "setUpListView called");
+
         final View headerView = getLayoutInflater().inflate(
                 R.layout.activity_lavatory_detail_header, null);
         ((TextView) headerView.findViewById(R.id.lavatory_detail_name_text))
@@ -424,9 +472,12 @@ public class LavatoryDetailActivity extends
      *
      */
     private class ReviewsRequestListener implements RequestListener<Reviews> {
+        private static final String TAG = "ReviewsRequestListener";
 
         @Override
         public void onRequestFailure(final SpiceException spiceException) {
+            Log.d(TAG, "onRequestFailure called");
+
             // TODO: move to string resources XML file
             final String errorMessage = "Reviews request failed: "
                     + spiceException.getMessage();
@@ -440,6 +491,8 @@ public class LavatoryDetailActivity extends
 
         @Override
         public void onRequestSuccess(final Reviews reviews) {
+            Log.d(TAG, "onRequestSuccess called");
+
             LavatoryDetailActivity.this.displayReviews(reviews.getReviews());
 
             LavatoryDetailActivity.this
@@ -456,9 +509,12 @@ public class LavatoryDetailActivity extends
      */
     private class UpdateHelpfulnessRequestListener implements
         RequestListener<ResponseEntity> {
+        private static final String TAG = "UpdateHelpfulnessRequestListener";
 
         @Override
         public void onRequestFailure(final SpiceException spiceException) {
+            Log.d(TAG, "onRequestFailure called");
+
             // TODO: move to string resources XML file
             final String errorMessage = "Submission failed: "
                     + spiceException.getMessage();
@@ -472,6 +528,8 @@ public class LavatoryDetailActivity extends
 
         @Override
         public void onRequestSuccess(final ResponseEntity responseEntity) {
+            Log.d(TAG, "onRequestSuccess called");
+
             LavatoryDetailActivity.this
                     .getSherlock().setProgressBarIndeterminateVisibility(false);
 
@@ -481,18 +539,21 @@ public class LavatoryDetailActivity extends
                     Toast.LENGTH_LONG).show();
         }
     }
-    
-    /** 
+
+    /**
      * {@code RequestListener} for requests to have a lavatory deleted.
-     * 
+     *
      * @author Wilkes Sunseri
      *
      */
     private class DeleteRequestListener implements
             RequestListener<ResponseEntity> {
-        
+        private static final String TAG = "DeleteRequestListener";
+
         @Override
         public void onRequestFailure(final SpiceException spiceException) {
+            Log.d(TAG, "onRequestFailure called");
+
             // TODO: move to string resources XML file
             final String errorMessage =
                     "Request failed: " + spiceException.getMessage();
@@ -502,17 +563,18 @@ public class LavatoryDetailActivity extends
             LavatoryDetailActivity.this.getSherlock()
                     .setProgressBarIndeterminateVisibility(false);
         }
-        
+
         @Override
         public void onRequestSuccess(final ResponseEntity responseEntity) {
+            Log.d(TAG, "onRequestSuccess called");
+
             LavatoryDetailActivity.this.getSherlock()
                     .setProgressBarIndeterminateVisibility(false);
-            
+
             //TODO: move to string resources XML file
             final String message = "Submitted!";
             Toast.makeText(LavatoryDetailActivity.this, message,
                     Toast.LENGTH_LONG).show();
         }
     }
-
 }
