@@ -54,6 +54,9 @@ public class ReviewListItemView extends RelativeLayout {
         markHelpfulButton.setId(reviewId);
         markNotHelpfulButton.setTag(new Integer(reviewId));
         markNotHelpfulButton.setId(reviewId);
+        if (review.getHelpfulness() != 0) {
+            disableHelpfulnessButtons();
+        }
     }
 
     /**
