@@ -7,7 +7,6 @@ import edu.washington.cs.lavatorylocator.activity.MainActivity;
 import edu.washington.cs.lavatorylocator.activity.SearchActivity;
 import edu.washington.cs.lavatorylocator.test.utils.TestUtils;
 import android.test.ActivityInstrumentationTestCase2;
-import android.text.Editable;
 import android.widget.EditText;
 
 /**

@@ -12,8 +12,10 @@ import com.jayway.android.robotium.solo.Solo;
  * @author Chris Rovillos
  * 
  */
-public class TestUtils {
-    // Prevent instantiation of the class
+public final class TestUtils {
+    /**
+     * Prevent instantiation of this class.
+     */
     private TestUtils() {
     }
 
