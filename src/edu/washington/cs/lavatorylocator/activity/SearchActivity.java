@@ -159,7 +159,7 @@ public class SearchActivity extends SherlockActivity {
             this.setResult(RESULT_OK, intent);
             finish();
         } else {
-            Log.d(TAG, "No search parameters entered");
+            Log.d(TAG, "submitSearchParameters: No search parameters entered");
 
             // TODO: move to string resources XML file
             final String message = "Enter some search parameters!";

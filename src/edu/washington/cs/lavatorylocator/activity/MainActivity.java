@@ -258,14 +258,15 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
             final double currentLatitude = currentLocation.getLatitude();
             final double currentLongitude = currentLocation.getLongitude();
 
-            Log.d(TAG, "got2go request initiated with lat: " + currentLatitude
-                    + "; long: " + currentLongitude);
+            Log.d(TAG, "activateGot2go: got2go request initiated with lat: "
+                    + currentLatitude + "; long: " + currentLongitude);
             getSpiceManager().execute(
                     new Got2goRequest(currentLatitude, currentLongitude),
                     GOT2GO_JSON_CACHE_KEY, JSON_CACHE_DURATION,
                     new Got2goRequestListener());
         } else {
-            Log.d(TAG, "got2go request failed: location services");
+            Log.d(TAG, "activateGot2go: got2go request failed:"
+                    + "location services unavailable");
             // TODO: move to the string resource XML file
             final String message = "Location information is currently "
                     + "not available. Got2Go requires location "
@@ -302,7 +303,8 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         final Boolean loggedIn = userDetails.getBoolean("isLoggedIn", false);
 
         if (!loggedIn) {
-            Log.d(TAG, "User not logged in: showing login popup");
+            Log.d(TAG, "goToAddLavatoryActivity: user not logged in:"
+                    + "prompting login...");
 
             final LayoutInflater inflater = (LayoutInflater) this
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -384,7 +386,8 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
 
             mMap.animateCamera(cameraUpdateToCurrentLocation);
         } else {
-            Log.d(TAG, "Unable to center the map: no location services");
+            Log.d(TAG, "centerMapOnCurrentLocation: Unable to center the map, "
+                    + "no location services");
 
             // TODO: move string to resources XML file
             final String message = "Your current location could not "
@@ -525,22 +528,23 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         // do a null check to confirm that we have not already instantiated the
         // map
         if (mMap == null) {
-            Log.d(TAG, "Attempting to obtain the map from the fragment");
+            Log.d(TAG, "setUpMapIfNeeded: attempting to obtain the map "
+                    + "from the fragment");
             // try to obtain the map from the SupportMapFragment
             mMap = ((SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map)).getMap();
 
             // check if we were successful in obtaining the map
             if (mMap != null) {
-                Log.d(TAG, "Successfully obtained the map");
+                Log.d(TAG, "setUpMapIfNeeded: Successfully obtained the map");
                 mMap.setMyLocationEnabled(true);
 
                 mMap.setOnInfoWindowClickListener(this);
             } else {
-                Log.d(TAG, "Unable to obtain the map");
+                Log.d(TAG, "setUpMapIfNeeded: Unable to obtain the map");
             }
         } else {
-            Log.d(TAG, "Map setup was not needed");
+            Log.d(TAG, "setUpMapIfNeeded: Map setup was not needed");
         }
     }
 
@@ -599,7 +603,8 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         assert (lavatories != null);
 
         if (lavatories.isEmpty()) {
-            Log.d(TAG, "No lavatories obtained from server response");
+            Log.d(TAG, "displayLavatories: No lavatories obtained from "
+                    + "server response");
             final String message = "No lavatories found!";
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
             // TODO: move string to resources xml file
@@ -695,7 +700,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
                         building, floor, room, minRating,
                         type, latitude, longitude, radius);
 
-        Log.d(TAG, "LavatorySearchRequest executing...");
+        Log.d(TAG, "searchForLavatories: LavatorySearchRequest executing...");
         getSpiceManager().execute(lavatorySearchRequest,
                 SEARCH_RESULTS_JSON_CACHE_KEY, JSON_CACHE_DURATION,
                 new LavatorySearchListener());
@@ -757,9 +762,12 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
      */
     private class LavatorySearchListener implements
         RequestListener<LavatorySearchResults> {
+        private static final String TAG = "LavatorySearchListener";
 
         @Override
         public void onRequestFailure(SpiceException spiceException) {
+            Log.d(TAG, "onRequestFailure called");
+
             // TODO: move to string resources XML file
             final String errorMessage = "Lavatory search request failed: "
                     + spiceException.getMessage();
@@ -774,6 +782,8 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         @Override
         public void onRequestSuccess(
                 LavatorySearchResults lavatorySearchResults) {
+            Log.d(TAG, "onRequestSuccess called");
+
             MainActivity.this.displayLavatories(lavatorySearchResults
                     .getLavatories());
 
@@ -791,11 +801,13 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
      */
     private class Got2goRequestListener implements
         RequestListener<LavatoryData> {
+        private static final String TAG = "Got2goRequestListener";
 
         @Override
         public void onRequestFailure(SpiceException spiceException) {
-            // TODO: move to string resources XML file
+            Log.d(TAG, "onRequestFailure called");
 
+            // TODO: move to string resources XML file
             final String errorMessage = "Got2Go request failed: "
                     + spiceException.getMessage();
 
@@ -808,6 +820,8 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
 
         @Override
         public void onRequestSuccess(LavatoryData got2goLavatory) {
+            Log.d(TAG, "onRequestSuccess called");
+
             MainActivity.this.getSherlock()
                     .setProgressBarIndeterminateVisibility(false);
 
