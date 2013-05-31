@@ -19,7 +19,7 @@ public class ReviewData {
     // INSTANCE VARIABLES
     // -----------------------------------------------------------
     private int lid;
-    private int uid;
+    private String uid;
     private String datetime;
     private String review;
     private float rating;
@@ -174,7 +174,7 @@ public class ReviewData {
      *            this review's author ID, as stored in the LavatoryLocator
      *            service
      */
-    public void setUid(int uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
