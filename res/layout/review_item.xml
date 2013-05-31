@@ -16,7 +16,7 @@
             android:id="@+id/review_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Review Author"
+            android:text="@string/review_author"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:text="Time and Date"
+            android:text="@string/datetime"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </RelativeLayout>
@@ -42,7 +42,7 @@
         android:id="@+id/review_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Review Text"
+        android:text="@string/review_text"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <LinearLayout
