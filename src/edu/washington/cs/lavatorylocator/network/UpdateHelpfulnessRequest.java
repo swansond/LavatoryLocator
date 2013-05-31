@@ -32,7 +32,7 @@ public class UpdateHelpfulnessRequest extends
     private static final String REVIEW_ID_KEY = "reviewId";
     private static final String HELPFULNESS_KEY = "helpful";
     
-    private int uid;
+    private String uid;
     private int reviewId;
     private int helpful;
 
@@ -48,7 +48,7 @@ public class UpdateHelpfulnessRequest extends
      * @param helpful
      *            the helpfulness value to update
      */
-    public UpdateHelpfulnessRequest(int uid, int reviewId, int helpful) {
+    public UpdateHelpfulnessRequest(String uid, int reviewId, int helpful) {
         super(ResponseEntity.class);
         
         this.uid = uid;
@@ -60,7 +60,7 @@ public class UpdateHelpfulnessRequest extends
     public ResponseEntity loadDataFromNetwork() throws Exception {
         final MultiValueMap<String, String> parameters = 
                 new LinkedMultiValueMap<String, String>();
-        parameters.add(USER_ID_KEY, Integer.toString(uid));
+        parameters.add(USER_ID_KEY, uid);
         parameters.add(REVIEW_ID_KEY, Integer.toString(reviewId));
         parameters.add(HELPFULNESS_KEY, Integer.toString(helpful));
 

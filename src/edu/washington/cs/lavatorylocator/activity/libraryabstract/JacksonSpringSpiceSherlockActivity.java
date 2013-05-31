@@ -1,4 +1,4 @@
-package edu.washington.cs.lavatorylocator.activity;
+package edu.washington.cs.lavatorylocator.activity.libraryabstract;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.octo.android.robospice.JacksonSpringAndroidSpiceService;

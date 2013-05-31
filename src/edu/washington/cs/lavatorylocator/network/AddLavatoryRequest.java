@@ -35,7 +35,7 @@ public class AddLavatoryRequest extends
     private static final String LATITUDE_SERVER_KEY = "latitude";
     private static final String LONGITUDE_SERVER_KEY = "longitude";
 
-    private int uid;
+    private String uid;
     private String building;
     private String floor;
     private char type;
@@ -60,7 +60,7 @@ public class AddLavatoryRequest extends
      * @param longitude
      *            the lavatory's longitude
      */
-    public AddLavatoryRequest(int uid, String building, String floor,
+    public AddLavatoryRequest(String uid, String building, String floor,
             String room, char type, double latitude, double longitude) {
         super(ResponseEntity.class);
 
@@ -76,7 +76,7 @@ public class AddLavatoryRequest extends
     public ResponseEntity loadDataFromNetwork() throws Exception {
         final MultiValueMap<String, String> parameters = 
                 new LinkedMultiValueMap<String, String>();
-        parameters.add(USER_ID_SERVER_KEY, Integer.toString(uid));
+        parameters.add(USER_ID_SERVER_KEY, uid);
         parameters.add(BUILDING_SERVER_KEY, building);
         parameters.add(FLOOR_SERVER_KEY, floor);
         parameters.add(LATITUDE_SERVER_KEY, Double.toString(latitude));

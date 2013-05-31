@@ -33,7 +33,7 @@ public class DeleteLavatoryRequest extends
     private static final String USER_ID_SERVER_KEY = "uid";
     
     private final int lid;
-    private final int uid;
+    private final String uid;
 
     /**
      * Constructs a new {@link DeleteLavatoryRequest} with the given
@@ -44,7 +44,7 @@ public class DeleteLavatoryRequest extends
      * @param lid
      *            the ID of the lavatory to edit
      */
-    public DeleteLavatoryRequest(final int lid, final int uid) {
+    public DeleteLavatoryRequest(final int lid, final String uid) {
         super(ResponseEntity.class);
         this.lid = lid;
         this.uid = uid;
@@ -55,7 +55,7 @@ public class DeleteLavatoryRequest extends
         final MultiValueMap<String, String> parameters =
                 new LinkedMultiValueMap<String, String>();
         parameters.add(LAVATORY_ID_SERVER_KEY, Integer.toString(lid));
-        parameters.add(USER_ID_SERVER_KEY, Integer.toString(uid));
+        parameters.add(USER_ID_SERVER_KEY, uid);
 
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);

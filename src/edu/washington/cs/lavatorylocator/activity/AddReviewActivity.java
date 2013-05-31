@@ -23,8 +23,12 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.android.gms.plus.PlusClient;
+import com.google.android.gms.plus.model.people.Person;
 
 import edu.washington.cs.lavatorylocator.R;
+import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment;
+import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment.OnSignedInListener;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 import edu.washington.cs.lavatorylocator.util.RESTLoader;
 import edu.washington.cs.lavatorylocator.util.RESTLoader.RESTResponse;
@@ -37,19 +41,20 @@ import edu.washington.cs.lavatorylocator.util.RESTLoader.RESTResponse;
  *
  */
 public class AddReviewActivity extends SherlockFragmentActivity implements
-        LoaderCallbacks<RESTLoader.RESTResponse> {
+        LoaderCallbacks<RESTLoader.RESTResponse>, OnSignedInListener {
 
     private static final String SUBMIT_REVIEW =
             "http://lavlocdb.herokuapp.com/submitreview.php";
     private static final int MANAGER_ID = 3;
-
-    public static final int POPUP_WIDTH = 350;
-    public static final int POPUP_HEIGHT = 250;
-
+    private static final int REQUEST_CODE_PLUS_CLIENT_FRAGMENT = 0;
     private static final String TAG = "AddReviewActivity";
 
-    private ProgressDialog loadingScreen;
-    private PopupWindow connectionPopup;
+    // -------------------------------------------------------------------
+    // INSTANCE VARIABLES
+    // -------------------------------------------------------------------
+    private PlusClientFragment mPlusClientFragment;
+    
+    private String uid;
 
     // saved data in case we need to retry a query
     private String lastUid;
@@ -75,7 +80,7 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
         final EditText reviewText = ((EditText) findViewById(
                 R.id.add_review_text));
         final String reviewTextString = reviewText.getText().toString();
-        updateReview("1", Integer.toString(ld.getLid()),
+        updateReview(uid, Integer.toString(ld.getLid()),
                 Float.toString(rating), reviewTextString);
     }
 
@@ -87,6 +92,9 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
         setContentView(R.layout.activity_add_review);
         // Show the Up button in the action bar.
         setupActionBar();
+        
+        mPlusClientFragment = PlusClientFragment.getPlusClientFragment(this,
+                null);
     }
 
     /**
@@ -167,7 +175,6 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
             RESTResponse response) {
         Log.d(TAG, "onLoadFinished called");
 
-        loadingScreen.dismiss();
         getSupportLoaderManager().destroyLoader(loader.getId());
         if (response.getCode() == HttpStatus.SC_OK) {
             Log.d(TAG, "onLoadFinished: 200 response received");
@@ -182,10 +189,6 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View layout = inflater.inflate(R.layout.no_connection_popup,
                     (ViewGroup) findViewById(R.id.no_connection_layout));
-
-            connectionPopup = new PopupWindow(layout, POPUP_WIDTH,
-                    POPUP_HEIGHT, true);
-            connectionPopup.showAtLocation(layout, Gravity.CENTER, 0, 0);
         }
     }
 
@@ -238,34 +241,25 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
             args.putString("review", review);
         }
 
-        loadingScreen = ProgressDialog.show(this, "Loading...",
-                "Getting data just for you!", true);
         // and initialize the Loader
         getSupportLoaderManager().initLoader(MANAGER_ID, args, this);
     }
-
+    
     /**
-     * Retries the previous request and dismisses the popup box.
+     * Called when the {@link com.google.android.gms.plus.PlusClient} has been connected
+     * successfully.
      *
-     * @param target
-     *            the popup box View to be dismissed
+     * @param plusClient The connected {@link PlusClient} for making API requests.
      */
-    public void retryConnection(View target) {
-        Log.d(TAG, "retryConnection called");
-
-        updateReview(lastUid, lastLid, lastRating, lastReview);
-        dismissConnection(target);
+    @Override
+    public void onSignedIn(PlusClient plusClient) {
+        Person user = plusClient.getCurrentPerson();
+        uid = user.getId();
     }
-
-    /**
-     * Dismisses the popup box.
-     *
-     * @param target
-     *            the popup box View to be dismissed
-     */
-    public void dismissConnection(View target) {
-        Log.d(TAG, "dismissConnection called");
-
-        connectionPopup.dismiss();
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPlusClientFragment.signIn(REQUEST_CODE_PLUS_CLIENT_FRAGMENT);
     }
 }
