@@ -1,6 +1,13 @@
 package edu.washington.cs.lavatorylocator.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+import android.util.Log;
 
 /**
  * The {@link Review} class is an representation of the data related to any one
@@ -10,6 +17,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
  * 
  * @author Wil Sunseri
  * @author Chris Rovillos
+ * @author David Swanson
  * 
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -27,6 +35,8 @@ public class ReviewData {
     private int uservote;
     private int reviewId;
 
+    
+    private static final int DATE_TIME_OFFSET = 3;
     // -----------------------------------------------------------
     // CONSTRUCTORS AND CREATORS
     // -----------------------------------------------------------
@@ -123,7 +133,23 @@ public class ReviewData {
      *            this review's date and time, as represented in a String
      */
     public void setDatetime(String datetime) {
-        this.datetime = datetime;
+        // In format: YYYY-MM-DD HH:MM:SS:JJJJJJ
+        // J seems to be fractions of a second
+        // Out format: MM/DD/YYYY HH:MMXM without 0 padding
+        try {
+            Log.e("datetime", datetime);
+            SimpleDateFormat format = 
+                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+            format.setTimeZone(TimeZone.getTimeZone("UTC"));
+            final Date time = format.parse(datetime.substring(
+                    0, datetime.length() - DATE_TIME_OFFSET));
+            Log.e("converted", time.toString());
+            format = new SimpleDateFormat("M/d/yyyy h:mm a");
+            format.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+            this.datetime = format.format(time);
+        } catch (ParseException e) {
+            this.datetime = "Error";
+        }
     }
 
     /**

@@ -21,6 +21,7 @@ public class ReviewListItemView extends RelativeLayout {
     private TextView promptHelpfulText;
     private Button markHelpfulButton;
     private Button markNotHelpfulButton;
+    private TextView reviewDateTextView;
 
     /**
      * Constructs a new {@link LavatorySearchResultsListItemView} with the given
@@ -44,10 +45,12 @@ public class ReviewListItemView extends RelativeLayout {
         final float rating = review.getRating();
         final String reviewText = review.getReview();
         final int reviewId = review.getReviewId();
+        final String datetime = review.getDatetime();
 
         reviewAuthorTextView.setText(reviewAuthor);
         ratingBar.setRating(rating);
         reviewTextView.setText(reviewText);
+        reviewDateTextView.setText(datetime);
         
         // Set up the call-backs for the helpfulness buttons
         markHelpfulButton.setTag(new Integer(reviewId));
@@ -73,5 +76,6 @@ public class ReviewListItemView extends RelativeLayout {
         markHelpfulButton = ((Button) findViewById(R.id.was_helpful_button));
         markNotHelpfulButton = ((Button) findViewById(
                 R.id.was_not_helpful_button));
+        reviewDateTextView = ((TextView) findViewById(R.id.review_datetime));
     }
 }
