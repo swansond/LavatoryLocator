@@ -148,7 +148,7 @@ public class ReviewData {
             format.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
             this.datetime = format.format(time);
         } catch (ParseException e) {
-            this.datetime = "Error";
+            this.datetime = "Date Unavailable";
         }
     }
 
