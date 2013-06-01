@@ -30,6 +30,9 @@
     <string name="from_huskysoft">From HuskySoft</string>
     <string name="legal_notices">Legal Notices</string>
     <string name="about">About</string>
+    <string name="review_author">Review Author</string>
+    <string name="review_text">Review Text</string>
+    <string name="datetime">Time and Date</string>
 
     <!-- Latitude, longitude format -->
     <string name="latitude_longitude">%1$.8f, %2$.8f</string>
