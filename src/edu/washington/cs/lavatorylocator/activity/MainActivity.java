@@ -4,21 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
@@ -47,7 +41,8 @@ import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import edu.washington.cs.lavatorylocator.R;
-import edu.washington.cs.lavatorylocator.activity.libraryabstract.JacksonSpringSpiceSherlockFragmentActivity;
+import edu.washington.cs.lavatorylocator.activity.libraryabstract.
+    JacksonSpringSpiceSherlockFragmentActivity;
 import edu.washington.cs.lavatorylocator.adapter.LavatorySearchResultsAdapter;
 import edu.washington.cs.lavatorylocator.location.LocationUtils;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;

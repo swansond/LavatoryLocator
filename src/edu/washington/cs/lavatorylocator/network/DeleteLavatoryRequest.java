@@ -23,6 +23,7 @@ import com.octo.android.robospice.request.springandroid
  * @author Wilkes Sunseri
  *
  */
+@SuppressWarnings("rawtypes")
 public class DeleteLavatoryRequest extends
         SpringAndroidSpiceRequest<ResponseEntity> {
 

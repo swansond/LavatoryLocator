@@ -22,9 +22,11 @@ import com.octo.android.robospice.request.
     springandroid.SpringAndroidSpiceRequest;
 
 import edu.washington.cs.lavatorylocator.R;
-import edu.washington.cs.lavatorylocator.activity.libraryabstract.JacksonSpringSpiceSherlockFragmentActivity;
+import edu.washington.cs.lavatorylocator.activity.libraryabstract.
+    JacksonSpringSpiceSherlockFragmentActivity;
 import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment;
-import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment.OnSignedInListener;
+import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment.
+    OnSignedInListener;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 import edu.washington.cs.lavatorylocator.network.AddLavatoryRequest;
 import edu.washington.cs.lavatorylocator.network.EditLavatoryDetailRequest;
@@ -38,7 +40,8 @@ import edu.washington.cs.lavatorylocator.network.EditLavatoryDetailRequest;
  *
  */
 public class EditLavatoryDetailActivity extends
-        JacksonSpringSpiceSherlockFragmentActivity implements OnSignedInListener {
+        JacksonSpringSpiceSherlockFragmentActivity implements
+        OnSignedInListener {
     // -------------------------------------------------------------------
     // CONSTANTS
     // -------------------------------------------------------------------
@@ -122,15 +125,20 @@ public class EditLavatoryDetailActivity extends
     }
     
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (mPlusClientFragment.handleOnActivityResult(requestCode, resultCode, data)) {
+    protected void onActivityResult(int requestCode, int resultCode,
+            Intent data) {
+        if (mPlusClientFragment.handleOnActivityResult(requestCode, resultCode,
+                data)) {
             switch (resultCode) {
-                case RESULT_CANCELED:
-                    // User canceled sign in.
-                    Toast.makeText(this, R.string.greeting_status_sign_in_required,
-                            Toast.LENGTH_LONG).show();
-                    finish();
-                    break;
+            case RESULT_CANCELED:
+                // User canceled sign in.
+                Toast.makeText(this, R.string.
+                        greeting_status_sign_in_required,
+                        Toast.LENGTH_LONG).show();
+                finish();
+                break;
+            default:
+                break;
             }
         }
     }
@@ -144,6 +152,7 @@ public class EditLavatoryDetailActivity extends
      * @param item
      *            the {@link MenuItem} that was selected
      */
+    @SuppressWarnings("rawtypes")
     public void submit(MenuItem item) {
         Log.d(TAG, "submit called");
 
@@ -187,7 +196,8 @@ public class EditLavatoryDetailActivity extends
                 final Intent intent = getIntent();
     
                 final LavatoryData lavatoryToEdit = intent
-                        .getParcelableExtra(LavatoryDetailActivity.LAVATORY_DATA);
+                        .getParcelableExtra(LavatoryDetailActivity.
+                                LAVATORY_DATA);
     
                 SpringAndroidSpiceRequest<ResponseEntity> request;
     
@@ -234,14 +244,15 @@ public class EditLavatoryDetailActivity extends
     }
     
     /**
-     * Called when the {@link com.google.android.gms.plus.PlusClient} has been connected
-     * successfully.
+     * Called when the {@link com.google.android.gms.plus.PlusClient} has been
+     * connected successfully.
      *
-     * @param plusClient The connected {@link PlusClient} for making API requests.
+     * @param plusClient
+     *                The connected {@link PlusClient} for making API requests.
      */
     @Override
     public void onSignedIn(PlusClient plusClient) {
-        Person user = plusClient.getCurrentPerson();
+        final Person user = plusClient.getCurrentPerson();
         uid = user.getId();
     }
 
@@ -267,6 +278,7 @@ public class EditLavatoryDetailActivity extends
      * @author Chris Rovillos
      *
      */
+    @SuppressWarnings("rawtypes")
     private class AddOrEditLavatoryDetailRequestListener implements
             RequestListener<ResponseEntity> {
         private static final String TAG = "AddOrEditLavatory"

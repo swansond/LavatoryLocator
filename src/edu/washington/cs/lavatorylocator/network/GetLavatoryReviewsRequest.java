@@ -65,7 +65,8 @@ public class GetLavatoryReviewsRequest extends
 
         uriBuilder.appendQueryParameter(LAVATORY_ID_SERVER_KEY, lid);
         uriBuilder.appendQueryParameter(USER_ID_SERVER_KEY, uid);
-        uriBuilder.appendQueryParameter(PAGE_SERVER_KEY, Integer.toString(page));
+        uriBuilder.appendQueryParameter(PAGE_SERVER_KEY,
+                Integer.toString(page));
         uriBuilder.appendQueryParameter(SORT_PARAM_SERVER_KEY, sortParam);
         uriBuilder.appendQueryParameter(
                 SORT_DIRECTION_SERVER_KEY, sortDirection);

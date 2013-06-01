@@ -23,6 +23,7 @@ import com.octo.android.robospice.request.
  * @author Chris Rovillos
  * 
  */
+@SuppressWarnings("rawtypes")
 public class EditLavatoryDetailRequest extends
         SpringAndroidSpiceRequest<ResponseEntity> {
     private static final String EDIT_LAVATORY_SERVICE_URL = 

@@ -23,6 +23,7 @@ import com.octo.android.robospice.request.
  * @author Keith Miller
  *
  */
+@SuppressWarnings("rawtypes")
 public class UpdateHelpfulnessRequest extends
         SpringAndroidSpiceRequest<ResponseEntity> {
     

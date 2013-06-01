@@ -27,10 +27,12 @@ import com.octo.android.robospice.request.springandroid
     .SpringAndroidSpiceRequest;
 
 import edu.washington.cs.lavatorylocator.R;
-import edu.washington.cs.lavatorylocator.activity.libraryabstract.JacksonSpringSpiceSherlockFragmentActivity;
+import edu.washington.cs.lavatorylocator.activity.libraryabstract.
+    JacksonSpringSpiceSherlockFragmentActivity;
 import edu.washington.cs.lavatorylocator.adapter.ReviewsListAdapter;
 import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment;
-import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment.OnSignedInListener;
+import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment.
+    OnSignedInListener;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 import edu.washington.cs.lavatorylocator.model.ReviewData;
 import edu.washington.cs.lavatorylocator.model.Reviews;
@@ -48,7 +50,8 @@ import edu.washington.cs.lavatorylocator.view.ReviewListItemView;
  *
  */
 public class LavatoryDetailActivity extends
-        JacksonSpringSpiceSherlockFragmentActivity implements OnSignedInListener {
+        JacksonSpringSpiceSherlockFragmentActivity implements
+        OnSignedInListener {
 
     // --------------------------------------------------------------------
     // CONSTANTS
@@ -280,6 +283,7 @@ public class LavatoryDetailActivity extends
      * @param v
      *            the {@link View} that was selected
      */
+    @SuppressWarnings("rawtypes")
     public final void markHelpful(final View v) {
         Log.d(TAG, "markHelpful called");
 
@@ -307,6 +311,7 @@ public class LavatoryDetailActivity extends
      * @param v
      *            the {@link View} that was selected
      */
+    @SuppressWarnings("rawtypes")
     public final void markNotHelpful(final View v) {
         Log.d(TAG, "markNotHelpful called");
 
@@ -350,16 +355,18 @@ public class LavatoryDetailActivity extends
     }
     
     /**
-     * Called when the {@link com.google.android.gms.plus.PlusClient} has been connected
-     * successfully.
+     * Called when the {@link com.google.android.gms.plus.PlusClient} has been
+     * connected successfully.
      *
-     * @param plusClient The connected {@link PlusClient} for making API requests.
+     * @param plusClient
+     *                 The connected {@link PlusClient} for making APIrequests.
      */
     @Override
     public void onSignedIn(PlusClient plusClient) {
-        Person user = plusClient.getCurrentPerson();
+        final Person user = plusClient.getCurrentPerson();
         uid = user.getId();
-        loadReviews(uid, Integer.toString(lavatory.getLid()), REVIEW_PAGE_NUMBER,
+        loadReviews(uid, Integer.toString(lavatory.getLid()),
+                REVIEW_PAGE_NUMBER,
                 "helpfulness", "descending");
     }
 
@@ -476,6 +483,7 @@ public class LavatoryDetailActivity extends
      * @author Keith Miller
      *
      */
+    @SuppressWarnings("rawtypes")
     private class UpdateHelpfulnessRequestListener implements
         RequestListener<ResponseEntity> {
         private static final String TAG = "UpdateHelpfulnessRequestListener";
@@ -531,6 +539,7 @@ public class LavatoryDetailActivity extends
      * @author Wilkes Sunseri
      *
      */
+    @SuppressWarnings("rawtypes")
     private class DeleteRequestListener implements
             RequestListener<ResponseEntity> {
         private static final String TAG = "DeleteRequestListener";
