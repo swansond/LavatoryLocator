@@ -38,14 +38,28 @@ public class TestReviewData extends TestCase {
      * Tests the getDatetime method.
      * @black
      */
-    public void test_getDatetime_datetimeIsToday_getsToday() {
+    public void test_getDatetime_datetimeParses() {
         final ReviewData datetimeTestReviewData = new ReviewData();
-        final String expectedTestDatetime = "Today";
-        datetimeTestReviewData.setDatetime("Today");
-        assertEquals(expectedTestDatetime,
+        final String expectedOutput = "3/30/1990 7:56 AM";
+        final String input = "1990-03-30 07:56:12.123456";
+        datetimeTestReviewData.setDatetime(input);
+        assertEquals(expectedOutput,
                 datetimeTestReviewData.getDatetime());
     }
 
+    /**
+     * Tests the error capabilities of the getDatetime method.
+     * @black
+     */
+    public void test_getDatetime_error() {
+        final ReviewData datetimeTestReviewData = new ReviewData();
+        final String expectedOutput = "error";
+        final String input = "today was a good day";
+        datetimeTestReviewData.setDatetime(input);
+        assertEquals(expectedOutput,
+                datetimeTestReviewData.getDatetime());
+    }
+    
     /**
      * Tests the getHelpfulness method.
      * @black
