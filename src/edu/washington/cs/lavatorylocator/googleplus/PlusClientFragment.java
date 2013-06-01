@@ -382,7 +382,7 @@ public final class PlusClientFragment extends SherlockFragment
                 (DialogFragment) getFragmentManager().findFragmentByTag(TAG_PROGRESS_DIALOG);
         if (progressDialog == null) {
             progressDialog = ProgressDialogFragment.create();
-            progressDialog.show(getFragmentManager(), TAG_PROGRESS_DIALOG);
+            progressDialog.show(getActivity().getSupportFragmentManager(), TAG_PROGRESS_DIALOG);
         }
     }
 
@@ -442,7 +442,7 @@ public final class PlusClientFragment extends SherlockFragment
     }
 
     protected void hideProgressDialog() {
-        FragmentManager manager = getFragmentManager();
+        FragmentManager manager = getActivity().getSupportFragmentManager();
         if (manager != null) {
             DialogFragment progressDialog = (DialogFragment) manager
                     .findFragmentByTag(TAG_PROGRESS_DIALOG);
@@ -454,23 +454,23 @@ public final class PlusClientFragment extends SherlockFragment
 
     private void showErrorDialog(DialogFragment errorDialog) {
         DialogFragment oldErrorDialog =
-                (DialogFragment) getFragmentManager().findFragmentByTag(TAG_ERROR_DIALOG);
+                (DialogFragment) getActivity().getSupportFragmentManager().findFragmentByTag(TAG_ERROR_DIALOG);
         if (oldErrorDialog != null) {
             oldErrorDialog.dismiss();
         }
 
-        errorDialog.show(getFragmentManager(), TAG_ERROR_DIALOG);
+        errorDialog.show(getActivity().getSupportFragmentManager(), TAG_ERROR_DIALOG);
     }
 
     private boolean isShowingErrorDialog() {
         DialogFragment errorDialog =
-                (DialogFragment) getFragmentManager().findFragmentByTag(TAG_ERROR_DIALOG);
+                (DialogFragment) getActivity().getSupportFragmentManager().findFragmentByTag(TAG_ERROR_DIALOG);
         return errorDialog != null && !errorDialog.isHidden();
     }
 
     private void hideErrorDialog() {
         DialogFragment errorDialog =
-                (DialogFragment) getFragmentManager().findFragmentByTag(TAG_ERROR_DIALOG);
+                (DialogFragment) getActivity().getSupportFragmentManager().findFragmentByTag(TAG_ERROR_DIALOG);
         if (errorDialog != null) {
             errorDialog.dismiss();
         }
