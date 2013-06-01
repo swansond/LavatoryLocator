@@ -41,7 +41,7 @@ public class TestReviewData extends TestCase {
     public void test_getDatetime_datetimeParses() {
         final ReviewData datetimeTestReviewData = new ReviewData();
         final String expectedOutput = "3/30/1990 7:56 AM";
-        final String input = "1990-03-30 07:56:12.123456";
+        final String input = "1990-03-30 15:56:12.123456";
         datetimeTestReviewData.setDatetime(input);
         assertEquals(expectedOutput,
                 datetimeTestReviewData.getDatetime());
@@ -53,7 +53,7 @@ public class TestReviewData extends TestCase {
      */
     public void test_getDatetime_error() {
         final ReviewData datetimeTestReviewData = new ReviewData();
-        final String expectedOutput = "error";
+        final String expectedOutput = "Date Unavailable";
         final String input = "today was a good day";
         datetimeTestReviewData.setDatetime(input);
         assertEquals(expectedOutput,
