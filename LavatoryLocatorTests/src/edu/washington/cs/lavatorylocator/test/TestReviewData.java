@@ -36,7 +36,7 @@ public class TestReviewData extends TestCase {
 
     /**
      * Tests the getDatetime method.
-     * @black
+     * @white
      */
     public void test_getDatetime_datetimeParses() {
         final ReviewData datetimeTestReviewData = new ReviewData();
@@ -49,7 +49,7 @@ public class TestReviewData extends TestCase {
 
     /**
      * Tests the error capabilities of the getDatetime method.
-     * @black
+     * @white
      */
     public void test_getDatetime_error() {
         final ReviewData datetimeTestReviewData = new ReviewData();
