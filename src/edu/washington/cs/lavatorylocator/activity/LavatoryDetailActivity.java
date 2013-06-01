@@ -426,12 +426,26 @@ public class LavatoryDetailActivity extends
 
         final View headerView = getLayoutInflater().inflate(
                 R.layout.activity_lavatory_detail_header, null);
-        ((TextView) headerView.findViewById(R.id.lavatory_detail_name_text))
-        .setText(lavatory.getName());
-        ((TextView) headerView.findViewById(R.id.lavatory_detail_building_text))
-        .setText(lavatory.getBuilding());
-        ((RatingBar) headerView.findViewById(R.id.lavatory_detail_rating))
-        .setRating(lavatory.getAvgRating());
+        final TextView lavatoryNameTextView = (TextView) headerView
+                .findViewById(R.id.lavatory_detail_name_text);
+        final TextView floorTextView = (TextView) headerView
+                .findViewById(R.id.lavatory_detail_floor_text);
+        final TextView buildingTextView = (TextView) headerView
+                .findViewById(R.id.lavatory_detail_building_text);
+        final RatingBar averageRatingBar = (RatingBar) headerView
+                .findViewById(R.id.lavatory_detail_rating);
+        
+        final String lavatoryName = lavatory.getName();
+        final String floor = lavatory.getFloor();
+        final String building = lavatory.getBuilding();
+        final float avgRating = lavatory.getAvgRating();
+        
+        final String floorTextPrefix = getString(R.string.floor_prefix);
+        
+        lavatoryNameTextView.setText(lavatoryName);
+        floorTextView.setText(floorTextPrefix + floor);
+        buildingTextView.setText(building);
+        averageRatingBar.setRating(avgRating);
 
         final ListView listView = (ListView) findViewById(
                 R.id.lavatory_detail_list_view);

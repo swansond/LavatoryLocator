@@ -190,8 +190,7 @@ public class LavatoryData implements Parcelable {
      * @return this lavatory's name
      */
     public String getName() {
-        return "Room " + getRoom() + ", " + getType() + ", Floor " + getFloor()
-                + ", " + getBuilding();
+        return "Room " + getRoom();
     }
 
     /**

@@ -44,5 +44,6 @@
     <string name="action_request_delete_lavatory">Request Deletion</string>
     <string name="progress_message">Signing in to Google…</string>
     <string name="greeting_status_sign_in_required">Signing in is required!</string>
+    <string name="floor_prefix">Floor&#160;</string>
     
 </resources>
