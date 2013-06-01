@@ -36,6 +36,7 @@ import edu.washington.cs.lavatorylocator.model.Reviews;
 import edu.washington.cs.lavatorylocator.network.DeleteLavatoryRequest;
 import edu.washington.cs.lavatorylocator.network.GetLavatoryReviewsRequest;
 import edu.washington.cs.lavatorylocator.network.UpdateHelpfulnessRequest;
+import edu.washington.cs.lavatorylocator.view.ReviewListItemView;
 
 /**
  * {@link android.app.Activity} for viewing information about a specific
@@ -325,8 +326,10 @@ public class LavatoryDetailActivity extends
             request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
 
             Log.d(TAG, "executing UpdateHelpfulnessRequest...");
+            final ReviewListItemView thisView =
+                    (ReviewListItemView) v.getParent().getParent().getParent();
             getSpiceManager().execute(request,
-                    new UpdateHelpfulnessRequestListener());
+                    new UpdateHelpfulnessRequestListener(thisView));
         }
     }
 
@@ -368,8 +371,10 @@ public class LavatoryDetailActivity extends
             request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
 
             Log.d(TAG, "markHelpful: executing UpdateHelpfulnessRequest...");
+            final ReviewListItemView thisView =
+                    (ReviewListItemView) v.getParent().getParent().getParent();
             getSpiceManager().execute(request,
-                    new UpdateHelpfulnessRequestListener());
+                    new UpdateHelpfulnessRequestListener(thisView));
         }
     }
 
@@ -511,6 +516,20 @@ public class LavatoryDetailActivity extends
         RequestListener<ResponseEntity> {
         private static final String TAG = "UpdateHelpfulnessRequestListener";
 
+        private ReviewListItemView thisReview;
+
+        /**
+         * Creates a new UpdateHelpfulnessRequestListener.
+         * 
+         * @param review
+         *              the ReviewListItem whose helpfulness button launched
+         *              this request
+         */
+        public UpdateHelpfulnessRequestListener(ReviewListItemView review) {
+            super();
+            thisReview = review;
+        }
+
         @Override
         public void onRequestFailure(final SpiceException spiceException) {
             Log.d(TAG, "onRequestFailure called");
@@ -532,6 +551,8 @@ public class LavatoryDetailActivity extends
 
             LavatoryDetailActivity.this
                     .getSherlock().setProgressBarIndeterminateVisibility(false);
+
+            thisReview.disableHelpfulnessButtons();
 
             // TODO: move to string resources XML file
             final String message = "Submitted!";
