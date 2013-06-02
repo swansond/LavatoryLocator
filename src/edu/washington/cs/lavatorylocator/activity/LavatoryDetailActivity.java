@@ -23,16 +23,16 @@ import com.google.android.gms.plus.model.people.Person;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
-import com.octo.android.robospice.request.springandroid
-    .SpringAndroidSpiceRequest;
+import com.octo.android.robospice.request.springandroid.
+        SpringAndroidSpiceRequest;
 
 import edu.washington.cs.lavatorylocator.R;
 import edu.washington.cs.lavatorylocator.activity.libraryabstract.
-    JacksonSpringSpiceSherlockFragmentActivity;
+        JacksonSpringSpiceSherlockFragmentActivity;
 import edu.washington.cs.lavatorylocator.adapter.ReviewsListAdapter;
 import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment;
 import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment.
-    OnSignedInListener;
+        OnSignedInListener;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 import edu.washington.cs.lavatorylocator.model.ReviewData;
 import edu.washington.cs.lavatorylocator.model.Reviews;

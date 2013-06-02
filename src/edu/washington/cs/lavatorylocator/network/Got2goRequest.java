@@ -1,9 +1,16 @@
 package edu.washington.cs.lavatorylocator.network;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.
+        MappingJacksonHttpMessageConverter;
+
 import android.net.Uri;
 
 import com.octo.android.robospice.request.
-    springandroid.SpringAndroidSpiceRequest;
+        springandroid.SpringAndroidSpiceRequest;
 
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 
@@ -49,6 +56,14 @@ public class Got2goRequest extends SpringAndroidSpiceRequest<LavatoryData> {
 
         uriBuilder.appendQueryParameter(LATITUDE_SERVER_KEY, latitudeString);
         uriBuilder.appendQueryParameter(LONGITUDE_SERVER_KEY, longitudeString);
+        
+        // set the message converters for the request
+        final List<HttpMessageConverter<?>> msgConverters =
+                new ArrayList<HttpMessageConverter<?>>();
+        final HttpMessageConverter<?> mappingJacksonConverter =
+                new MappingJacksonHttpMessageConverter();
+        msgConverters.add(mappingJacksonConverter);
+        getRestTemplate().setMessageConverters(msgConverters);
         
         final String url = uriBuilder.build().toString();
         

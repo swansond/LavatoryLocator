@@ -15,7 +15,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.octo.android.robospice.request.springandroid.
-    SpringAndroidSpiceRequest;
+        SpringAndroidSpiceRequest;
 
 /**
  * Class for submitting a lavatory review to the LavatoryLocator service.
@@ -74,7 +74,8 @@ public class AddReviewRequest extends
 
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
+        
+        // set the message converters for the request
         final HttpMessageConverter<String> stringConverter =
                 new StringHttpMessageConverter();
         final FormHttpMessageConverter formConverter =

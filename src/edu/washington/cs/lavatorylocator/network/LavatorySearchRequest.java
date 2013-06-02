@@ -1,10 +1,17 @@
 package edu.washington.cs.lavatorylocator.network;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.
+        MappingJacksonHttpMessageConverter;
+
 import android.net.Uri;
 import android.text.TextUtils;
 
 import com.octo.android.robospice.request.
-    springandroid.SpringAndroidSpiceRequest;
+        springandroid.SpringAndroidSpiceRequest;
 
 import edu.washington.cs.lavatorylocator.model.LavatorySearchResults;
 
@@ -90,6 +97,14 @@ public class LavatorySearchRequest extends
 
     @Override
     public LavatorySearchResults loadDataFromNetwork() throws Exception {
+        // set the message converters for the request
+        final List<HttpMessageConverter<?>> msgConverters =
+                new ArrayList<HttpMessageConverter<?>>();
+        final HttpMessageConverter<?> mappingJacksonConverter =
+                new MappingJacksonHttpMessageConverter();
+        msgConverters.add(mappingJacksonConverter);
+        getRestTemplate().setMessageConverters(msgConverters);
+        
         if (loadAllLavatories) {
             return getRestTemplate().getForObject(LAVATORY_SEARCH_SERVICE_URL,
                     LavatorySearchResults.class);
@@ -113,7 +128,7 @@ public class LavatorySearchRequest extends
                     RADIUS_SERVER_KEY, radius);
             appendQueryParameterToUriBuilderNoEmptyKeys(uriBuilder,
                     TYPE_SERVER_KEY, type);
-
+            
             final String url = uriBuilder.build().toString();
 
             return getRestTemplate().getForObject(url,

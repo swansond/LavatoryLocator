@@ -4,9 +4,9 @@ import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient.
-    ConnectionCallbacks;
+        ConnectionCallbacks;
 import com.google.android.gms.common.GooglePlayServicesClient.
-    OnConnectionFailedListener;
+        OnConnectionFailedListener;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.plus.PlusClient;

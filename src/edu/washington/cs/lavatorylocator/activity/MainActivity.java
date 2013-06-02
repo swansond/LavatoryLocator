@@ -20,10 +20,10 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common
-    .GooglePlayServicesClient.ConnectionCallbacks;
-import com.google.android.gms.common
-    .GooglePlayServicesClient.OnConnectionFailedListener;
+import com.google.android.gms.common.
+        GooglePlayServicesClient.ConnectionCallbacks;
+import com.google.android.gms.common.
+        GooglePlayServicesClient.OnConnectionFailedListener;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
@@ -42,7 +42,7 @@ import com.octo.android.robospice.request.listener.RequestListener;
 
 import edu.washington.cs.lavatorylocator.R;
 import edu.washington.cs.lavatorylocator.activity.libraryabstract.
-    JacksonSpringSpiceSherlockFragmentActivity;
+        JacksonSpringSpiceSherlockFragmentActivity;
 import edu.washington.cs.lavatorylocator.adapter.LavatorySearchResultsAdapter;
 import edu.washington.cs.lavatorylocator.location.LocationUtils;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;

@@ -20,10 +20,10 @@ import com.octo.android.robospice.request.listener.RequestListener;
 
 import edu.washington.cs.lavatorylocator.R;
 import edu.washington.cs.lavatorylocator.activity.libraryabstract.
-    JacksonSpringSpiceSherlockFragmentActivity;
+        JacksonSpringSpiceSherlockFragmentActivity;
 import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment;
 import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment.
-    OnSignedInListener;
+        OnSignedInListener;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 import edu.washington.cs.lavatorylocator.network.AddReviewRequest;
 

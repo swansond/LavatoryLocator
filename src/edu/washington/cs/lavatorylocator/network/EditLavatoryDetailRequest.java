@@ -15,7 +15,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.octo.android.robospice.request.
-    springandroid.SpringAndroidSpiceRequest;
+        springandroid.SpringAndroidSpiceRequest;
 
 /**
  * Class for editing a lavatory's detail in the LavatoryLocator service.
@@ -94,7 +94,8 @@ public class EditLavatoryDetailRequest extends
 
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
+        
+        // set the message converters for the request
         final HttpMessageConverter<String> stringConverter = 
                 new StringHttpMessageConverter();
         final FormHttpMessageConverter formConverter = 

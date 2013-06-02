@@ -20,14 +20,14 @@ import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 import com.octo.android.robospice.request.
-    springandroid.SpringAndroidSpiceRequest;
+        springandroid.SpringAndroidSpiceRequest;
 
 import edu.washington.cs.lavatorylocator.R;
 import edu.washington.cs.lavatorylocator.activity.libraryabstract.
     JacksonSpringSpiceSherlockFragmentActivity;
 import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment;
 import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment.
-    OnSignedInListener;
+        OnSignedInListener;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 import edu.washington.cs.lavatorylocator.network.AddLavatoryRequest;
 import edu.washington.cs.lavatorylocator.network.EditLavatoryDetailRequest;
