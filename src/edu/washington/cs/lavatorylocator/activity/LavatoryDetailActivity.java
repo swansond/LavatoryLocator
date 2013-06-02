@@ -4,37 +4,41 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.android.gms.plus.PlusClient;
+import com.google.android.gms.plus.model.people.Person;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
-import com.octo.android.robospice.request.springandroid
-    .SpringAndroidSpiceRequest;
+import com.octo.android.robospice.request.springandroid.
+        SpringAndroidSpiceRequest;
 
 import edu.washington.cs.lavatorylocator.R;
+import edu.washington.cs.lavatorylocator.activity.libraryabstract.
+        JacksonSpringSpiceSherlockFragmentActivity;
 import edu.washington.cs.lavatorylocator.adapter.ReviewsListAdapter;
+import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment;
+import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment.
+        OnSignedInListener;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 import edu.washington.cs.lavatorylocator.model.ReviewData;
 import edu.washington.cs.lavatorylocator.model.Reviews;
+import edu.washington.cs.lavatorylocator.network.DeleteLavatoryRequest;
 import edu.washington.cs.lavatorylocator.network.GetLavatoryReviewsRequest;
 import edu.washington.cs.lavatorylocator.network.UpdateHelpfulnessRequest;
+import edu.washington.cs.lavatorylocator.view.ReviewListItemView;
 
 /**
  * {@link android.app.Activity} for viewing information about a specific
@@ -45,7 +49,8 @@ import edu.washington.cs.lavatorylocator.network.UpdateHelpfulnessRequest;
  *
  */
 public class LavatoryDetailActivity extends
-        JacksonSpringSpiceSherlockFragmentActivity {
+        JacksonSpringSpiceSherlockFragmentActivity implements
+        OnSignedInListener {
 
     // --------------------------------------------------------------------
     // CONSTANTS
@@ -54,6 +59,12 @@ public class LavatoryDetailActivity extends
      * Key for caching reviews.
      */
     private static final String REVIEWS_JSON_CACHE_KEY = "reviewsJson";
+    
+    private static final String DELETE_LAVATORY_REQUEST_CACHE_KEY =
+            "deleteLavatoryRequest";
+    
+    private static final String REVIEW_HELPFULNESS_REQUEST_CACHE_KEY =
+            "reviewHelpfulnessRequest";
 
     /**
      * Cache duration, in milliseconds.
@@ -66,26 +77,34 @@ public class LavatoryDetailActivity extends
      */
     public static final String LAVATORY_DATA = "lavatoryData";
 
-    // TODO: replace when user IDs are implemented
-    private static final int STUB_USER_ID = 1;
-
-    public static final int POPUP_WIDTH = 350;
-    public static final int POPUP_HEIGHT = 250;
+    private static final String TAG = "LavatoryDetailActivity";
+    
+    private static final int REVIEW_PAGE_NUMBER = 1;
+    
+    private static final int REQUEST_CODE_PLUS_CLIENT_FRAGMENT = 0;
 
     // ------------------------------------------------------------------
     // INSTANCE VARIABLES
     // ------------------------------------------------------------------
-    private PopupWindow popup;
     private LavatoryData lavatory;
+    
+    private PlusClientFragment mPlusClientFragment;
+    private String uid;
+    private String username;
 
     // -------------------------------------------------------------
     // ACTIVITY LIFECYCLE
     // -------------------------------------------------------------
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate called");
+
         super.onCreate(savedInstanceState);
         // Show the Up button in the action bar.
         setupActionBar();
+        
+        mPlusClientFragment = PlusClientFragment.getPlusClientFragment(this,
+                null);
 
         final Intent intent = getIntent();
 
@@ -116,23 +135,18 @@ public class LavatoryDetailActivity extends
             lavatory = new LavatoryData(id, type, building, floor, room,
                     latitude, longitude, reviews, avgRating);
 
-        } /*else
-            // Some bad state, do nothing and throw a null pointer exception
-        }*/
+        }
 
         setContentView(R.layout.activity_lavatory_detail);
 
         setTitle(lavatory.getName());
 
         setUpListView();
-
-        // TODO: replace when Facebook authentication is implemented
-        loadReviews("0", Integer.toString(lavatory.getLid()), "1",
-                "helpfulness", "descending");
     }
 
     @Override
     protected void onPause() {
+        Log.d(TAG, "onPause called");
         super.onPause();
 
         final SharedPreferences settings =
@@ -153,13 +167,23 @@ public class LavatoryDetailActivity extends
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mPlusClientFragment.signIn(REQUEST_CODE_PLUS_CLIENT_FRAGMENT);
+    }
+    
+    @Override
     protected void onSaveInstanceState(final Bundle outState) {
+        Log.d(TAG, "onSaveInstanceState called");
+
         super.onSaveInstanceState(outState);
         outState.putParcelable(MainActivity.LAVATORY_DATA, lavatory);
     }
 
     @Override
     protected void onRestoreInstanceState(final Bundle savedInstanceState) {
+        Log.d(TAG, "onRestoreInstanceState called");
+
         super.onRestoreInstanceState(savedInstanceState);
         lavatory = (LavatoryData) savedInstanceState
                 .get(MainActivity.LAVATORY_DATA);
@@ -169,38 +193,41 @@ public class LavatoryDetailActivity extends
      * Set up the {@link android.app.ActionBar}.
      */
     private void setupActionBar() {
+        Log.d(TAG, "setupActionBar called");
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
+        Log.d(TAG, "onCreateOptionsMenu called");
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getSupportMenuInflater().inflate(R.menu.lavatory_detail, menu);
         return true;
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+            Intent data) {
+        if (mPlusClientFragment.handleOnActivityResult(requestCode, resultCode,
+                data)) {
+            switch (resultCode) {
+            case RESULT_CANCELED:
+                // User canceled sign in.
+                Toast.makeText(this, R.string.google_sign_in_required,
+                        Toast.LENGTH_LONG).show();
+                finish();
+                break;
+            default:
+                break;
+            }
+        }
     }
 
     // ----------------------------------------------------------------
     // VIEW EVENT HANDLERS
     // ----------------------------------------------------------------
-    /**
-     * Logs the user in so that they can add missing lavatories.
-     *
-     * @param target
-     *           the {@link View} that was selected
-     */
-    public final void loginUser(final View target) {
-        final SharedPreferences userDetails = getApplicationContext()
-                .getSharedPreferences("User", MODE_PRIVATE);
-        userDetails.edit().putBoolean("isLoggedIn", true).commit();
-        dismissLoginPrompt();
-    }
-
-    /**
-     * Closes the popup window.
-     */
-    public final void dismissLoginPrompt() {
-        popup.dismiss();
-    }
 
     /**
      * Goes to the {@link AddReviewActivity} to allow the user to add a review
@@ -210,23 +237,11 @@ public class LavatoryDetailActivity extends
      *            the {@link MenuItem} that was selected
      */
     public final void goToAddReviewActivity(final MenuItem item) {
-        final SharedPreferences userDetails = getApplicationContext()
-                .getSharedPreferences("User", MODE_PRIVATE);
-        final boolean loggedIn = userDetails.getBoolean("isLoggedIn", false);
+        Log.d(TAG, "goToAddReviewActivity called");
 
-        if (!loggedIn) {
-            final LayoutInflater inflater = (LayoutInflater) this
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final View layout = inflater.inflate(R.layout.login_popup,
-                    (ViewGroup) findViewById(R.id.login_popup_layout));
-
-            popup = new PopupWindow(layout, POPUP_WIDTH, POPUP_HEIGHT, true);
-            popup.showAtLocation(layout, Gravity.CENTER, 0, 0);
-        } else {
-            final Intent intent = new Intent(this, AddReviewActivity.class);
-            intent.putExtra(LAVATORY_DATA, lavatory);
-            startActivityForResult(intent, 0);
-        }
+        final Intent intent = new Intent(this, AddReviewActivity.class);
+        intent.putExtra(LAVATORY_DATA, lavatory);
+        startActivityForResult(intent, 0);
     }
 
     /**
@@ -236,50 +251,58 @@ public class LavatoryDetailActivity extends
      *            the {@link MenuItem} that was selected
      */
     public final void goToEditLavatoryDetailActivity(final MenuItem item) {
+        Log.d(TAG, "goToEditLavatoryDetailActivity called");
+
         final Intent intent = new Intent(
                 this, EditLavatoryDetailActivity.class);
         intent.putExtra(LAVATORY_DATA, lavatory);
-        intent.putExtra(EditLavatoryDetailActivity.USER_ID_KEY, STUB_USER_ID);
         startActivity(intent);
     }
-    
+
+    /**
+     * Requests that the current lavatory be deleted from the database.
+     *
+     * @param item
+     *            the {@link MenuItem} that was selected
+     */
+    public final void requestDeletion(final MenuItem item) {
+        Log.d(TAG, "requestDeletion called");
+
+        getSherlock().setProgressBarIndeterminateVisibility(true);
+        final DeleteLavatoryRequest request =
+                new DeleteLavatoryRequest(lavatory.getLid(), uid);
+
+        Log.d(TAG, "requestDeletion: executing DeleteLavatoryRequest...");
+        getSpiceManager().execute(request, DELETE_LAVATORY_REQUEST_CACHE_KEY,
+                JSON_CACHE_DURATION, new DeleteRequestListener());
+    }
+
     /**
      * Mark a review as being helpful.
      *
      * @param v
      *            the {@link View} that was selected
      */
+    @SuppressWarnings("rawtypes")
     public final void markHelpful(final View v) {
-        final SharedPreferences userDetails = getApplicationContext()
-            .getSharedPreferences("User", MODE_PRIVATE);
-        final boolean loggedIn = userDetails.getBoolean("isLoggedIn", false);
+        Log.d(TAG, "markHelpful called");
 
-        if (!loggedIn) {
-            final LayoutInflater inflater = (LayoutInflater) this
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final View layout = inflater.inflate(R.layout.login_popup,
-                    (ViewGroup) findViewById(R.id.login_popup_layout));
+        final int reviewId = v.getId();
+        final int helpfulness = 1;
 
-            final int width = 350;
-            final int height = 250;
-            popup = new PopupWindow(layout, width, height, true);
-            popup.showAtLocation(layout, Gravity.CENTER, 0, 0);
-        } else {
-            getSherlock().setProgressBarIndeterminateVisibility(true);
-            final int uid = STUB_USER_ID;  
-            // TODO: change once facebook login works
-            final int reviewId = (Integer) v.getId();
-            final int helpful = 1;
+        SpringAndroidSpiceRequest<ResponseEntity> request;
+        
+        request = new UpdateHelpfulnessRequest(username, uid, 
+                reviewId, helpfulness);
 
-            /*Toast.makeText(this, "uid: " + uid + " reviewId: " + reviewId
-                    + " helpful: " + helpful,
-                    Toast.LENGTH_LONG).show();*/ // for debugging
-            SpringAndroidSpiceRequest<ResponseEntity> request;
+        Log.d(TAG, "executing UpdateHelpfulnessRequest...");
 
-            request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
-            getSpiceManager().execute(request,
-                    new UpdateHelpfulnessRequestListener());
-        }
+        final ReviewListItemView reviewListItemView =
+                (ReviewListItemView) v.getParent().getParent().getParent();
+        getSpiceManager().execute(request,
+                REVIEW_HELPFULNESS_REQUEST_CACHE_KEY, JSON_CACHE_DURATION,
+                new UpdateHelpfulnessRequestListener(reviewListItemView,
+                        helpfulness));
     }
 
     /**
@@ -288,39 +311,33 @@ public class LavatoryDetailActivity extends
      * @param v
      *            the {@link View} that was selected
      */
+    @SuppressWarnings("rawtypes")
     public final void markNotHelpful(final View v) {
-        final SharedPreferences userDetails = getApplicationContext()
-                .getSharedPreferences("User", MODE_PRIVATE);
-        final boolean loggedIn = userDetails.getBoolean("isLoggedIn", false);
+        Log.d(TAG, "markNotHelpful called");
 
-        if (!loggedIn) {
-            final LayoutInflater inflater = (LayoutInflater) this
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final View layout = inflater.inflate(R.layout.login_popup,
-                    (ViewGroup) findViewById(R.id.login_popup_layout));
+        getSherlock().setProgressBarIndeterminateVisibility(true);
+        
+        final int reviewId = v.getId();
+        final int helpfulness = -1;
+        SpringAndroidSpiceRequest<ResponseEntity> request;
+        
+        request = new UpdateHelpfulnessRequest(username, uid, 
+                reviewId, helpfulness);
+        
+        Log.d(TAG, "markHelpful: executing UpdateHelpfulnessRequest...");
 
-            final int width = 350;
-            final int height = 250;
-            popup = new PopupWindow(layout, width, height, true);
-            popup.showAtLocation(layout, Gravity.CENTER, 0, 0);
-        } else {
-            getSherlock().setProgressBarIndeterminateVisibility(true);
-            // TODO: change once facebook login works
-            final int uid = STUB_USER_ID; 
-            final int reviewId = (Integer) v.getId();
-            final int helpful = -1;
-            SpringAndroidSpiceRequest<ResponseEntity> request;
-            /*Toast.makeText(this, "uid: " + uid + " reviewId: " + reviewId
-                    + " helpful: " + helpful,
-                    Toast.LENGTH_LONG).show();*/ // for debugging
-            request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
-            getSpiceManager().execute(request,
-                    new UpdateHelpfulnessRequestListener());
-        }
+        final ReviewListItemView reviewListItemView =
+                (ReviewListItemView) v.getParent().getParent().getParent();
+        getSpiceManager().execute(request,
+                REVIEW_HELPFULNESS_REQUEST_CACHE_KEY, JSON_CACHE_DURATION,
+                new UpdateHelpfulnessRequestListener(reviewListItemView,
+                        helpfulness));
     }
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected called");
+
         switch (item.getItemId()) {
         case android.R.id.home:
             /* This ID represents the Home or Up button. In the case of this
@@ -337,6 +354,40 @@ public class LavatoryDetailActivity extends
         }
         return super.onOptionsItemSelected(item);
     }
+    
+    /**
+     * Called when the {@link com.google.android.gms.plus.PlusClient} has been
+     * connected successfully.
+     *
+     * @param plusClient
+     *                 The connected {@link PlusClient} for making APIrequests.
+     */
+    @Override
+    public void onSignedIn(PlusClient plusClient) {
+        final Person user = plusClient.getCurrentPerson();
+        uid = user.getId();
+        String firstName = user.getName().getGivenName();
+        String lastName = user.getName().getFamilyName();
+        // only use initial of last name
+        username = firstName + lastName.charAt(0);
+        loadReviews(uid, Integer.toString(lavatory.getLid()),
+                REVIEW_PAGE_NUMBER,
+                "helpfulness", "descending");
+    }
+    
+    /**
+     * Signs the user out.
+     * 
+     * @param item
+     *            the {@link MenuItem} that was selected
+     */
+    public void signOut(MenuItem item) {
+        mPlusClientFragment.signOut();
+
+        // go back to MainActivity
+        final Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 
     // ---------------------------------------------------
     // PRIVATE HELPER METHODS
@@ -348,6 +399,8 @@ public class LavatoryDetailActivity extends
      *            a {@link List} of reviews to display
      */
     private void displayReviews(final List<ReviewData> reviews) {
+        Log.d(TAG, "displayReviews called");
+
         final ReviewsListAdapter adapter = new ReviewsListAdapter(this,
                 R.layout.review_item, R.id.review_author, reviews);
 
@@ -359,9 +412,9 @@ public class LavatoryDetailActivity extends
     /**
      * Gets a page of (10) reviews for the lavatory.
      *
-     * @param userId
+     * @param uid
      *            the ID number of the user
-     * @param lavatoryId
+     * @param lid
      *            the ID number for the lavatory
      * @param page
      *            the page of reviews to get
@@ -370,13 +423,16 @@ public class LavatoryDetailActivity extends
      * @param sortDirection
      *            ascending or descending
      */
-    private void loadReviews(final String userId, final String lavatoryId,
-            final String page, final String sortParam,
+    private void loadReviews(final String uid, final String lid,
+            final int page, final String sortParam,
             final String sortDirection) {
+        Log.d(TAG, "loadReviews called");
+
         getSherlock().setProgressBarIndeterminateVisibility(true);
 
+        Log.d(TAG, "loadReviews: executing GetLavatoryReviewsRequest...");
         getSpiceManager().execute(
-                new GetLavatoryReviewsRequest(userId, lavatoryId, page,
+                new GetLavatoryReviewsRequest(uid, lid, page,
                         sortParam, sortDirection), REVIEWS_JSON_CACHE_KEY,
                         JSON_CACHE_DURATION, new ReviewsRequestListener());
     }
@@ -385,14 +441,30 @@ public class LavatoryDetailActivity extends
      * Sets up the list view.
      */
     private void setUpListView() {
+        Log.d(TAG, "setUpListView called");
+
         final View headerView = getLayoutInflater().inflate(
                 R.layout.activity_lavatory_detail_header, null);
-        ((TextView) headerView.findViewById(R.id.lavatory_detail_name_text))
-        .setText(lavatory.getName());
-        ((TextView) headerView.findViewById(R.id.lavatory_detail_building_text))
-        .setText(lavatory.getBuilding());
-        ((RatingBar) headerView.findViewById(R.id.lavatory_detail_rating))
-        .setRating(lavatory.getAvgRating());
+        final TextView lavatoryNameTextView = (TextView) headerView
+                .findViewById(R.id.lavatory_detail_name_text);
+        final TextView floorTextView = (TextView) headerView
+                .findViewById(R.id.lavatory_detail_floor_text);
+        final TextView buildingTextView = (TextView) headerView
+                .findViewById(R.id.lavatory_detail_building_text);
+        final RatingBar averageRatingBar = (RatingBar) headerView
+                .findViewById(R.id.lavatory_detail_rating);
+        
+        final String lavatoryName = lavatory.getName();
+        final String floor = lavatory.getFloor();
+        final String building = lavatory.getBuilding();
+        final float avgRating = lavatory.getAvgRating();
+        
+        final String floorTextPrefix = getString(R.string.floor_prefix);
+        
+        lavatoryNameTextView.setText(lavatoryName);
+        floorTextView.setText(floorTextPrefix + floor);
+        buildingTextView.setText(building);
+        averageRatingBar.setRating(avgRating);
 
         final ListView listView = (ListView) findViewById(
                 R.id.lavatory_detail_list_view);
@@ -409,26 +481,31 @@ public class LavatoryDetailActivity extends
      *
      */
     private class ReviewsRequestListener implements RequestListener<Reviews> {
-
-        @Override
-        public void onRequestFailure(final SpiceException spiceException) {
-            // TODO: move to string resources XML file
-            final String errorMessage = "Reviews request failed: "
-                    + spiceException.getMessage();
-
-            Log.e(getLocalClassName(), errorMessage);
-            Toast.makeText(LavatoryDetailActivity.this, errorMessage,
-                    Toast.LENGTH_LONG).show();
-            LavatoryDetailActivity.this
-            .getSherlock().setProgressBarIndeterminateVisibility(false);
-        }
+        private static final String TAG = "ReviewsRequestListener";
 
         @Override
         public void onRequestSuccess(final Reviews reviews) {
+            final String logSuccessMessage = "Review helpfulness request "
+                    + "succeeded";
+            Log.d(TAG, logSuccessMessage);
+
             LavatoryDetailActivity.this.displayReviews(reviews.getReviews());
 
-            LavatoryDetailActivity.this
-            .getSherlock().setProgressBarIndeterminateVisibility(false);
+            LavatoryDetailActivity.this.getSherlock().
+                    setProgressBarIndeterminateVisibility(false);
+        }
+        
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            final String logErrorMessage = "Get lavatory reviews request "
+                    + "failed: " + spiceException.getMessage();
+            Log.e(TAG, logErrorMessage);
+
+            Toast.makeText(LavatoryDetailActivity.this,
+                    R.string.activity_lavatory_detail_get_reviews_error,
+                    Toast.LENGTH_LONG).show();
+            LavatoryDetailActivity.this.getSherlock().
+                    setProgressBarIndeterminateVisibility(false);
         }
     }
 
@@ -439,32 +516,97 @@ public class LavatoryDetailActivity extends
      * @author Keith Miller
      *
      */
+    @SuppressWarnings("rawtypes")
     private class UpdateHelpfulnessRequestListener implements
-        RequestListener<ResponseEntity> {
+            RequestListener<ResponseEntity> {
+        private static final String TAG = "UpdateHelpfulnessRequestListener";
 
-        @Override
-        public void onRequestFailure(final SpiceException spiceException) {
-            // TODO: move to string resources XML file
-            final String errorMessage = "Submission failed: "
-                    + spiceException.getMessage();
+        private ReviewListItemView review;
+        private int helpfulnessDifference;
 
-            Log.e(getLocalClassName(), errorMessage);
-            Toast.makeText(LavatoryDetailActivity.this, errorMessage,
-                    Toast.LENGTH_LONG).show();
-            LavatoryDetailActivity.this
-                    .getSherlock().setProgressBarIndeterminateVisibility(false);
+        /**
+         * Creates a new UpdateHelpfulnessRequestListener.
+         * 
+         * @param review
+         *              the ReviewListItem whose helpfulness button launched
+         *              this request
+         * @param helpfulnessDifference
+         *              the review helpfulness difference
+         */
+        public UpdateHelpfulnessRequestListener(ReviewListItemView review,
+                int helpfulnessDifference) {
+            super();
+            this.review = review;
+            this.helpfulnessDifference = helpfulnessDifference;
         }
-
+        
         @Override
-        public void onRequestSuccess(final ResponseEntity responseEntity) {
-            LavatoryDetailActivity.this
-                    .getSherlock().setProgressBarIndeterminateVisibility(false);
+        public void onRequestSuccess(ResponseEntity responseEntity) {
+            final String logSuccessMessage = "Review helpfulness request "
+                    + "succeeded";
+            Log.d(TAG, logSuccessMessage);
 
-            // TODO: move to string resources XML file
-            final String message = "Submitted!";
-            Toast.makeText(LavatoryDetailActivity.this, message,
+            LavatoryDetailActivity.this.getSherlock().
+                    setProgressBarIndeterminateVisibility(false);
+            
+            review.updateHelpfulness(helpfulnessDifference);
+            review.disableHelpfulnessButtons();
+
+            Toast.makeText(LavatoryDetailActivity.this, R.string.
+                activity_lavatory_detail_review_helpfulness_submission_success,
+                    Toast.LENGTH_SHORT).show();
+        }
+        
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            final String logErrorMessage = "Review helpfulness request "
+                    + "failed: " + spiceException.getMessage();
+            Log.e(TAG, logErrorMessage);
+
+            Toast.makeText(LavatoryDetailActivity.this, R.string.
+                activity_lavatory_detail_review_helpfulness_submission_error,
                     Toast.LENGTH_LONG).show();
+            LavatoryDetailActivity.this.getSherlock().
+                    setProgressBarIndeterminateVisibility(false);
         }
     }
 
+    /**
+     * {@code RequestListener} for requests to have a lavatory deleted.
+     *
+     * @author Wilkes Sunseri
+     *
+     */
+    @SuppressWarnings("rawtypes")
+    private class DeleteRequestListener implements
+            RequestListener<ResponseEntity> {
+        private static final String TAG = "DeleteRequestListener";
+        
+        @Override
+        public void onRequestSuccess(ResponseEntity responseEntity) {
+            final String logSuccessMessage = "Lavatory deletion request "
+                    + "succeeded";
+            Log.d(TAG, logSuccessMessage);
+
+            LavatoryDetailActivity.this.getSherlock().
+                    setProgressBarIndeterminateVisibility(false);
+
+            Toast.makeText(LavatoryDetailActivity.this,
+                    R.string.activity_lavatory_detail_delete_lavatory_success,
+                    Toast.LENGTH_SHORT).show();
+        }
+        
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            final String logErrorMessage = "Lavatory deletion request "
+                    + "failed: " + spiceException.getMessage();
+            Log.e(TAG, logErrorMessage);
+
+            Toast.makeText(LavatoryDetailActivity.this,
+                    R.string.activity_lavatory_detail_delete_lavatory_error,
+                    Toast.LENGTH_LONG).show();
+            LavatoryDetailActivity.this.getSherlock().
+                    setProgressBarIndeterminateVisibility(false);
+        }
+    }
 }

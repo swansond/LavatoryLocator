@@ -11,7 +11,7 @@ import edu.washington.cs.lavatorylocator.network.EditLavatoryDetailRequest;
 public class TestEditLavatoryRequest extends TestCase {
 
     private EditLavatoryDetailRequest eldr;
-    private int uid;
+    private String uid;
     private int lid;
     private String building;
     private String floor;
@@ -24,7 +24,7 @@ public class TestEditLavatoryRequest extends TestCase {
      * Tests constructor.
      */
     public void testConstructor() {
-        uid = 0;
+        uid = "0";
         lid = 0;
         building = "CSE";
         floor = "B";

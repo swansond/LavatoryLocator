@@ -35,6 +35,14 @@
                 android:textColor="@android:color/white" />
 
             <TextView
+                android:id="@+id/lavatory_detail_floor_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Floor"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@android:color/white" />
+            
+            <TextView
                 android:id="@+id/lavatory_detail_building_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -70,7 +78,7 @@
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/reviews" />
+            android:text="@string/activity_lavatory_detail_reviews" />
     </LinearLayout>
 
 </LinearLayout>

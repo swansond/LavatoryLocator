@@ -25,7 +25,7 @@
         android:id="@+id/action_about"
         android:onClick="goToAboutActivity"
         android:showAsAction="never"
-        android:title="@string/about">
+        android:title="@string/action_about">
     </item>
 
 </menu>

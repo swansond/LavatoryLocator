@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
@@ -19,11 +20,11 @@ import edu.washington.cs.lavatorylocator.R;
  * {@link android.app.Activity} displayed to search for lavatories. Shows a form
  * to fill out with search parameters, which are sent back to the
  * {@link MainActivity}.
- * 
+ *
  * @author Wil Sunseri
  * @author Keith Miller
  * @author Chris Rovillos
- * 
+ *
  */
 public class SearchActivity extends SherlockActivity {
 
@@ -42,11 +43,15 @@ public class SearchActivity extends SherlockActivity {
     public static final String LONGITUDE_PARAMETER = "longitudeParameter";
     public static final String TYPE_PARAMETER = "typeParameter";
 
+    private static final String TAG = "SearchActivity";
+
     // ----------------------------------------------------------
     // ACTIVITY LIFECYCLE
     // ----------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate called");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         // Show the Up button in the action bar.
@@ -55,6 +60,8 @@ public class SearchActivity extends SherlockActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "onCreateOptionsMenu called");
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getSupportMenuInflater().inflate(R.menu.search, menu);
         return true;
@@ -62,6 +69,8 @@ public class SearchActivity extends SherlockActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected, item: " + item.toString());
+
         switch (item.getItemId()) {
         case android.R.id.home:
             // This ID represents the Home or Up button. In the case of this
@@ -85,11 +94,13 @@ public class SearchActivity extends SherlockActivity {
     /**
      * Submits the user's entered search parameters back to the
      * {@link MainActivity}.
-     * 
+     *
      * @param item
      *            the {@link MenuItem} that was selected
      */
     public void submitSearchParameters(MenuItem item) {
+        Log.d(TAG, "submitSearchParameters called");
+
         final String building = ((EditText) findViewById(
                 R.id.activity_search_building_name))
                 .getText().toString().trim();
@@ -148,9 +159,11 @@ public class SearchActivity extends SherlockActivity {
             this.setResult(RESULT_OK, intent);
             finish();
         } else {
-            // TODO: move to string resources XML file
-            final String message = "Enter some search parameters!";
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "submitSearchParameters: No search parameters entered");
+
+            Toast.makeText(this,
+                    R.string.activity_search_required_paramters_error,
+                    Toast.LENGTH_SHORT).show();
         }
     }
 

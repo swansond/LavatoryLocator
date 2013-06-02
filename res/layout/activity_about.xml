@@ -22,14 +22,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/from_huskysoft"
+            android:text="@string/activity_about_from_huskysoft"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/legal_notices" />
+            android:text="@string/activity_about_legal_notices" />
 
         <TextView
             android:id="@+id/google_play_services_attribution_text"

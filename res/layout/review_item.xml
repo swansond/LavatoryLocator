@@ -8,18 +8,35 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/list_item_vertical_margin" >
 
-    <TextView
-        android:id="@+id/review_author"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Review Author"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_marginBottom="@dimen/list_item_vertical_margin" >
+
+        <TextView
+            android:id="@+id/review_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Review Author"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/review_datetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:text="Review Date and Time"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    </RelativeLayout>
 
     <RatingBar
         android:id="@+id/review_stars"
         style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/list_item_vertical_margin"
         android:isIndicator="true"
         android:numStars="@integer/num_review_stars" />
 
@@ -27,19 +44,28 @@
         android:id="@+id/review_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/list_item_vertical_margin"
         android:text="Review Text"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <LinearLayout 
+    <TextView
+        android:id="@+id/review_helpfulness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/list_item_vertical_margin"
+        android:text="Review Helpfulness"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" 
-        android:orientation="horizontal">
-        
-        <TextView 
+        android:layout_height="fill_parent"
+        android:orientation="horizontal" >
+
+        <TextView
             android:id="@+id/was_helpful_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/helpful_prompt"/>
+            android:text="@string/activity_lavatory_detail_helpful_prompt"/>
 
         <Button
             android:id="@+id/was_helpful_button"
@@ -47,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:onClick="markHelpful"
-            android:text="@string/was_helpful" />
+            android:text="@string/activity_lavatory_detail_was_helpful" />
 
         <Button
             android:id="@+id/was_not_helpful_button"
@@ -55,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:onClick="markNotHelpful"
-            android:text="@string/was_not_helpful" />
-        
+            android:text="@string/activity_lavatory_detail_was_not_helpful" />
     </LinearLayout>
+
 </LinearLayout>

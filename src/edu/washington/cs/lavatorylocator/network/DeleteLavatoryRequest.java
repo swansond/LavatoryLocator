@@ -14,71 +14,59 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.octo.android.robospice.request.
-        springandroid.SpringAndroidSpiceRequest;
+import com.octo.android.robospice.request.springandroid.
+        SpringAndroidSpiceRequest;
 
 /**
- * Class for updating a review's helpfulness in the LavatoryLocator service.
+ * Class for deleting a lavatory.
  * 
- * @author Keith Miller
+ * @author Wilkes Sunseri
  *
  */
 @SuppressWarnings("rawtypes")
-public class UpdateHelpfulnessRequest extends
+public class DeleteLavatoryRequest extends
         SpringAndroidSpiceRequest<ResponseEntity> {
-    
-    private static final String MARK_HELPFUL_SERVICE_URL = 
-            "http://lavlocdb.herokuapp.com/submithelpful.php";
-    private static final String USER_ID_KEY = "uid";
-    private static final String USER_NAME_SERVER_KEY = "username";
-    private static final String REVIEW_ID_KEY = "reviewId";
-    private static final String HELPFULNESS_KEY = "helpful";
-    
-    private String uid;
-    private String username;
-    private int reviewId;
-    private int helpful;
 
+    private static final String DELETE_LAVATORY_SERVICE_URL = 
+            "http://lavlocdb.herokuapp.com/deletelava.php";
     
+    private static final String LAVATORY_ID_SERVER_KEY = "lid";
+    private static final String USER_ID_SERVER_KEY = "uid";
+    
+    private final int lid;
+    private final String uid;
+
     /**
-     * Constructs a new {@link UpdateHelpfulnessRequest} with the given
+     * Constructs a new {@link DeleteLavatoryRequest} with the given
      * parameters.
-     * 
+     *
      * @param uid
      *            the user ID of the user submitting the request
-     * @param reviewId
-     *            the ID of the review to edit
-     * @param helpful
-     *            the helpfulness value to update
+     * @param lid
+     *            the ID of the lavatory to edit
      */
-    public UpdateHelpfulnessRequest(String username, String uid, 
-            int reviewId, int helpful) {
+    public DeleteLavatoryRequest(final int lid, final String uid) {
         super(ResponseEntity.class);
-        
+        this.lid = lid;
         this.uid = uid;
-        this.reviewId = reviewId;
-        this.helpful = helpful;
-        this.username = username;
     }
-    
+
     @Override
     public ResponseEntity loadDataFromNetwork() throws Exception {
-        final MultiValueMap<String, String> parameters = 
+        final MultiValueMap<String, String> parameters =
                 new LinkedMultiValueMap<String, String>();
-        parameters.add(USER_ID_KEY, uid);
-        parameters.add(REVIEW_ID_KEY, Integer.toString(reviewId));
-        parameters.add(HELPFULNESS_KEY, Integer.toString(helpful));
-        parameters.add(USER_NAME_SERVER_KEY, username);
+        parameters.add(LAVATORY_ID_SERVER_KEY, Integer.toString(lid));
+        parameters.add(USER_ID_SERVER_KEY, uid);
 
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         
         // set the message converters for the request
-        final HttpMessageConverter<String> stringConverter = 
+        final HttpMessageConverter<String> stringConverter =
                 new StringHttpMessageConverter();
-        final FormHttpMessageConverter formConverter = 
+        final FormHttpMessageConverter formConverter =
                 new FormHttpMessageConverter();
-        final List<HttpMessageConverter<?>> msgConverters = 
+        final List<HttpMessageConverter<?>> msgConverters =
                 new ArrayList<HttpMessageConverter<?>>();
         msgConverters.add(formConverter);
         msgConverters.add(stringConverter);
@@ -87,7 +75,8 @@ public class UpdateHelpfulnessRequest extends
         final HttpEntity<?> httpEntity =
                 new HttpEntity<Object>(parameters, headers);
 
-        return getRestTemplate().exchange(MARK_HELPFUL_SERVICE_URL,
+        return getRestTemplate().exchange(DELETE_LAVATORY_SERVICE_URL,
                 HttpMethod.POST, httpEntity, ResponseEntity.class);
     }
+
 }
