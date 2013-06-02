@@ -39,7 +39,7 @@
             android:id="@+id/was_helpful_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/helpful_prompt"/>
+            android:text="@string/activity_lavatory_detail_helpful_prompt"/>
 
         <Button
             android:id="@+id/was_helpful_button"
@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:onClick="markHelpful"
-            android:text="@string/was_helpful" />
+            android:text="@string/activity_lavatory_detail_was_helpful" />
 
         <Button
             android:id="@+id/was_not_helpful_button"
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:onClick="markNotHelpful"
-            android:text="@string/was_not_helpful" />
+            android:text="@string/activity_lavatory_detail_was_not_helpful" />
         
     </LinearLayout>
 </LinearLayout>

@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -706,30 +707,30 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         private static final String TAG = "LavatorySearchListener";
 
         @Override
-        public void onRequestFailure(SpiceException spiceException) {
-            Log.d(TAG, "onRequestFailure called");
-
-            // TODO: move to string resources XML file
-            final String errorMessage = "Lavatory search request failed: "
-                    + spiceException.getMessage();
-
-            Log.e(getLocalClassName(), errorMessage);
-            Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG)
-                    .show();
-            MainActivity.this.getSherlock()
-                    .setProgressBarIndeterminateVisibility(false);
-        }
-
-        @Override
         public void onRequestSuccess(
                 LavatorySearchResults lavatorySearchResults) {
-            Log.d(TAG, "onRequestSuccess called");
+            final String logSuccessMessage = "Lavatory search request " +
+                    "succeeded";
+            Log.d(TAG, logSuccessMessage);
 
             MainActivity.this.displayLavatories(lavatorySearchResults
                     .getLavatories());
 
             MainActivity.this.getSherlock()
                     .setProgressBarIndeterminateVisibility(false);
+        }
+        
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            final String logErrorMessage = "Lavatory search request " +
+                    "failed: " + spiceException.getMessage();
+            Log.e(TAG, logErrorMessage);
+
+            Toast.makeText(MainActivity.this,
+                    R.string.activity_main_search_error,
+                    Toast.LENGTH_LONG).show();
+            MainActivity.this.getSherlock().
+                    setProgressBarIndeterminateVisibility(false);
         }
     }
 
@@ -745,28 +746,28 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         private static final String TAG = "Got2goRequestListener";
 
         @Override
-        public void onRequestFailure(SpiceException spiceException) {
-            Log.d(TAG, "onRequestFailure called");
-
-            // TODO: move to string resources XML file
-            final String errorMessage = "Got2Go request failed: "
-                    + spiceException.getMessage();
-
-            Log.e(getLocalClassName(), errorMessage);
-            Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG)
-                .show();
-            MainActivity.this.getSherlock()
-                    .setProgressBarIndeterminateVisibility(false);
-        }
-
-        @Override
         public void onRequestSuccess(LavatoryData got2goLavatory) {
-            Log.d(TAG, "onRequestSuccess called");
+            final String logSuccessMessage = "Got2Go request " +
+                    "succeeded";
+            Log.d(TAG, logSuccessMessage);
 
             MainActivity.this.getSherlock()
                     .setProgressBarIndeterminateVisibility(false);
 
             showLavatoryDetail(got2goLavatory);
+        }
+        
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            final String logErrorMessage = "Got2Go request " +
+                    "failed: " + spiceException.getMessage();
+            Log.e(TAG, logErrorMessage);
+
+            Toast.makeText(MainActivity.this,
+                    R.string.activity_main_search_error,
+                    Toast.LENGTH_LONG).show();
+            MainActivity.this.getSherlock().
+                    setProgressBarIndeterminateVisibility(false);
         }
     }
 
@@ -774,7 +775,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
      * {@link DialogFragment} to display the error dialog generated in
      * {@link showErrorDialog}.
      */
-    private static class ErrorDialogFragment extends DialogFragment {
+    private static class ErrorDialogFragment extends SherlockDialogFragment {
         private Dialog mDialog;
 
         /**

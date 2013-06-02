@@ -132,8 +132,7 @@ public class EditLavatoryDetailActivity extends
             switch (resultCode) {
             case RESULT_CANCELED:
                 // User canceled sign in.
-                Toast.makeText(this, R.string.
-                        greeting_status_sign_in_required,
+                Toast.makeText(this, R.string.google_sign_in_required,
                         Toast.LENGTH_LONG).show();
                 finish();
                 break;
@@ -215,9 +214,9 @@ public class EditLavatoryDetailActivity extends
                 getSpiceManager().execute(request,
                         new AddOrEditLavatoryDetailRequestListener());
             } else { // some fields not filled
-                // TODO: move string resource to XML file
-                final String message = "You need to fill in all the fields!";
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.
+                        activity_edit_lavatory_detail_fields_not_filled,
+                        Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -283,35 +282,33 @@ public class EditLavatoryDetailActivity extends
             RequestListener<ResponseEntity> {
         private static final String TAG = "AddOrEditLavatory"
                 + "DetailRequestListener";
-
-        @Override
-        public void onRequestFailure(SpiceException spiceException) {
-            Log.d(TAG, "onRequestFailure called");
-
-            // TODO: move to string resources XML file
-            final String errorMessage = "Submission failed: "
-                    + spiceException.getMessage();
-
-            Log.e(getLocalClassName(), errorMessage);
-            Toast.makeText(EditLavatoryDetailActivity.this, errorMessage,
-                    Toast.LENGTH_LONG).show();
-            EditLavatoryDetailActivity.this
-                    .getSherlock().setProgressBarIndeterminateVisibility(false);
-        }
-
+        
         @Override
         public void onRequestSuccess(ResponseEntity responseEntity) {
-            Log.d(TAG, "onRequestSuccess called");
+            final String logSuccessMessage = "Review submission succeeded";
+            Log.d(TAG, logSuccessMessage);
 
-            EditLavatoryDetailActivity.this
-                    .getSherlock().setProgressBarIndeterminateVisibility(false);
+            EditLavatoryDetailActivity.this.getSherlock().
+                    setProgressBarIndeterminateVisibility(false);
 
-            // TODO: move to string resources XML file
-            final String message = "Submitted!";
-            Toast.makeText(EditLavatoryDetailActivity.this, message,
+            Toast.makeText(EditLavatoryDetailActivity.this,
+                    R.string.activity_edit_lavatory_detail_submission_success,
                     Toast.LENGTH_LONG).show();
 
             finish();
+        }
+        
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            final String logErrorMessage = "Edit lavatory detail submission " +
+            		"failed: " + spiceException.getMessage();
+            Log.e(TAG, logErrorMessage);
+
+            Toast.makeText(EditLavatoryDetailActivity.this,
+                    R.string.activity_edit_lavatory_detail_submission_error,
+                    Toast.LENGTH_LONG).show();
+            EditLavatoryDetailActivity.this.getSherlock().
+                    setProgressBarIndeterminateVisibility(false);
         }
     }
 

@@ -499,7 +499,7 @@ public final class PlusClientFragment extends SherlockFragment implements
          * @return a new {@link ProgressDialogFragment}
          */
         public static ProgressDialogFragment create() {
-            return create(R.string.progress_message);
+            return create(R.string.google_sign_in_progress_message);
         }
 
         @Override

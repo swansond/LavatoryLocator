@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ems="10"
-            android:hint="@string/building_name"
+            android:hint="@string/building"
             android:imeOptions="actionNext"
             android:inputType="textCapWords"
             android:singleLine="true" >

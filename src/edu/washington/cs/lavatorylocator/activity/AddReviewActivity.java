@@ -171,33 +171,31 @@ public class AddReviewActivity extends
         private static final String TAG = "AddReviewRequestListener";
 
         @Override
-        public void onRequestFailure(SpiceException spiceException) {
-            Log.d(TAG, "onRequestFailure called");
-
-            // TODO: move to string resources XML file
-            final String errorMessage = "Submission failed: "
-                    + spiceException.getMessage();
-
-            Log.e(getLocalClassName(), errorMessage);
-            Toast.makeText(AddReviewActivity.this, errorMessage,
-                    Toast.LENGTH_LONG).show();
-            AddReviewActivity.this.getSherlock().
-                    setProgressBarIndeterminateVisibility(false);
-        }
-
-        @Override
         public void onRequestSuccess(ResponseEntity responseEntity) {
-            Log.d(TAG, "onRequestSuccess called");
+            final String logSuccessMessage = "Review submission succeeded";
+            Log.d(TAG, logSuccessMessage);
 
             AddReviewActivity.this.getSherlock().
                     setProgressBarIndeterminateVisibility(false);
 
-            // TODO: move to string resources XML file
-            final String message = "Submitted!";
-            Toast.makeText(AddReviewActivity.this, message,
+            Toast.makeText(AddReviewActivity.this,
+                    R.string.activity_add_review_submission_success,
                     Toast.LENGTH_LONG).show();
 
             finish();
+        }
+        
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            final String logErrorMessage = "Review submission failed: "
+                    + spiceException.getMessage();
+            Log.e(TAG, logErrorMessage);
+
+            Toast.makeText(AddReviewActivity.this,
+                    R.string.activity_add_review_submission_error,
+                    Toast.LENGTH_LONG).show();
+            AddReviewActivity.this.getSherlock().
+                    setProgressBarIndeterminateVisibility(false);
         }
     }
 }

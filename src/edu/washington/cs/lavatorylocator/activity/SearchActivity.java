@@ -161,9 +161,9 @@ public class SearchActivity extends SherlockActivity {
         } else {
             Log.d(TAG, "submitSearchParameters: No search parameters entered");
 
-            // TODO: move to string resources XML file
-            final String message = "Enter some search parameters!";
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,
+                    R.string.activity_search_required_paramters_error,
+                    Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -465,28 +465,28 @@ public class LavatoryDetailActivity extends
         private static final String TAG = "ReviewsRequestListener";
 
         @Override
-        public void onRequestFailure(final SpiceException spiceException) {
-            Log.d(TAG, "onRequestFailure called");
-
-            // TODO: move to string resources XML file
-            final String errorMessage = "Reviews request failed: "
-                    + spiceException.getMessage();
-
-            Log.e(getLocalClassName(), errorMessage);
-            Toast.makeText(LavatoryDetailActivity.this, errorMessage,
-                    Toast.LENGTH_LONG).show();
-            LavatoryDetailActivity.this
-            .getSherlock().setProgressBarIndeterminateVisibility(false);
-        }
-
-        @Override
         public void onRequestSuccess(final Reviews reviews) {
-            Log.d(TAG, "onRequestSuccess called");
+            final String logSuccessMessage = "Review helpfulness request " +
+                    "succeeded";
+            Log.d(TAG, logSuccessMessage);
 
             LavatoryDetailActivity.this.displayReviews(reviews.getReviews());
 
-            LavatoryDetailActivity.this
-            .getSherlock().setProgressBarIndeterminateVisibility(false);
+            LavatoryDetailActivity.this.getSherlock().
+                    setProgressBarIndeterminateVisibility(false);
+        }
+        
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            final String logErrorMessage = "Get lavatory reviews request " +
+                    "failed: " + spiceException.getMessage();
+            Log.e(TAG, logErrorMessage);
+
+            Toast.makeText(LavatoryDetailActivity.this,
+                    R.string.activity_lavatory_detail_get_reviews_error,
+                    Toast.LENGTH_LONG).show();
+            LavatoryDetailActivity.this.getSherlock().
+                    setProgressBarIndeterminateVisibility(false);
         }
     }
 
@@ -515,35 +515,34 @@ public class LavatoryDetailActivity extends
             super();
             thisReview = review;
         }
-
+        
         @Override
-        public void onRequestFailure(final SpiceException spiceException) {
-            Log.d(TAG, "onRequestFailure called");
+        public void onRequestSuccess(ResponseEntity responseEntity) {
+            final String logSuccessMessage = "Review helpfulness request " +
+                    "succeeded";
+            Log.d(TAG, logSuccessMessage);
 
-            // TODO: move to string resources XML file
-            final String errorMessage = "Submission failed: "
-                    + spiceException.getMessage();
-
-            Log.e(getLocalClassName(), errorMessage);
-            Toast.makeText(LavatoryDetailActivity.this, errorMessage,
-                    Toast.LENGTH_LONG).show();
-            LavatoryDetailActivity.this
-                    .getSherlock().setProgressBarIndeterminateVisibility(false);
-        }
-
-        @Override
-        public void onRequestSuccess(final ResponseEntity responseEntity) {
-            Log.d(TAG, "onRequestSuccess called");
-
-            LavatoryDetailActivity.this
-                    .getSherlock().setProgressBarIndeterminateVisibility(false);
-
+            LavatoryDetailActivity.this.getSherlock().
+                    setProgressBarIndeterminateVisibility(false);
+            
             thisReview.disableHelpfulnessButtons();
 
-            // TODO: move to string resources XML file
-            final String message = "Submitted!";
-            Toast.makeText(LavatoryDetailActivity.this, message,
+            Toast.makeText(LavatoryDetailActivity.this, R.string.
+                    activity_lavatory_detail_review_helpfulness_submission_success,
                     Toast.LENGTH_LONG).show();
+        }
+        
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            final String logErrorMessage = "Review helpfulness request " +
+                    "failed: " + spiceException.getMessage();
+            Log.e(TAG, logErrorMessage);
+
+            Toast.makeText(LavatoryDetailActivity.this, R.string.
+                    activity_lavatory_detail_review_helpfulness_submission_error,
+                    Toast.LENGTH_LONG).show();
+            LavatoryDetailActivity.this.getSherlock().
+                    setProgressBarIndeterminateVisibility(false);
         }
     }
 
@@ -557,32 +556,32 @@ public class LavatoryDetailActivity extends
     private class DeleteRequestListener implements
             RequestListener<ResponseEntity> {
         private static final String TAG = "DeleteRequestListener";
-
+        
         @Override
-        public void onRequestFailure(final SpiceException spiceException) {
-            Log.d(TAG, "onRequestFailure called");
+        public void onRequestSuccess(ResponseEntity responseEntity) {
+            final String logSuccessMessage = "Lavatory deletion request " +
+            		"succeeded";
+            Log.d(TAG, logSuccessMessage);
 
-            // TODO: move to string resources XML file
-            final String errorMessage =
-                    "Request failed: " + spiceException.getMessage();
-            Log.e(getLocalClassName(), errorMessage);
-            Toast.makeText(LavatoryDetailActivity.this, errorMessage,
+            LavatoryDetailActivity.this.getSherlock().
+                    setProgressBarIndeterminateVisibility(false);
+
+            Toast.makeText(LavatoryDetailActivity.this,
+                    R.string.activity_lavatory_detail_delete_lavatory_success,
                     Toast.LENGTH_LONG).show();
-            LavatoryDetailActivity.this.getSherlock()
-                    .setProgressBarIndeterminateVisibility(false);
         }
-
+        
         @Override
-        public void onRequestSuccess(final ResponseEntity responseEntity) {
-            Log.d(TAG, "onRequestSuccess called");
+        public void onRequestFailure(SpiceException spiceException) {
+            final String logErrorMessage = "Lavatory deletion request " +
+            		"failed: " + spiceException.getMessage();
+            Log.e(TAG, logErrorMessage);
 
-            LavatoryDetailActivity.this.getSherlock()
-                    .setProgressBarIndeterminateVisibility(false);
-
-            //TODO: move to string resources XML file
-            final String message = "Submitted!";
-            Toast.makeText(LavatoryDetailActivity.this, message,
+            Toast.makeText(LavatoryDetailActivity.this,
+                    R.string.activity_lavatory_detail_delete_lavatory_error,
                     Toast.LENGTH_LONG).show();
+            LavatoryDetailActivity.this.getSherlock().
+                    setProgressBarIndeterminateVisibility(false);
         }
     }
 }
