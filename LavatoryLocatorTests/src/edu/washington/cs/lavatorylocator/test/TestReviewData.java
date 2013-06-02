@@ -30,7 +30,7 @@ public class TestReviewData extends TestCase {
     public void test_getAuthor_idIs403_getsUser403() {
         final ReviewData uidTestReviewData = new ReviewData();
         final String expectedTestUid = "User 403";
-        uidTestReviewData.setUid(Integer.toString(FOUROHTHREE));
+        uidTestReviewData.setUsername("User " + Integer.toString(FOUROHTHREE));
         assertEquals(expectedTestUid, uidTestReviewData.getAuthor());
     }
 

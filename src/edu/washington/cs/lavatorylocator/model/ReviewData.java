@@ -7,8 +7,6 @@ import java.util.TimeZone;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-import android.util.Log;
-
 /**
  * The {@link Review} class is an representation of the data related to any one
  * review. This includes its database ID number, the database ID number of the
@@ -207,7 +205,7 @@ public class ReviewData {
      * Sets this review's author displayed name, as stored in the 
      *      LavatoryLocator service.
      *
-     * @param uid
+     * @param username
      *            this review's author displayed name, as stored in the 
      *            LavatoryLocator service
      */

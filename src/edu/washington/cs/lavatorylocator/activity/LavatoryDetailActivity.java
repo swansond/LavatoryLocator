@@ -366,8 +366,8 @@ public class LavatoryDetailActivity extends
     public void onSignedIn(PlusClient plusClient) {
         final Person user = plusClient.getCurrentPerson();
         uid = user.getId();
-        String firstName = user.getName().getGivenName();
-        String lastName = user.getName().getFamilyName();
+        final String firstName = user.getName().getGivenName();
+        final String lastName = user.getName().getFamilyName();
         // only use initial of last name
         username = firstName + lastName.charAt(0);
         loadReviews(uid, Integer.toString(lavatory.getLid()),
