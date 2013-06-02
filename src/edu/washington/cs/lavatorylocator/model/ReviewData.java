@@ -137,13 +137,11 @@ public class ReviewData {
         // J seems to be fractions of a second
         // Out format: MM/DD/YYYY HH:MMXM without 0 padding
         try {
-            Log.e("datetime", datetime);
             SimpleDateFormat format = 
                     new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
             format.setTimeZone(TimeZone.getTimeZone("UTC"));
             final Date time = format.parse(datetime.substring(
                     0, datetime.length() - DATE_TIME_OFFSET));
-            Log.e("converted", time.toString());
             format = new SimpleDateFormat("M/d/yyyy h:mm a");
             format.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
             this.datetime = format.format(time);
