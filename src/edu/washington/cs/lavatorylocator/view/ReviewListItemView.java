@@ -21,6 +21,9 @@ public class ReviewListItemView extends RelativeLayout {
     private Button markHelpfulButton;
     private Button markNotHelpfulButton;
     private TextView reviewDateTextView;
+    private TextView helpfulnessTextView;
+    
+    private int helpfulness;
 
     /**
      * Constructs a new {@link LavatorySearchResultsListItemView} with the given
@@ -37,7 +40,7 @@ public class ReviewListItemView extends RelativeLayout {
     /**
      * Updates the view with the new review.
      * @param review
-     *              The review to add to the view.
+     *              the review to add to the view.
      */
     public void updateView(ReviewData review) {
         final String reviewAuthor = review.getAuthor();
@@ -45,11 +48,17 @@ public class ReviewListItemView extends RelativeLayout {
         final String reviewText = review.getReview();
         final int reviewId = review.getRid();
         final String datetime = review.getDatetime();
+        helpfulness = review.getHelpfulness();
+        
+        final String helpfulnessTextSuffix = getContext().getString(R.string.
+                activity_lavatory_detail_helpfulness_suffix);
+        final String helpfulnessString = helpfulness + helpfulnessTextSuffix;
 
         reviewAuthorTextView.setText(reviewAuthor);
         ratingBar.setRating(rating);
         reviewTextView.setText(reviewText);
         reviewDateTextView.setText(datetime);
+        helpfulnessTextView.setText(helpfulnessString);
         
         // Set up the call-backs for the helpfulness buttons
         markHelpfulButton.setTag(new Integer(reviewId));
@@ -78,13 +87,31 @@ public class ReviewListItemView extends RelativeLayout {
         markNotHelpfulButton = ((Button) findViewById(
                 R.id.was_not_helpful_button));
         reviewDateTextView = ((TextView) findViewById(R.id.review_datetime));
+        helpfulnessTextView = ((TextView) findViewById(
+                R.id.review_helpfulness));
     }
 
     /**
      * Disables this object's helpfulness rating buttons.
      */
-    public final void disableHelpfulnessButtons() {
+    public void disableHelpfulnessButtons() {
         markHelpfulButton.setEnabled(false);
         markNotHelpfulButton.setEnabled(false);
+    }
+    
+    /**
+     * Updates the helpfulness of the {@link ReviewData} represented by this
+     * view.
+     * 
+     * @param helpfulnessDifference
+     *              the review helpfulness difference
+     */
+    public void updateHelpfulness(int helpfulnessDifference) {
+        helpfulness += helpfulnessDifference;
+        
+        final String helpfulnessTextSuffix = getContext().getString(R.string.
+                activity_lavatory_detail_helpfulness_suffix);
+        final String helpfulnessString = helpfulness + helpfulnessTextSuffix;
+        helpfulnessTextView.setText(helpfulnessString);
     }
 }

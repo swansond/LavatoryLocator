@@ -26,6 +26,7 @@
         android:id="@+id/search_result_item_building"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/list_item_vertical_margin"
         android:text="Building"
         android:textAppearance="?android:attr/textAppearanceSmall" />
     
