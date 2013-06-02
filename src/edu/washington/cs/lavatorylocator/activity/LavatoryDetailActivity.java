@@ -372,7 +372,7 @@ public class LavatoryDetailActivity extends
         username = firstName + lastName.charAt(0);
         loadReviews(uid, Integer.toString(lavatory.getLid()),
                 REVIEW_PAGE_NUMBER,
-                "helpfulness", "descending");
+                "date", "descending");
     }
     
     /**
