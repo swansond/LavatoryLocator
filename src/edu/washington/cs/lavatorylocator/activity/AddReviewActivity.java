@@ -168,6 +168,20 @@ public class AddReviewActivity extends
         final Person user = plusClient.getCurrentPerson();
         uid = user.getId();
     }
+    
+    /**
+     * Signs the user out.
+     * 
+     * @param item
+     *            the {@link MenuItem} that was selected
+     */
+    public void signOut(MenuItem item) {
+        mPlusClientFragment.signOut();
+
+        // go back to MainActivity
+        final Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 
     // ------------------------------------------------------------------
     // PRIVATE INNER CLASSES

@@ -19,6 +19,7 @@
     <string name="action_edit_lavatory_detail">Edit Lavatory Details</string>
     <string name="action_request_delete_lavatory">Request Deletion</string>
     <string name="action_submit">Submit</string>
+    <string name="action_sign_out">Sign Out</string>
 
     <!-- AboutActivity -->
     <string name="activity_about_from_huskysoft">From HuskySoft</string>

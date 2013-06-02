@@ -372,6 +372,20 @@ public class LavatoryDetailActivity extends
                 REVIEW_PAGE_NUMBER,
                 "helpfulness", "descending");
     }
+    
+    /**
+     * Signs the user out.
+     * 
+     * @param item
+     *            the {@link MenuItem} that was selected
+     */
+    public void signOut(MenuItem item) {
+        mPlusClientFragment.signOut();
+
+        // go back to MainActivity
+        final Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 
     // ---------------------------------------------------
     // PRIVATE HELPER METHODS
