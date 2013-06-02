@@ -60,6 +60,7 @@ public class AddReviewActivity extends
     private PlusClientFragment mPlusClientFragment;
 
     private String uid;
+    private String username;
 
     // -------------------------------------------------------------------
     // ACTIVITY LIFECYCLE
@@ -144,8 +145,8 @@ public class AddReviewActivity extends
         final float rating = ratingBar.getRating();
         final String reviewText = reviewTextView.getText().toString();
         
-        final AddReviewRequest request = new AddReviewRequest(uid, lid, rating,
-                reviewText);
+        final AddReviewRequest request = new AddReviewRequest(username, uid, lid, 
+                rating, reviewText);
         getSpiceManager().execute(request, ADD_REVIEW_CACHE_KEY,
                 JSON_CACHE_DURATION, new AddReviewRequestListener());
     }
@@ -185,6 +186,10 @@ public class AddReviewActivity extends
     public void onSignedIn(PlusClient plusClient) {
         final Person user = plusClient.getCurrentPerson();
         uid = user.getId();
+        String firstName = user.getName().getGivenName();
+        String lastName = user.getName().getFamilyName();
+        // only use initial of last name
+        username = firstName + lastName.charAt(0);
     }
     
     /**

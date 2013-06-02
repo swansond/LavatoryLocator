@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
@@ -111,8 +110,6 @@ public class EditLavatoryDetailActivity extends
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_lavatory);
-        // Show the Up button in the action bar.
-        setupActionBar();
         
         setUpLocationRequest();
         
@@ -261,26 +258,15 @@ public class EditLavatoryDetailActivity extends
             }
         }
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "onOptionsItemSelected called");
-
-        switch (item.getItemId()) {
-        case android.R.id.home:
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. Use NavUtils to allow users
-            // to navigate up one level in the application structure. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html
-            //
-            NavUtils.navigateUpFromSameTask(this);
-            return true;
-        default:
-            break;
-        }
-        return super.onOptionsItemSelected(item);
+    
+    /**
+     * Discards changes.
+     *
+     * @param item
+     *            the {@link MenuItem} that was selected
+     */
+    public void discard(MenuItem item) {
+        finish();
     }
     
     /**
@@ -308,18 +294,6 @@ public class EditLavatoryDetailActivity extends
         // go back to MainActivity
         final Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-    }
-
-    // -----------------------------------------------------------------
-    // PRIVATE HELPER METHODS
-    // -----------------------------------------------------------------
-    /**
-     * Set up the {@link android.app.ActionBar}.
-     */
-    private void setupActionBar() {
-        Log.d(TAG, "setupActionBar called");
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     // -------------------------------------------------------------
