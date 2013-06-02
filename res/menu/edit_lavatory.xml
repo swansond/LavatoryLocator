@@ -1,11 +1,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/action_discard"
+        android:icon="@drawable/ic_action_remove"
+        android:onClick="discard"
+        android:showAsAction="always"
+        android:title="@string/abs__action_bar_home_description">
+    </item>
+    <item
         android:id="@+id/action_submit"
         android:icon="@drawable/ic_action_new"
+        android:onClick="submit"
         android:showAsAction="always"
-        android:title="@string/action_submit" android:onClick="submit">
+        android:title="@string/action_submit">
     </item>
-    <item android:id="@+id/action_sign_out" android:onClick="signOut" android:title="@string/action_sign_out" android:showAsAction="never"></item>
+    <item
+        android:id="@+id/action_sign_out"
+        android:onClick="signOut"
+        android:showAsAction="never"
+        android:title="@string/action_sign_out">
+    </item>
 
 </menu>
