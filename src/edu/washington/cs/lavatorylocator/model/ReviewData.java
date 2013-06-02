@@ -28,6 +28,7 @@ public class ReviewData {
     // -----------------------------------------------------------
     private int lid;
     private String uid;
+    private String username;
     private String datetime;
     private String review;
     private float rating;
@@ -55,7 +56,7 @@ public class ReviewData {
      * @return this review's author
      */
     public String getAuthor() {
-        return "User " + uid;
+        return username;
     }
 
     /**
@@ -203,7 +204,18 @@ public class ReviewData {
     public void setUid(String uid) {
         this.uid = uid;
     }
-
+    
+    /**
+     * Sets this review's author displayed name, as stored in the 
+     *      LavatoryLocator service.
+     *
+     * @param uid
+     *            this review's author displayed name, as stored in the 
+     *            LavatoryLocator service
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
     /**
      * Sets this review's uservote.
      *
