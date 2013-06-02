@@ -138,19 +138,15 @@ public class EditLavatoryDetailActivity extends
     }
     
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-            Intent data) {
-        if (mPlusClientFragment.handleOnActivityResult(requestCode, resultCode,
-                data)) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (mPlusClientFragment.handleOnActivityResult(requestCode, resultCode, data)) {
             switch (resultCode) {
-            case RESULT_CANCELED:
-                // User canceled sign in.
-                Toast.makeText(this, R.string.google_sign_in_required,
-                        Toast.LENGTH_LONG).show();
-                finish();
-                break;
-            default:
-                break;
+                case RESULT_CANCELED:
+                    // User canceled sign in.
+                    Toast.makeText(this, R.string.google_sign_in_required,
+                            Toast.LENGTH_LONG).show();
+                    finish();
+                    break;
             }
         }
     }

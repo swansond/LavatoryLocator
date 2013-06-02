@@ -207,6 +207,20 @@ public class LavatoryDetailActivity extends
         getSupportMenuInflater().inflate(R.menu.lavatory_detail, menu);
         return true;
     }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (mPlusClientFragment.handleOnActivityResult(requestCode, resultCode, data)) {
+            switch (resultCode) {
+                case RESULT_CANCELED:
+                    // User canceled sign in.
+                    Toast.makeText(this, R.string.google_sign_in_required,
+                            Toast.LENGTH_LONG).show();
+                    finish();
+                    break;
+            }
+        }
+    }
 
     // ----------------------------------------------------------------
     // VIEW EVENT HANDLERS

@@ -16,11 +16,11 @@
 
 package edu.washington.cs.lavatorylocator.googleplus;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 
 /**
  * Wraps the {@link Dialog} returned by
@@ -29,8 +29,7 @@ import android.os.Bundle;
  * 
  * @author Chris Rovillos
  */
-public class GooglePlayServicesErrorDialogFragment extends
-        SherlockDialogFragment {
+public class GooglePlayServicesErrorDialogFragment extends DialogFragment {
 
     /**
      * The error code returned by the

@@ -1,6 +1,5 @@
 package edu.washington.cs.lavatorylocator.googleplus;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient.
@@ -459,8 +458,7 @@ public final class PlusClientFragment extends SherlockFragment implements
                 .findFragmentByTag(TAG_PROGRESS_DIALOG);
         if (progressDialog == null) {
             progressDialog = ProgressDialogFragment.create();
-            progressDialog.show(getActivity().getSupportFragmentManager(),
-                    TAG_PROGRESS_DIALOG);
+            progressDialog.show(getFragmentManager(), TAG_PROGRESS_DIALOG);
         }
     }
 
@@ -471,8 +469,7 @@ public final class PlusClientFragment extends SherlockFragment implements
      * @author Chris Rovillos
      * 
      */
-    public static final class ProgressDialogFragment extends
-            SherlockDialogFragment {
+    public static final class ProgressDialogFragment extends DialogFragment {
 
         private static final String ARG_MESSAGE = "message";
 
@@ -504,8 +501,8 @@ public final class PlusClientFragment extends SherlockFragment implements
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            final ProgressDialog progressDialog =
-                    new ProgressDialog(getActivity());
+            final ProgressDialog progressDialog = new ProgressDialog(
+                    getActivity());
             progressDialog.setIndeterminate(true);
             progressDialog.setMessage(getString(getArguments().getInt(
                     ARG_MESSAGE)));
@@ -549,8 +546,7 @@ public final class PlusClientFragment extends SherlockFragment implements
      * Hides the progress dialog.
      */
     protected void hideProgressDialog() {
-        final FragmentManager manager = getActivity()
-                .getSupportFragmentManager();
+        final FragmentManager manager = getFragmentManager();
         if (manager != null) {
             final DialogFragment progressDialog = (DialogFragment) manager
                     .findFragmentByTag(TAG_PROGRESS_DIALOG);
@@ -567,15 +563,14 @@ public final class PlusClientFragment extends SherlockFragment implements
      *            the {@link DialogFragment} to show
      */
     private void showErrorDialog(DialogFragment errorDialog) {
-        final DialogFragment oldErrorDialog = (DialogFragment) getActivity()
-                .getSupportFragmentManager()
-                .findFragmentByTag(TAG_ERROR_DIALOG);
+        final DialogFragment oldErrorDialog =
+                (DialogFragment) getFragmentManager().findFragmentByTag(
+                        TAG_ERROR_DIALOG);
         if (oldErrorDialog != null) {
             oldErrorDialog.dismiss();
         }
 
-        errorDialog.show(getActivity().getSupportFragmentManager(),
-                TAG_ERROR_DIALOG);
+        errorDialog.show(getFragmentManager(), TAG_ERROR_DIALOG);
     }
 
     /**
@@ -584,9 +579,9 @@ public final class PlusClientFragment extends SherlockFragment implements
      * @return true if the error dialog is showing; returns false otherwise
      */
     private boolean isShowingErrorDialog() {
-        final DialogFragment errorDialog = (DialogFragment) getActivity()
-                .getSupportFragmentManager()
-                .findFragmentByTag(TAG_ERROR_DIALOG);
+        final DialogFragment errorDialog =
+                (DialogFragment) getFragmentManager().findFragmentByTag(
+                        TAG_ERROR_DIALOG);
         return errorDialog != null && !errorDialog.isHidden();
     }
 
@@ -594,21 +589,21 @@ public final class PlusClientFragment extends SherlockFragment implements
      * Hides the error dialog, if showing.
      */
     private void hideErrorDialog() {
-        final DialogFragment errorDialog = (DialogFragment) getActivity()
-                .getSupportFragmentManager()
-                .findFragmentByTag(TAG_ERROR_DIALOG);
+        final DialogFragment errorDialog =
+                (DialogFragment) getFragmentManager().findFragmentByTag(
+                        TAG_ERROR_DIALOG);
         if (errorDialog != null) {
             errorDialog.dismiss();
         }
     }
 
     /**
-     * Attempts to start a resolution for any error that occuring during the
+     * Attempts to start a resolution for any error that occurs during the
      * Google+ sign-in process.
      */
     private void startResolution() {
         try {
-            mLastConnectionResult.startResolutionForResult(getActivity(),
+            mLastConnectionResult.startResolutionForResult(getSherlockActivity(),
                     mRequestCode);
             hideProgressDialog();
         } catch (SendIntentException e) {
