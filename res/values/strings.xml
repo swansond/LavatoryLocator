@@ -77,4 +77,5 @@
     
     <!-- Format Strings -->
     <string name="latitude_longitude_format">%1$.8f, %2$.8f</string>
+    <string name="action_discard">Discard</string>
 </resources>

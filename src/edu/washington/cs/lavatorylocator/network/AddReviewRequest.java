@@ -33,7 +33,9 @@ public class AddReviewRequest extends
     private static final String LAVATORY_ID_SERVER_KEY = "lid";
     private static final String RATING_SERVER_KEY = "rating";
     private static final String REVIEW_TEXT_SERVER_KEY = "review";
+    private static final String USER_NAME_SERVER_KEY = "username";
 
+    private String username;
     private String uid;
     private int lid;
     private float rating;
@@ -51,7 +53,7 @@ public class AddReviewRequest extends
      * @param reviewText
      *            the text of the lavatory review
      */
-    public AddReviewRequest(String uid, int lid, float rating,
+    public AddReviewRequest(String username, String uid, int lid, float rating,
             String reviewText) {
         super(ResponseEntity.class);
 
@@ -59,6 +61,7 @@ public class AddReviewRequest extends
         this.lid = lid;
         this.rating = rating;
         this.reviewText = reviewText;
+        this.username = username;
     }
 
     @Override
@@ -71,6 +74,7 @@ public class AddReviewRequest extends
         parameters.add(USER_ID_SERVER_KEY, uid);
         parameters.add(RATING_SERVER_KEY, ratingString);
         parameters.add(REVIEW_TEXT_SERVER_KEY, reviewText);
+        parameters.add(USER_NAME_SERVER_KEY, username);
 
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);

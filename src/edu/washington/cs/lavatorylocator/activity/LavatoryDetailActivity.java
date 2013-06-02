@@ -11,7 +11,6 @@ import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,11 +86,11 @@ public class LavatoryDetailActivity extends
     // ------------------------------------------------------------------
     // INSTANCE VARIABLES
     // ------------------------------------------------------------------
-    private PopupWindow popup;
     private LavatoryData lavatory;
     
     private PlusClientFragment mPlusClientFragment;
     private String uid;
+    private String username;
 
     // -------------------------------------------------------------
     // ACTIVITY LIFECYCLE
@@ -229,29 +228,6 @@ public class LavatoryDetailActivity extends
     // ----------------------------------------------------------------
     // VIEW EVENT HANDLERS
     // ----------------------------------------------------------------
-    /**
-     * Logs the user in so that they can add missing lavatories.
-     *
-     * @param target
-     *           the {@link View} that was selected
-     */
-    public final void loginUser(final View target) {
-        Log.d(TAG, "loginUser called");
-
-        final SharedPreferences userDetails = getApplicationContext()
-                .getSharedPreferences("User", MODE_PRIVATE);
-        userDetails.edit().putBoolean("isLoggedIn", true).commit();
-        dismissLoginPrompt();
-    }
-
-    /**
-     * Closes the popup window.
-     */
-    public final void dismissLoginPrompt() {
-        Log.d(TAG, "dismissLoginPrompt called");
-
-        popup.dismiss();
-    }
 
     /**
      * Goes to the {@link AddReviewActivity} to allow the user to add a review
@@ -316,7 +292,8 @@ public class LavatoryDetailActivity extends
 
         SpringAndroidSpiceRequest<ResponseEntity> request;
         
-        request = new UpdateHelpfulnessRequest(uid, reviewId, helpfulness);
+        request = new UpdateHelpfulnessRequest(username, uid, 
+                reviewId, helpfulness);
 
         Log.d(TAG, "executing UpdateHelpfulnessRequest...");
 
@@ -344,7 +321,8 @@ public class LavatoryDetailActivity extends
         final int helpfulness = -1;
         SpringAndroidSpiceRequest<ResponseEntity> request;
         
-        request = new UpdateHelpfulnessRequest(uid, reviewId, helpfulness);
+        request = new UpdateHelpfulnessRequest(username, uid, 
+                reviewId, helpfulness);
         
         Log.d(TAG, "markHelpful: executing UpdateHelpfulnessRequest...");
 
@@ -388,6 +366,10 @@ public class LavatoryDetailActivity extends
     public void onSignedIn(PlusClient plusClient) {
         final Person user = plusClient.getCurrentPerson();
         uid = user.getId();
+        String firstName = user.getName().getGivenName();
+        String lastName = user.getName().getFamilyName();
+        // only use initial of last name
+        username = firstName + lastName.charAt(0);
         loadReviews(uid, Integer.toString(lavatory.getLid()),
                 REVIEW_PAGE_NUMBER,
                 "helpfulness", "descending");
