@@ -101,6 +101,24 @@ public class AddReviewActivity extends
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
     
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+            Intent data) {
+        if (mPlusClientFragment.handleOnActivityResult(requestCode, resultCode,
+                data)) {
+            switch (resultCode) {
+            case RESULT_CANCELED:
+                // User canceled sign in.
+                Toast.makeText(this, R.string.google_sign_in_required,
+                        Toast.LENGTH_LONG).show();
+                finish();
+                break;
+            default:
+                break;
+            }
+        }
+    }
+    
     // ----------------------------------------------------------------------
     // VIEW EVENT HANDLERS
     // ----------------------------------------------------------------------
@@ -167,6 +185,20 @@ public class AddReviewActivity extends
     public void onSignedIn(PlusClient plusClient) {
         final Person user = plusClient.getCurrentPerson();
         uid = user.getId();
+    }
+    
+    /**
+     * Signs the user out.
+     * 
+     * @param item
+     *            the {@link MenuItem} that was selected
+     */
+    public void signOut(MenuItem item) {
+        mPlusClientFragment.signOut();
+        
+        // go back to MainActivity
+        final Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     // ------------------------------------------------------------------
