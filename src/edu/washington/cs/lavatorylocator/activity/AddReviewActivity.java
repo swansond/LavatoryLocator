@@ -1,31 +1,29 @@
 package edu.washington.cs.lavatorylocator.activity;
 
-import org.apache.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.app.NavUtils;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.plus.PlusClient;
 import com.google.android.gms.plus.model.people.Person;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
 
 import edu.washington.cs.lavatorylocator.R;
+import edu.washington.cs.lavatorylocator.activity.libraryabstract.JacksonSpringSpiceSherlockFragmentActivity;
 import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment;
 import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment.
     OnSignedInListener;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
-import edu.washington.cs.lavatorylocator.util.RESTLoader;
-import edu.washington.cs.lavatorylocator.util.RESTLoader.RESTResponse;
+import edu.washington.cs.lavatorylocator.network.AddReviewRequest;
 
 /**
  * {@link android.app.Activity} for adding a review on a lavatory.
@@ -34,12 +32,12 @@ import edu.washington.cs.lavatorylocator.util.RESTLoader.RESTResponse;
  * @author Wil Sunseri
  * 
  */
-public class AddReviewActivity extends SherlockFragmentActivity implements
-        LoaderCallbacks<RESTLoader.RESTResponse>, OnSignedInListener {
-
-    private static final String SUBMIT_REVIEW =
-            "http://lavlocdb.herokuapp.com/submitreview.php";
-    private static final int MANAGER_ID = 3;
+public class AddReviewActivity extends
+        JacksonSpringSpiceSherlockFragmentActivity implements
+        OnSignedInListener {
+    // -------------------------------------------------------------------
+    // CONSTANTS
+    // -------------------------------------------------------------------
     private static final int REQUEST_CODE_PLUS_CLIENT_FRAGMENT = 0;
     private static final String TAG = "AddReviewActivity";
 
@@ -50,28 +48,9 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
 
     private String uid;
 
-    /**
-     * Starts submitting the entered review to the LavatoryLocator service.
-     * 
-     * @param item
-     *            the {@link MenuItem} that was selected
-     */
-    public void addReview(MenuItem item) {
-        Log.d(TAG, "addReview called");
-
-        final Intent intent = getIntent();
-        final LavatoryData ld = intent
-                .getParcelableExtra(LavatoryDetailActivity.LAVATORY_DATA);
-        final RatingBar ratingbar = ((RatingBar) findViewById(
-                R.id.add_review_rating));
-        final float rating = ratingbar.getRating();
-        final EditText reviewText = ((EditText) findViewById(
-                R.id.add_review_text));
-        final String reviewTextString = reviewText.getText().toString();
-        updateReview(uid, Integer.toString(ld.getLid()),
-                Float.toString(rating), reviewTextString);
-    }
-
+    // -------------------------------------------------------------------
+    // ACTIVITY LIFECYCLE
+    // -------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate called");
@@ -84,7 +63,22 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
         mPlusClientFragment = PlusClientFragment.getPlusClientFragment(this,
                 null);
     }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPlusClientFragment.signIn(REQUEST_CODE_PLUS_CLIENT_FRAGMENT);
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "onCreateOptionsMenu called");
 
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getSupportMenuInflater().inflate(R.menu.add_review, menu);
+        return true;
+    }
+    
     /**
      * Set up the {@link android.app.ActionBar}.
      */
@@ -93,14 +87,35 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+    
+    // ----------------------------------------------------------------------
+    // VIEW EVENT HANDLERS
+    // ----------------------------------------------------------------------
+    /**
+     * Starts submitting the entered review to the LavatoryLocator service.
+     * 
+     * @param item
+     *            the {@link MenuItem} that was selected
+     */
+    public void addReview(MenuItem item) {
+        Log.d(TAG, "addReview called");
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(TAG, "onCreateOptionsMenu called");
-
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getSupportMenuInflater().inflate(R.menu.add_review, menu);
-        return true;
+        final Intent intent = getIntent();
+        final LavatoryData lavatory = intent
+                .getParcelableExtra(LavatoryDetailActivity.LAVATORY_DATA);
+        
+        final RatingBar ratingBar = ((RatingBar) findViewById(
+                R.id.add_review_rating));
+        final EditText reviewTextView = ((EditText) findViewById(
+                R.id.add_review_text));
+        
+        final int lid = lavatory.getLid();
+        final float rating = ratingBar.getRating();
+        final String reviewText = reviewTextView.getText().toString();
+        
+        AddReviewRequest request = new AddReviewRequest(uid, lid, rating,
+                reviewText);
+        getSpiceManager().execute(request, new AddReviewRequestListener());
     }
 
     @Override
@@ -128,101 +143,6 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
     }
 
     /**
-     * Returns a new Loader to this activity's LoaderManager. NOTE: We never
-     * need to call this directly as it is done automatically.
-     * 
-     * @param id
-     *            the id of the LoaderManager
-     * @param args
-     *            the Bundle of arguments to be passed to the Loader
-     * 
-     * @return A Loader to submit a review
-     */
-    @Override
-    public Loader<RESTResponse> onCreateLoader(int id, Bundle args) {
-        Log.d(TAG, "onCreateLoader called");
-
-        final Uri searchAddress = Uri.parse(SUBMIT_REVIEW);
-        return new RESTLoader(getApplicationContext(), searchAddress,
-                RESTLoader.requestType.POST, args);
-    }
-
-    /**
-     * Thanks the user for their submission if it is successful, or prompts them
-     * to try again otherwise.
-     * 
-     * This is called automatically when the load finishes.
-     * 
-     * @param loader
-     *            the Loader that did the submission request
-     * @param response
-     *            the server response
-     */
-    @Override
-    public void onLoadFinished(Loader<RESTResponse> loader,
-            RESTResponse response) {
-        Log.d(TAG, "onLoadFinished called");
-
-        getSupportLoaderManager().destroyLoader(loader.getId());
-        if (response.getCode() == HttpStatus.SC_OK) {
-            Log.d(TAG, "onLoadFinished: 200 response received");
-
-            Toast.makeText(this, "Thank you for your submission",
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            Log.d(TAG, "onLoadFinished: " + response.getCode()
-                    + " response received");
-        }
-    }
-
-    /**
-     * Nullifies the data of the Loader being reset so that it can be garbage
-     * collected. NOTE: This is called automatically when the Loader is reset.
-     * 
-     * @param loader
-     *            the Loader being reset
-     */
-    @Override
-    public void onLoaderReset(Loader<RESTLoader.RESTResponse> loader) {
-        // TODO: nullify the loader's cached data for garbage collecting
-    }
-
-    /**
-     * Sends a new review to the server.
-     * 
-     * @param uid
-     *            the ID of the user making the review
-     * @param lid
-     *            the ID of the lavatory being reviewed
-     * @param rating
-     *            the rating the user is giving the lavatory
-     * @param review
-     *            the review itself
-     */
-    private void updateReview(String uid, String lid, String rating,
-            String review) {
-        Log.d(TAG, "updateReview called");
-
-        // set up the request
-        final Bundle args = new Bundle(4);
-        if (!"".equals(uid)) {
-            args.putString("uid", uid);
-        }
-        if (!"".equals(lid)) {
-            args.putString("lid", lid);
-        }
-        if (!"".equals(rating)) {
-            args.putString("rating", rating);
-        }
-        if (!"".equals(review)) {
-            args.putString("review", review);
-        }
-
-        // and initialize the Loader
-        getSupportLoaderManager().initLoader(MANAGER_ID, args, this);
-    }
-
-    /**
      * Called when the {@link com.google.android.gms.plus.PlusClient} has been
      * connected successfully.
      * 
@@ -235,9 +155,49 @@ public class AddReviewActivity extends SherlockFragmentActivity implements
         uid = user.getId();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mPlusClientFragment.signIn(REQUEST_CODE_PLUS_CLIENT_FRAGMENT);
+    // ------------------------------------------------------------------
+    // PRIVATE INNER CLASSES
+    // ------------------------------------------------------------------
+    /**
+     * {@code RequestListener} for result of submitting the lavatory review to
+     * the LavatoryLocator service.
+     *
+     * @author Chris Rovillos
+     *
+     */
+    @SuppressWarnings("rawtypes")
+    private class AddReviewRequestListener implements
+            RequestListener<ResponseEntity> {
+        private static final String TAG = "AddReviewRequestListener";
+
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            Log.d(TAG, "onRequestFailure called");
+
+            // TODO: move to string resources XML file
+            final String errorMessage = "Submission failed: "
+                    + spiceException.getMessage();
+
+            Log.e(getLocalClassName(), errorMessage);
+            Toast.makeText(AddReviewActivity.this, errorMessage,
+                    Toast.LENGTH_LONG).show();
+            AddReviewActivity.this.getSherlock().
+                    setProgressBarIndeterminateVisibility(false);
+        }
+
+        @Override
+        public void onRequestSuccess(ResponseEntity responseEntity) {
+            Log.d(TAG, "onRequestSuccess called");
+
+            AddReviewActivity.this.getSherlock().
+                    setProgressBarIndeterminateVisibility(false);
+
+            // TODO: move to string resources XML file
+            final String message = "Submitted!";
+            Toast.makeText(AddReviewActivity.this, message,
+                    Toast.LENGTH_LONG).show();
+
+            finish();
+        }
     }
 }
