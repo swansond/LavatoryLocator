@@ -256,11 +256,9 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         } else {
             Log.d(TAG, "activateGot2go: got2go request failed:"
                     + "location services unavailable");
-            // TODO: move to the string resource XML file
-            final String message = "Location information is currently "
-                    + "not available. Got2Go requires location "
-                    + "information to show you the nearest lavatory.";
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            
+            Toast.makeText(this, R.string.activity_main_got2go_error,
+                    Toast.LENGTH_LONG).show();
         }
     }
 
@@ -341,10 +339,8 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
             Log.d(TAG, "centerMapOnCurrentLocation: Unable to center the map, "
                     + "no location services");
 
-            // TODO: move string to resources XML file
-            final String message = "Your current location could not "
-                    + "be found. Try again later.";
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.location_unavailable,
+                    Toast.LENGTH_LONG).show();
         }
     }
 
@@ -354,12 +350,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
      */
     @Override
     public void onDisconnected() {
-        Log.d(TAG, "onDisconnected called");
-
-        // TODO: move to string resource XML file
-        Toast.makeText(this, "Disconnected. Please re-connect.",
-                Toast.LENGTH_SHORT).show();
-        // TODO: show button for user to reconnect
+        Log.e(TAG, "Location client disconnected");
     }
 
     /**
@@ -547,9 +538,9 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         if (lavatories.isEmpty()) {
             Log.d(TAG, "displayLavatories: No lavatories obtained from "
                     + "server response");
-            final String message = "No lavatories found!";
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-            // TODO: move string to resources xml file
+            
+            Toast.makeText(this, R.string.activity_main_no_lavatories_found,
+                    Toast.LENGTH_LONG).show();
         }
 
         displayLavatoriesOnMap(lavatories);

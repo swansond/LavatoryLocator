@@ -96,8 +96,7 @@ public class LavatorySearchRequest extends
         } else {
             final Uri.Builder uriBuilder = 
                     Uri.parse(LAVATORY_SEARCH_SERVICE_URL).buildUpon();
-
-            // TODO: make the server code not require empty keys
+            
             appendQueryParameterToUriBuilderNoEmptyKeys(uriBuilder,
                     BUILDING_SERVER_KEY, building);
             appendQueryParameterToUriBuilderNoEmptyKeys(uriBuilder,

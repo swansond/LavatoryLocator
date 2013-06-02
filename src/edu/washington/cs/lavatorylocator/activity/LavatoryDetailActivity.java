@@ -499,7 +499,7 @@ public class LavatoryDetailActivity extends
      */
     @SuppressWarnings("rawtypes")
     private class UpdateHelpfulnessRequestListener implements
-        RequestListener<ResponseEntity> {
+            RequestListener<ResponseEntity> {
         private static final String TAG = "UpdateHelpfulnessRequestListener";
 
         private ReviewListItemView thisReview;

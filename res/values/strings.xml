@@ -47,7 +47,9 @@
     <string name="activity_lavatory_detail_delete_lavatory_error">Whoops! We’re having some issues submitting your request to delete this lavatory, but you can try again!</string>
     
     <!-- MainActivity -->
+    <string name="activity_main_no_lavatories_found">No lavatories were found! Try a broader search.</string>
     <string name="activity_main_search_error">Whoops! We’re having some issues finding your perfect lavatory. Try again!</string>
+    <string name="activity_main_got2go_error">Whoops! Can’t use Got2Go without location data! Better hold on!</string>
 
     <!-- SearchActivity -->
     <string name="activity_search_required_paramters_error">Whoops! You need to enter some search parameters!</string>
@@ -56,6 +58,9 @@
     <string name="google_sign_in_progress_message">Signing in to Google…</string>
     <string name="google_sign_in_required">Uh-oh! You can’t use LavatoryLocator without signing in!</string>
 
+    <!-- Location related -->
+    <string name="location_unavailable">Looks like we can’t find your location :-(. Try again later.</string>
+    
     <!-- Miscellaneous -->
     <string name="building">Building</string>
     <string name="floor">Floor</string>
