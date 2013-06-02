@@ -296,11 +296,8 @@ public class LavatoryDetailActivity extends
         final int reviewId = v.getId();
         final int helpful = 1;
 
-        /*Toast.makeText(this, "uid: " + uid + " reviewId: " + reviewId
-                + " helpful: " + helpful,
-                Toast.LENGTH_LONG).show();*/ // for debugging
         SpringAndroidSpiceRequest<ResponseEntity> request;
-
+        
         request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
 
         Log.d(TAG, "executing UpdateHelpfulnessRequest...");
@@ -327,9 +324,7 @@ public class LavatoryDetailActivity extends
         final int reviewId = v.getId();
         final int helpful = -1;
         SpringAndroidSpiceRequest<ResponseEntity> request;
-        /*Toast.makeText(this, "uid: " + uid + " reviewId: " + reviewId
-                + " helpful: " + helpful,
-                Toast.LENGTH_LONG).show();*/ // for debugging
+        
         request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
         
         Log.d(TAG, "markHelpful: executing UpdateHelpfulnessRequest...");
@@ -537,7 +532,7 @@ public class LavatoryDetailActivity extends
 
             Toast.makeText(LavatoryDetailActivity.this, R.string.
                 activity_lavatory_detail_review_helpfulness_submission_success,
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_SHORT).show();
         }
         
         @Override
@@ -576,7 +571,7 @@ public class LavatoryDetailActivity extends
 
             Toast.makeText(LavatoryDetailActivity.this,
                     R.string.activity_lavatory_detail_delete_lavatory_success,
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_SHORT).show();
         }
         
         @Override

@@ -539,7 +539,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
                     + "server response");
             
             Toast.makeText(this, R.string.activity_main_no_lavatories_found,
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_SHORT).show();
         }
 
         displayLavatoriesOnMap(lavatories);

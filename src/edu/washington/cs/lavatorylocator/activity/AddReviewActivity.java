@@ -194,7 +194,7 @@ public class AddReviewActivity extends
 
             Toast.makeText(AddReviewActivity.this,
                     R.string.activity_add_review_submission_success,
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_SHORT).show();
 
             finish();
         }

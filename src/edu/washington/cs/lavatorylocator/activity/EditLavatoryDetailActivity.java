@@ -308,7 +308,7 @@ public class EditLavatoryDetailActivity extends
 
             Toast.makeText(EditLavatoryDetailActivity.this,
                     R.string.activity_edit_lavatory_detail_submission_success,
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_SHORT).show();
 
             finish();
         }
