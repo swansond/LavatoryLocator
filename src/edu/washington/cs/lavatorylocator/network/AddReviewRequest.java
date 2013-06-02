@@ -44,6 +44,8 @@ public class AddReviewRequest extends
     /**
      * Constructs a new {@link AddReviewRequest} with the given parameters.
      * 
+     * @param username
+     *            the username of the user submitting the review
      * @param uid
      *            the user ID of the user submitting the lavatory review
      * @param lid
