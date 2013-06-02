@@ -25,9 +25,9 @@ public class GetLavatoryReviewsRequest extends
     private static final String SORT_PARAM_SERVER_KEY = "sortparam";
     private static final String SORT_DIRECTION_SERVER_KEY = "direction";
 
-    private String lavatoryId;
-    private String userId;
-    private String page;
+    private String lid;
+    private String uid;
+    private int page;
     private String sortParam;
     private String sortDirection;
 
@@ -35,9 +35,9 @@ public class GetLavatoryReviewsRequest extends
      * Creates a new {@link GetLavatoryReviewsRequest} with the given
      * parameters.
      * 
-     * @param userId
+     * @param uid
      *            the user ID of the user requesting the reviews
-     * @param lavatoryId
+     * @param lid
      *            the ID of the lavatory for which to get reviews
      * @param page
      *            the page of reviews to load
@@ -47,12 +47,12 @@ public class GetLavatoryReviewsRequest extends
      *            the sort direction
      */
     public GetLavatoryReviewsRequest(
-            String userId, String lavatoryId, String page, 
+            String uid, String lid, int page, 
             String sortParam, String sortDirection) {
         super(Reviews.class);
 
-        this.lavatoryId = lavatoryId;
-        this.userId = userId;
+        this.lid = lid;
+        this.uid = uid;
         this.page = page;
         this.sortParam = sortParam;
         this.sortDirection = sortDirection;
@@ -63,9 +63,10 @@ public class GetLavatoryReviewsRequest extends
         final Uri.Builder uriBuilder = Uri.parse(FETCH_REVIEWS_SERVICE_URL)
                 .buildUpon();
 
-        uriBuilder.appendQueryParameter(LAVATORY_ID_SERVER_KEY, lavatoryId);
-        uriBuilder.appendQueryParameter(USER_ID_SERVER_KEY, userId);
-        uriBuilder.appendQueryParameter(PAGE_SERVER_KEY, page);
+        uriBuilder.appendQueryParameter(LAVATORY_ID_SERVER_KEY, lid);
+        uriBuilder.appendQueryParameter(USER_ID_SERVER_KEY, uid);
+        uriBuilder.appendQueryParameter(PAGE_SERVER_KEY,
+                Integer.toString(page));
         uriBuilder.appendQueryParameter(SORT_PARAM_SERVER_KEY, sortParam);
         uriBuilder.appendQueryParameter(
                 SORT_DIRECTION_SERVER_KEY, sortDirection);

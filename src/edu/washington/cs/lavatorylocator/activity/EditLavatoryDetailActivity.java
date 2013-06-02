@@ -1,7 +1,5 @@
 package edu.washington.cs.lavatorylocator.activity;
 
-import static junit.framework.Assert.assertFalse;
-
 import org.springframework.http.ResponseEntity;
 
 import android.content.Intent;
@@ -16,12 +14,19 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.android.gms.plus.PlusClient;
+import com.google.android.gms.plus.model.people.Person;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 import com.octo.android.robospice.request.
     springandroid.SpringAndroidSpiceRequest;
 
 import edu.washington.cs.lavatorylocator.R;
+import edu.washington.cs.lavatorylocator.activity.libraryabstract.
+    JacksonSpringSpiceSherlockFragmentActivity;
+import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment;
+import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment.
+    OnSignedInListener;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 import edu.washington.cs.lavatorylocator.network.AddLavatoryRequest;
 import edu.washington.cs.lavatorylocator.network.EditLavatoryDetailRequest;
@@ -35,15 +40,21 @@ import edu.washington.cs.lavatorylocator.network.EditLavatoryDetailRequest;
  *
  */
 public class EditLavatoryDetailActivity extends
-        JacksonSpringSpiceSherlockFragmentActivity {
+        JacksonSpringSpiceSherlockFragmentActivity implements
+        OnSignedInListener {
     // -------------------------------------------------------------------
     // CONSTANTS
     // -------------------------------------------------------------------
-    public static final String USER_ID_KEY = "uid";
-
-    private static final int NO_ID = Integer.MIN_VALUE;
-
     private static final String TAG = "EditLavatoryDetailActivity";
+    
+    private static final int REQUEST_CODE_PLUS_CLIENT_FRAGMENT = 0;
+    
+    // -------------------------------------------------------------------
+    // INSTANCE VARIABLES
+    // -------------------------------------------------------------------
+    private PlusClientFragment mPlusClientFragment;
+    
+    private String uid;
 
     // -------------------------------------------------------------------
     // ACTIVITY LIFECYCLE
@@ -56,6 +67,9 @@ public class EditLavatoryDetailActivity extends
         setContentView(R.layout.activity_edit_lavatory);
         // Show the Up button in the action bar.
         setupActionBar();
+        
+        mPlusClientFragment = PlusClientFragment.getPlusClientFragment(this,
+                null);
 
         final LavatoryData lavatoryData = getIntent().getParcelableExtra(
                 LavatoryDetailActivity.LAVATORY_DATA);
@@ -96,12 +110,37 @@ public class EditLavatoryDetailActivity extends
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mPlusClientFragment.signIn(REQUEST_CODE_PLUS_CLIENT_FRAGMENT);
+    }
+    
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(TAG, "onCreateOptionsMenu called");
 
         // Inflate the menu; this adds items to the action bar if it is present.
         getSupportMenuInflater().inflate(R.menu.edit_lavatory, menu);
         return true;
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+            Intent data) {
+        if (mPlusClientFragment.handleOnActivityResult(requestCode, resultCode,
+                data)) {
+            switch (resultCode) {
+            case RESULT_CANCELED:
+                // User canceled sign in.
+                Toast.makeText(this, R.string.
+                        greeting_status_sign_in_required,
+                        Toast.LENGTH_LONG).show();
+                finish();
+                break;
+            default:
+                break;
+            }
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -113,72 +152,73 @@ public class EditLavatoryDetailActivity extends
      * @param item
      *            the {@link MenuItem} that was selected
      */
+    @SuppressWarnings("rawtypes")
     public void submit(MenuItem item) {
         Log.d(TAG, "submit called");
 
-        getSherlock().setProgressBarIndeterminateVisibility(true);
-
-        final String building = ((EditText) findViewById(
-                R.id.activity_add_lavatory_building_name))
-                .getText().toString();
-        final String floor = ((EditText) findViewById(
-                R.id.activity_add_lavatory_floor))
-                .getText().toString();
-        final String room = ((EditText) findViewById(
-                R.id.activity_add_lavatory_room))
-                .getText().toString();
-        final int typeRadioButtonSelected = ((RadioGroup) findViewById(
-                R.id.activity_add_lavatory_type))
-                .getCheckedRadioButtonId();
-
-        char type;
-        if (typeRadioButtonSelected == R.id.activity_add_lavatory_male) {
-            type = 'M';
-        } else {
-            type = 'F';
-        }
-
-        final String latitudeString = ((EditText) findViewById(
-                R.id.activity_add_lavatory_latitude))
-                .getText().toString();
-        final String longitudeString = ((EditText) findViewById(
-                R.id.activity_add_lavatory_longitude))
-                .getText().toString();
-
-        if (!TextUtils.isEmpty(building) && !TextUtils.isEmpty(floor)
-                && !TextUtils.isEmpty(room)
-                && !TextUtils.isEmpty(latitudeString)
-                && !TextUtils.isEmpty(longitudeString)) {
-            final double latitude = Double.parseDouble(latitudeString);
-            final double longitude = Double.parseDouble(longitudeString);
-
-            final Intent intent = getIntent();
-
-            final int uid = intent.getIntExtra(USER_ID_KEY, NO_ID);
-            assertFalse(uid == NO_ID);
-
-            final LavatoryData lavatoryToEdit = intent
-                    .getParcelableExtra(LavatoryDetailActivity.LAVATORY_DATA);
-
-            SpringAndroidSpiceRequest<ResponseEntity> request;
-
-            if (lavatoryToEdit != null) {
-                final int lid = lavatoryToEdit.getLid();
-
-                request = new EditLavatoryDetailRequest(uid, lid, building,
-                        floor, room, type, latitude, longitude);
-            } else { // add a new lavatory
-                request = new AddLavatoryRequest(uid, building, floor, room,
-                        type, latitude, longitude);
+        if (uid != null) {
+            getSherlock().setProgressBarIndeterminateVisibility(true);
+    
+            final String building = ((EditText) findViewById(
+                    R.id.activity_add_lavatory_building_name))
+                    .getText().toString();
+            final String floor = ((EditText) findViewById(
+                    R.id.activity_add_lavatory_floor))
+                    .getText().toString();
+            final String room = ((EditText) findViewById(
+                    R.id.activity_add_lavatory_room))
+                    .getText().toString();
+            final int typeRadioButtonSelected = ((RadioGroup) findViewById(
+                    R.id.activity_add_lavatory_type))
+                    .getCheckedRadioButtonId();
+    
+            char type;
+            if (typeRadioButtonSelected == R.id.activity_add_lavatory_male) {
+                type = 'M';
+            } else {
+                type = 'F';
             }
-
-            Log.d(TAG, "submit: executing Add or Edit LavatoryRequest");
-            getSpiceManager().execute(request,
-                    new AddOrEditLavatoryDetailRequestListener());
-        } else { // some fields not filled
-            // TODO: move string resource to XML file
-            final String message = "You need to fill in all the fields!";
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    
+            final String latitudeString = ((EditText) findViewById(
+                    R.id.activity_add_lavatory_latitude))
+                    .getText().toString();
+            final String longitudeString = ((EditText) findViewById(
+                    R.id.activity_add_lavatory_longitude))
+                    .getText().toString();
+    
+            if (!TextUtils.isEmpty(building) && !TextUtils.isEmpty(floor)
+                    && !TextUtils.isEmpty(room)
+                    && !TextUtils.isEmpty(latitudeString)
+                    && !TextUtils.isEmpty(longitudeString)) {
+                final double latitude = Double.parseDouble(latitudeString);
+                final double longitude = Double.parseDouble(longitudeString);
+    
+                final Intent intent = getIntent();
+    
+                final LavatoryData lavatoryToEdit = intent
+                        .getParcelableExtra(LavatoryDetailActivity.
+                                LAVATORY_DATA);
+    
+                SpringAndroidSpiceRequest<ResponseEntity> request;
+    
+                if (lavatoryToEdit != null) {
+                    final int lid = lavatoryToEdit.getLid();
+    
+                    request = new EditLavatoryDetailRequest(uid, lid, building,
+                            floor, room, type, latitude, longitude);
+                } else { // add a new lavatory
+                    request = new AddLavatoryRequest(uid, building, floor, room,
+                            type, latitude, longitude);
+                }
+    
+                Log.d(TAG, "submit: executing Add or Edit LavatoryRequest");
+                getSpiceManager().execute(request,
+                        new AddOrEditLavatoryDetailRequestListener());
+            } else { // some fields not filled
+                // TODO: move string resource to XML file
+                final String message = "You need to fill in all the fields!";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -201,6 +241,19 @@ public class EditLavatoryDetailActivity extends
             break;
         }
         return super.onOptionsItemSelected(item);
+    }
+    
+    /**
+     * Called when the {@link com.google.android.gms.plus.PlusClient} has been
+     * connected successfully.
+     *
+     * @param plusClient
+     *                The connected {@link PlusClient} for making API requests.
+     */
+    @Override
+    public void onSignedIn(PlusClient plusClient) {
+        final Person user = plusClient.getCurrentPerson();
+        uid = user.getId();
     }
 
     // -----------------------------------------------------------------
@@ -225,6 +278,7 @@ public class EditLavatoryDetailActivity extends
      * @author Chris Rovillos
      *
      */
+    @SuppressWarnings("rawtypes")
     private class AddOrEditLavatoryDetailRequestListener implements
             RequestListener<ResponseEntity> {
         private static final String TAG = "AddOrEditLavatory"

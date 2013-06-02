@@ -22,6 +22,13 @@
         android:text="Floor"
         android:textAppearance="?android:attr/textAppearanceSmall" />
     
+    <TextView
+        android:id="@+id/search_result_item_building"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Building"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

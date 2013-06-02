@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 public class TestAddLavatoryRequest extends TestCase {
 
     private AddLavatoryRequest alr;
-    private int uid;
+    private String uid;
     private String building;
     private String floor;
     private String room;
@@ -24,7 +24,7 @@ public class TestAddLavatoryRequest extends TestCase {
      * @black
      */
     public void test_constructor_usualCase_newRequest() {
-        uid = 0;
+        uid = "0";
         building = "CSE";
         floor = "B";
         room = "B100";

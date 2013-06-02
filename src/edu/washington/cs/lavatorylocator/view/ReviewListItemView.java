@@ -18,7 +18,6 @@ public class ReviewListItemView extends RelativeLayout {
     private TextView reviewAuthorTextView;
     private RatingBar ratingBar;
     private TextView reviewTextView;
-    private TextView promptHelpfulText;
     private Button markHelpfulButton;
     private Button markNotHelpfulButton;
     private TextView reviewDateTextView;
@@ -75,7 +74,6 @@ public class ReviewListItemView extends RelativeLayout {
         reviewAuthorTextView = ((TextView) findViewById(R.id.review_author));
         ratingBar = ((RatingBar) findViewById(R.id.review_stars));
         reviewTextView = ((TextView) findViewById(R.id.review_text));
-        promptHelpfulText = ((TextView) findViewById(R.id.was_helpful_text));
         markHelpfulButton = ((Button) findViewById(R.id.was_helpful_button));
         markNotHelpfulButton = ((Button) findViewById(
                 R.id.was_not_helpful_button));
@@ -83,7 +81,7 @@ public class ReviewListItemView extends RelativeLayout {
     }
 
     /**
-     * Disables this object's helpfullness rating buttons.
+     * Disables this object's helpfulness rating buttons.
      */
     public final void disableHelpfulnessButtons() {
         markHelpfulButton.setEnabled(false);

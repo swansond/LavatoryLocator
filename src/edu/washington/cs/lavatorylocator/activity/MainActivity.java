@@ -4,21 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
@@ -47,6 +41,8 @@ import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import edu.washington.cs.lavatorylocator.R;
+import edu.washington.cs.lavatorylocator.activity.libraryabstract.
+    JacksonSpringSpiceSherlockFragmentActivity;
 import edu.washington.cs.lavatorylocator.adapter.LavatorySearchResultsAdapter;
 import edu.washington.cs.lavatorylocator.location.LocationUtils;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
@@ -98,19 +94,11 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
      */
     private static final int SEARCH_PARAMETERS_REQUEST = 0;
 
-    public static final int POPUP_WIDTH = 350;
-    public static final int POPUP_HEIGHT = 250;
-
     private static final String TAG = "MainActivity";
 
     // -----------------------------------------------------------
     // INSTANCE VARIABLES
     // -----------------------------------------------------------
-    /**
-     * The login popup window displayed when the user wants to add a lavatory,
-     * but is not logged in.
-     */
-    private PopupWindow loginPopup;
 
     // MAPPING AND LOCATION
     private GoogleMap mMap;
@@ -297,30 +285,9 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
     public void goToAddLavatoryActivity(MenuItem item) {
         Log.d(TAG, "goToAddLavatoryActivity called");
 
-        // TODO: move to Facebook authentication system
-        final SharedPreferences userDetails = getApplicationContext()
-                .getSharedPreferences("User", MODE_PRIVATE);
-        final Boolean loggedIn = userDetails.getBoolean("isLoggedIn", false);
-
-        if (!loggedIn) {
-            Log.d(TAG, "goToAddLavatoryActivity: user not logged in:"
-                    + "prompting login...");
-
-            final LayoutInflater inflater = (LayoutInflater) this
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final View layout = inflater.inflate(R.layout.login_popup,
-                    (ViewGroup) findViewById(R.id.login_popup_layout));
-
-            loginPopup = new PopupWindow(layout, POPUP_WIDTH, POPUP_HEIGHT,
-                    true);
-            loginPopup.showAtLocation(layout, Gravity.CENTER, 0, 0);
-        } else {
-            final Intent intent = new Intent(
-                    this, EditLavatoryDetailActivity.class);
-            intent.putExtra(EditLavatoryDetailActivity.USER_ID_KEY, 1);
-            // TODO: change when user IDs are implemented
-            startActivity(intent);
-        }
+        final Intent intent = new Intent(
+                this, EditLavatoryDetailActivity.class);
+        startActivity(intent);
     }
 
     /**
@@ -333,22 +300,6 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
 
         final Intent intent = new Intent(this, SearchActivity.class);
         startActivityForResult(intent, SEARCH_PARAMETERS_REQUEST);
-    }
-
-    /**
-     * Logs the user in.
-     *
-     * @param target
-     *          The view that caused this method to be called
-     */
-    public void loginUser(View target) {
-        Log.d(TAG, "loginUser called");
-
-        // TODO: move to Facebook authentication system
-        final SharedPreferences userDetails = getApplicationContext()
-                .getSharedPreferences("User", MODE_PRIVATE);
-        userDetails.edit().putBoolean("isLoggedIn", true).commit();
-        dismissLoginPrompt();
     }
 
     @Override
@@ -581,16 +532,6 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
     // ----------------------------------------------------
     // PRIVATE HELPER METHODS
     // ----------------------------------------------------
-    /**
-     * Dismisses the login prompt.
-     */
-    private void dismissLoginPrompt() {
-        Log.d(TAG, "dismissLoginPrompt called");
-
-        // TODO: move to Facebook authentication system
-        loginPopup.dismiss();
-    }
-
     /**
      * Displays the given list of lavatories in the map and list.
      *
