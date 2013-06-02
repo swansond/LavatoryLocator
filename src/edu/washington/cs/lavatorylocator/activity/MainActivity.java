@@ -373,7 +373,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
             } catch (IntentSender.SendIntentException e) {
                 // thrown if Google Play services canceled the original
                 // PendingIntent
-                Log.e(getLocalClassName(), e.getMessage());
+                Log.e(TAG, e.getMessage());
             }
         } else {
             // if no resolution is available, display a dialog to the user with
