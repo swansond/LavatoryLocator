@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_above="@+id/add_review_ad"
     android:orientation="vertical" >
-    
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="200dp" >
@@ -41,7 +42,7 @@
                 android:text="Floor"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@android:color/white" />
-            
+
             <TextView
                 android:id="@+id/lavatory_detail_building_text"
                 android:layout_width="match_parent"
@@ -49,9 +50,7 @@
                 android:text="Building"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@android:color/white" />
-
         </LinearLayout>
-
     </FrameLayout>
 
     <LinearLayout
@@ -80,5 +79,13 @@
             android:layout_height="wrap_content"
             android:text="@string/activity_lavatory_detail_reviews" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:src="@drawable/beach" />
 
 </LinearLayout>
