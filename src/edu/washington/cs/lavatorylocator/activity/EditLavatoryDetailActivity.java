@@ -16,6 +16,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.plus.PlusClient;
 import com.google.android.gms.plus.model.people.Person;
+import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 import com.octo.android.robospice.request.
@@ -48,6 +49,18 @@ public class EditLavatoryDetailActivity extends
     private static final String TAG = "EditLavatoryDetailActivity";
     
     private static final int REQUEST_CODE_PLUS_CLIENT_FRAGMENT = 0;
+    
+    /**
+     * Key for caching the result from a edit lavatory detail request.
+     */
+    private static final String EDIT_LAVATORY_DETAIL_CACHE_KEY =
+            "editLavatoryDetailJson";
+
+    /**
+     * Cache duration, in milliseconds.
+     */
+    private static final long JSON_CACHE_DURATION =
+            DurationInMillis.ALWAYS_EXPIRED;
     
     // -------------------------------------------------------------------
     // INSTANCE VARIABLES
@@ -212,6 +225,8 @@ public class EditLavatoryDetailActivity extends
     
                 Log.d(TAG, "submit: executing Add or Edit LavatoryRequest");
                 getSpiceManager().execute(request,
+                        EDIT_LAVATORY_DETAIL_CACHE_KEY,
+                        JSON_CACHE_DURATION, 
                         new AddOrEditLavatoryDetailRequestListener());
             } else { // some fields not filled
                 Toast.makeText(this, R.string.

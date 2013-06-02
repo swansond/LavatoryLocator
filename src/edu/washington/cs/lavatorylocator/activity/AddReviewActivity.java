@@ -14,6 +14,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.plus.PlusClient;
 import com.google.android.gms.plus.model.people.Person;
+import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
@@ -41,6 +42,17 @@ public class AddReviewActivity extends
     // -------------------------------------------------------------------
     private static final int REQUEST_CODE_PLUS_CLIENT_FRAGMENT = 0;
     private static final String TAG = "AddReviewActivity";
+    
+    /**
+     * Key for caching the result from a review submission.
+     */
+    private static final String ADD_REVIEW_CACHE_KEY = "addReview";
+
+    /**
+     * Cache duration, in milliseconds.
+     */
+    private static final long JSON_CACHE_DURATION =
+            DurationInMillis.ALWAYS_EXPIRED;
 
     // -------------------------------------------------------------------
     // INSTANCE VARIABLES
@@ -116,7 +128,8 @@ public class AddReviewActivity extends
         
         final AddReviewRequest request = new AddReviewRequest(uid, lid, rating,
                 reviewText);
-        getSpiceManager().execute(request, new AddReviewRequestListener());
+        getSpiceManager().execute(request, ADD_REVIEW_CACHE_KEY,
+                JSON_CACHE_DURATION, new AddReviewRequestListener());
     }
 
     @Override

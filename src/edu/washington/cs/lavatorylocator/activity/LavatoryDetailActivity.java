@@ -60,6 +60,12 @@ public class LavatoryDetailActivity extends
      * Key for caching reviews.
      */
     private static final String REVIEWS_JSON_CACHE_KEY = "reviewsJson";
+    
+    private static final String DELETE_LAVATORY_REQUEST_CACHE_KEY =
+            "deleteLavatoryRequest";
+    
+    private static final String REVIEW_HELPFULNESS_REQUEST_CACHE_KEY =
+            "reviewHelpfulnessRequest";
 
     /**
      * Cache duration, in milliseconds.
@@ -273,8 +279,8 @@ public class LavatoryDetailActivity extends
                 new DeleteLavatoryRequest(lavatory.getLid(), uid);
 
         Log.d(TAG, "requestDeletion: executing DeleteLavatoryRequest...");
-        getSpiceManager().execute(request,
-                new DeleteRequestListener());
+        getSpiceManager().execute(request, DELETE_LAVATORY_REQUEST_CACHE_KEY,
+                JSON_CACHE_DURATION, new DeleteRequestListener());
     }
 
     /**
@@ -302,6 +308,7 @@ public class LavatoryDetailActivity extends
         final ReviewListItemView thisView =
                 (ReviewListItemView) v.getParent().getParent().getParent();
         getSpiceManager().execute(request,
+                REVIEW_HELPFULNESS_REQUEST_CACHE_KEY, JSON_CACHE_DURATION,
                 new UpdateHelpfulnessRequestListener(thisView));
     }
 
@@ -330,6 +337,7 @@ public class LavatoryDetailActivity extends
         final ReviewListItemView thisView =
                 (ReviewListItemView) v.getParent().getParent().getParent();
         getSpiceManager().execute(request,
+                REVIEW_HELPFULNESS_REQUEST_CACHE_KEY, JSON_CACHE_DURATION,
                 new UpdateHelpfulnessRequestListener(thisView));
     }
 
