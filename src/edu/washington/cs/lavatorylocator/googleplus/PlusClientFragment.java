@@ -603,8 +603,8 @@ public final class PlusClientFragment extends SherlockFragment implements
      */
     private void startResolution() {
         try {
-            mLastConnectionResult.startResolutionForResult(getSherlockActivity(),
-                    mRequestCode);
+            mLastConnectionResult.startResolutionForResult(
+                    getSherlockActivity(), mRequestCode);
             hideProgressDialog();
         } catch (SendIntentException e) {
             // The intent we had is not valid right now, perhaps the remote
