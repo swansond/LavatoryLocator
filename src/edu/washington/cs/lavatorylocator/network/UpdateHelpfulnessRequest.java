@@ -44,6 +44,8 @@ public class UpdateHelpfulnessRequest extends
      * Constructs a new {@link UpdateHelpfulnessRequest} with the given
      * parameters.
      * 
+     * @param username
+     *            the username of hte user submitting the request
      * @param uid
      *            the user ID of the user submitting the request
      * @param reviewId
