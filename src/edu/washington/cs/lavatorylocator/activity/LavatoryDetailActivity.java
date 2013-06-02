@@ -466,8 +466,8 @@ public class LavatoryDetailActivity extends
 
         @Override
         public void onRequestSuccess(final Reviews reviews) {
-            final String logSuccessMessage = "Review helpfulness request " +
-                    "succeeded";
+            final String logSuccessMessage = "Review helpfulness request "
+                    + "succeeded";
             Log.d(TAG, logSuccessMessage);
 
             LavatoryDetailActivity.this.displayReviews(reviews.getReviews());
@@ -478,8 +478,8 @@ public class LavatoryDetailActivity extends
         
         @Override
         public void onRequestFailure(SpiceException spiceException) {
-            final String logErrorMessage = "Get lavatory reviews request " +
-                    "failed: " + spiceException.getMessage();
+            final String logErrorMessage = "Get lavatory reviews request "
+                    + "failed: " + spiceException.getMessage();
             Log.e(TAG, logErrorMessage);
 
             Toast.makeText(LavatoryDetailActivity.this,
@@ -518,8 +518,8 @@ public class LavatoryDetailActivity extends
         
         @Override
         public void onRequestSuccess(ResponseEntity responseEntity) {
-            final String logSuccessMessage = "Review helpfulness request " +
-                    "succeeded";
+            final String logSuccessMessage = "Review helpfulness request "
+                    + "succeeded";
             Log.d(TAG, logSuccessMessage);
 
             LavatoryDetailActivity.this.getSherlock().
@@ -528,18 +528,18 @@ public class LavatoryDetailActivity extends
             thisReview.disableHelpfulnessButtons();
 
             Toast.makeText(LavatoryDetailActivity.this, R.string.
-                    activity_lavatory_detail_review_helpfulness_submission_success,
+                activity_lavatory_detail_review_helpfulness_submission_success,
                     Toast.LENGTH_LONG).show();
         }
         
         @Override
         public void onRequestFailure(SpiceException spiceException) {
-            final String logErrorMessage = "Review helpfulness request " +
-                    "failed: " + spiceException.getMessage();
+            final String logErrorMessage = "Review helpfulness request "
+                    + "failed: " + spiceException.getMessage();
             Log.e(TAG, logErrorMessage);
 
             Toast.makeText(LavatoryDetailActivity.this, R.string.
-                    activity_lavatory_detail_review_helpfulness_submission_error,
+                activity_lavatory_detail_review_helpfulness_submission_error,
                     Toast.LENGTH_LONG).show();
             LavatoryDetailActivity.this.getSherlock().
                     setProgressBarIndeterminateVisibility(false);
@@ -559,8 +559,8 @@ public class LavatoryDetailActivity extends
         
         @Override
         public void onRequestSuccess(ResponseEntity responseEntity) {
-            final String logSuccessMessage = "Lavatory deletion request " +
-            		"succeeded";
+            final String logSuccessMessage = "Lavatory deletion request "
+                    + "succeeded";
             Log.d(TAG, logSuccessMessage);
 
             LavatoryDetailActivity.this.getSherlock().
@@ -573,8 +573,8 @@ public class LavatoryDetailActivity extends
         
         @Override
         public void onRequestFailure(SpiceException spiceException) {
-            final String logErrorMessage = "Lavatory deletion request " +
-            		"failed: " + spiceException.getMessage();
+            final String logErrorMessage = "Lavatory deletion request "
+                    + "failed: " + spiceException.getMessage();
             Log.e(TAG, logErrorMessage);
 
             Toast.makeText(LavatoryDetailActivity.this,

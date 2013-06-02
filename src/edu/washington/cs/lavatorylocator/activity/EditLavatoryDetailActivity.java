@@ -300,8 +300,8 @@ public class EditLavatoryDetailActivity extends
         
         @Override
         public void onRequestFailure(SpiceException spiceException) {
-            final String logErrorMessage = "Edit lavatory detail submission " +
-            		"failed: " + spiceException.getMessage();
+            final String logErrorMessage = "Edit lavatory detail submission "
+                    + "failed: " + spiceException.getMessage();
             Log.e(TAG, logErrorMessage);
 
             Toast.makeText(EditLavatoryDetailActivity.this,

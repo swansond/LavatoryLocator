@@ -14,7 +14,8 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceRequest;
+import com.octo.android.robospice.request.springandroid.
+    SpringAndroidSpiceRequest;
 
 /**
  * Class for submitting a lavatory review to the LavatoryLocator service.
@@ -23,7 +24,8 @@ import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceReques
  * 
  */
 @SuppressWarnings("rawtypes")
-public class AddReviewRequest extends SpringAndroidSpiceRequest<ResponseEntity> {
+public class AddReviewRequest extends
+        SpringAndroidSpiceRequest<ResponseEntity> {
     private static final String SUBMIT_REVIEW_SERVICE_URL =
             "http://lavlocdb.herokuapp.com/submitreview.php";
 
@@ -46,7 +48,7 @@ public class AddReviewRequest extends SpringAndroidSpiceRequest<ResponseEntity> 
      *            the ID of the lavatory being reviewed
      * @param rating
      *            the rating of the lavatory
-     * @param text
+     * @param reviewText
      *            the text of the lavatory review
      */
     public AddReviewRequest(String uid, int lid, float rating,

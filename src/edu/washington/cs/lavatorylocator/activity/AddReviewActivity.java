@@ -18,7 +18,8 @@ import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import edu.washington.cs.lavatorylocator.R;
-import edu.washington.cs.lavatorylocator.activity.libraryabstract.JacksonSpringSpiceSherlockFragmentActivity;
+import edu.washington.cs.lavatorylocator.activity.libraryabstract.
+    JacksonSpringSpiceSherlockFragmentActivity;
 import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment;
 import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment.
     OnSignedInListener;
@@ -113,7 +114,7 @@ public class AddReviewActivity extends
         final float rating = ratingBar.getRating();
         final String reviewText = reviewTextView.getText().toString();
         
-        AddReviewRequest request = new AddReviewRequest(uid, lid, rating,
+        final AddReviewRequest request = new AddReviewRequest(uid, lid, rating,
                 reviewText);
         getSpiceManager().execute(request, new AddReviewRequestListener());
     }

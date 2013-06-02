@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -700,8 +699,8 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         @Override
         public void onRequestSuccess(
                 LavatorySearchResults lavatorySearchResults) {
-            final String logSuccessMessage = "Lavatory search request " +
-                    "succeeded";
+            final String logSuccessMessage = "Lavatory search request "
+                    + "succeeded";
             Log.d(TAG, logSuccessMessage);
 
             MainActivity.this.displayLavatories(lavatorySearchResults
@@ -713,8 +712,8 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         
         @Override
         public void onRequestFailure(SpiceException spiceException) {
-            final String logErrorMessage = "Lavatory search request " +
-                    "failed: " + spiceException.getMessage();
+            final String logErrorMessage = "Lavatory search request "
+                    + "failed: " + spiceException.getMessage();
             Log.e(TAG, logErrorMessage);
 
             Toast.makeText(MainActivity.this,
@@ -738,8 +737,8 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
 
         @Override
         public void onRequestSuccess(LavatoryData got2goLavatory) {
-            final String logSuccessMessage = "Got2Go request " +
-                    "succeeded";
+            final String logSuccessMessage = "Got2Go request "
+                    + "succeeded";
             Log.d(TAG, logSuccessMessage);
 
             MainActivity.this.getSherlock()
@@ -750,8 +749,8 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
         
         @Override
         public void onRequestFailure(SpiceException spiceException) {
-            final String logErrorMessage = "Got2Go request " +
-                    "failed: " + spiceException.getMessage();
+            final String logErrorMessage = "Got2Go request "
+                    + "failed: " + spiceException.getMessage();
             Log.e(TAG, logErrorMessage);
 
             Toast.makeText(MainActivity.this,
