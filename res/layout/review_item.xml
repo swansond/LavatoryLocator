@@ -10,7 +10,8 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/list_item_vertical_margin" >
 
         <TextView
             android:id="@+id/review_author"
@@ -35,6 +36,7 @@
         style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/list_item_vertical_margin"
         android:isIndicator="true"
         android:numStars="@integer/num_review_stars" />
 
@@ -42,7 +44,16 @@
         android:id="@+id/review_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/list_item_vertical_margin"
         android:text="Review Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/review_helpfulness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/list_item_vertical_margin"
+        android:text="Review Helpfulness"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <LinearLayout
