@@ -38,6 +38,7 @@
 
     <!-- LavatoryDetailActivity -->
     <string name="activity_lavatory_detail_reviews">Reviews</string>
+    <string name="activity_lavatory_detail_helpfulness_suffix">&#160;people found this helpful</string>
     <string name="activity_lavatory_detail_get_reviews_error">Whoops! We’re having some issues getting the reviews for this lavatory, but you can try again later!</string>
     <string name="activity_lavatory_detail_helpful_prompt">Was this review helpful?</string>
     <string name="activity_lavatory_detail_was_helpful">Yes</string>

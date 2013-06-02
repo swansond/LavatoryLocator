@@ -312,19 +312,20 @@ public class LavatoryDetailActivity extends
         Log.d(TAG, "markHelpful called");
 
         final int reviewId = v.getId();
-        final int helpful = 1;
+        final int helpfulness = 1;
 
         SpringAndroidSpiceRequest<ResponseEntity> request;
         
-        request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
+        request = new UpdateHelpfulnessRequest(uid, reviewId, helpfulness);
 
         Log.d(TAG, "executing UpdateHelpfulnessRequest...");
 
-        final ReviewListItemView thisView =
+        final ReviewListItemView reviewListItemView =
                 (ReviewListItemView) v.getParent().getParent().getParent();
         getSpiceManager().execute(request,
                 REVIEW_HELPFULNESS_REQUEST_CACHE_KEY, JSON_CACHE_DURATION,
-                new UpdateHelpfulnessRequestListener(thisView));
+                new UpdateHelpfulnessRequestListener(reviewListItemView,
+                        helpfulness));
     }
 
     /**
@@ -340,18 +341,19 @@ public class LavatoryDetailActivity extends
         getSherlock().setProgressBarIndeterminateVisibility(true);
         
         final int reviewId = v.getId();
-        final int helpful = -1;
+        final int helpfulness = -1;
         SpringAndroidSpiceRequest<ResponseEntity> request;
         
-        request = new UpdateHelpfulnessRequest(uid, reviewId, helpful);
+        request = new UpdateHelpfulnessRequest(uid, reviewId, helpfulness);
         
         Log.d(TAG, "markHelpful: executing UpdateHelpfulnessRequest...");
 
-        final ReviewListItemView thisView =
+        final ReviewListItemView reviewListItemView =
                 (ReviewListItemView) v.getParent().getParent().getParent();
         getSpiceManager().execute(request,
                 REVIEW_HELPFULNESS_REQUEST_CACHE_KEY, JSON_CACHE_DURATION,
-                new UpdateHelpfulnessRequestListener(thisView));
+                new UpdateHelpfulnessRequestListener(reviewListItemView,
+                        helpfulness));
     }
 
     @Override
@@ -537,7 +539,8 @@ public class LavatoryDetailActivity extends
             RequestListener<ResponseEntity> {
         private static final String TAG = "UpdateHelpfulnessRequestListener";
 
-        private ReviewListItemView thisReview;
+        private ReviewListItemView review;
+        private int helpfulnessDifference;
 
         /**
          * Creates a new UpdateHelpfulnessRequestListener.
@@ -545,10 +548,14 @@ public class LavatoryDetailActivity extends
          * @param review
          *              the ReviewListItem whose helpfulness button launched
          *              this request
+         * @param helpfulnessDifference
+         *              the review helpfulness difference
          */
-        public UpdateHelpfulnessRequestListener(ReviewListItemView review) {
+        public UpdateHelpfulnessRequestListener(ReviewListItemView review,
+                int helpfulnessDifference) {
             super();
-            thisReview = review;
+            this.review = review;
+            this.helpfulnessDifference = helpfulnessDifference;
         }
         
         @Override
@@ -560,7 +567,8 @@ public class LavatoryDetailActivity extends
             LavatoryDetailActivity.this.getSherlock().
                     setProgressBarIndeterminateVisibility(false);
             
-            thisReview.disableHelpfulnessButtons();
+            review.updateHelpfulness(helpfulnessDifference);
+            review.disableHelpfulnessButtons();
 
             Toast.makeText(LavatoryDetailActivity.this, R.string.
                 activity_lavatory_detail_review_helpfulness_submission_success,
