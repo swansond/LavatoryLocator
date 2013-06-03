@@ -476,6 +476,15 @@ public class EditLavatoryDetailActivity extends
             Log.d(TAG, "setUpMapIfNeeded: Map setup was not needed");
         }
     }
+    
+    /**
+     * Sets the user id.
+     * 
+     * @param uid the user id to set
+     */
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     /**
      * Show a dialog returned by Google Play services for the provided

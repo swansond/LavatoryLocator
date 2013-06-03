@@ -205,6 +205,15 @@ public class AddReviewActivity extends
         final Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+    
+    /**
+     * Sets the user id.
+     * 
+     * @param uid the user id to set
+     */
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     // ------------------------------------------------------------------
     // PRIVATE INNER CLASSES

@@ -304,6 +304,15 @@ public class LavatoryDetailActivity extends
                 new UpdateHelpfulnessRequestListener(reviewListItemView,
                         helpfulness));
     }
+    
+    /**
+     * Sets the user id.
+     * 
+     * @param uid the user id to set
+     */
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     /**
      * Mark a review as being not helpful.

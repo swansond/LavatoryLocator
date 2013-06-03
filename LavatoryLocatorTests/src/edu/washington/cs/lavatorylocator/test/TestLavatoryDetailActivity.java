@@ -97,6 +97,30 @@ public class TestLavatoryDetailActivity extends
                         + "an incomplete review",
                         AddReviewActivity.class);
     }
+    
+    /**
+     * Tests adding a review.
+     */
+    public void test_addReview() {
+        // work around bug:
+        // http://code.google.com/p/robotium/issues/detail?id=179
+        solo = new Solo(getInstrumentation());
+        
+        solo.clickOnActionBarItem(R.id.action_add_review);
+        TestUtils.dismissGooglePlayServicesErrorDialog(solo);
+        
+        solo.waitForActivity(AddReviewActivity.class);
+        ((AddReviewActivity) solo.getCurrentActivity()).setUid("1");
+
+        final EditText reviewTextField = (EditText) solo
+                .getView(R.id.add_review_text);
+        solo.enterText(reviewTextField, "Wow");
+        solo.clickOnActionBarItem(R.id.action_search);
+
+        solo.assertCurrentActivity(
+                "Should be still on AddReviewActivity",
+                        AddReviewActivity.class);
+    }
 
     /**
      * Tests to see if clicking the button to go to 
@@ -120,6 +144,24 @@ public class TestLavatoryDetailActivity extends
                 EditLavatoryDetailActivity.class);
     }
     
+    /**
+     * Tests to see if submitting a change request with no modified details
+     * keeps you on {@link EditLavatoryDetailActivity} because the emulator
+     * can't log in. This test uses a non-null user id.
+     */
+    public void test_editLavatoryDetail_submit() {
+        // work around bug:
+        // http://code.google.com/p/robotium/issues/detail?id=179
+        solo = new Solo(getInstrumentation());
+        
+        solo.clickOnActionBarItem(R.id.action_edit_lavatory_detail);
+        solo.waitForActivity(EditLavatoryDetailActivity.class);
+        ((EditLavatoryDetailActivity) solo.getCurrentActivity()).setUid("1");
+        
+        solo.clickOnActionBarItem(R.id.action_submit);
+        solo.assertCurrentActivity("Not still on EditLavatoryDetail activity",
+                EditLavatoryDetailActivity.class);
+    }
     
      /**
       * Tests to see if the top left back button sends you back to
@@ -137,6 +179,23 @@ public class TestLavatoryDetailActivity extends
      * {@link LavatoryDetailActivity}.
      */
     public void test_requestDeletion_menuItem() {
+        solo.clickOnActionBarItem(R.id.action_request_delete_lavatory);
+        solo.assertCurrentActivity("Not still on LavatoryDetail activity",
+                LavatoryDetailActivity.class);
+    }
+    
+    /**
+     * Tests to see if requesting deletion leaves you on
+     * {@link LavatoryDetailActivity}, but with a valid user id.
+     */
+    public void test_requestDeletion_menuItem_validUid() {
+        // work around bug:
+        // http://code.google.com/p/robotium/issues/detail?id=179
+        solo = new Solo(getInstrumentation());
+        
+        solo.waitForActivity(LavatoryDetailActivity.class);
+        ((LavatoryDetailActivity) solo.getCurrentActivity()).setUid("1");
+        
         solo.clickOnActionBarItem(R.id.action_request_delete_lavatory);
         solo.assertCurrentActivity("Not still on LavatoryDetail activity",
                 LavatoryDetailActivity.class);

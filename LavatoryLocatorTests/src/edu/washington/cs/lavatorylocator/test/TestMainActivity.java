@@ -4,6 +4,7 @@ import com.jayway.android.robotium.solo.Solo;
 
 import edu.washington.cs.lavatorylocator.R;
 import edu.washington.cs.lavatorylocator.activity.AboutActivity;
+import edu.washington.cs.lavatorylocator.activity.EditLavatoryDetailActivity;
 import edu.washington.cs.lavatorylocator.activity.LavatoryDetailActivity;
 import edu.washington.cs.lavatorylocator.activity.MainActivity;
 import edu.washington.cs.lavatorylocator.activity.SearchActivity;
@@ -96,6 +97,18 @@ public class TestMainActivity extends
         solo.assertCurrentActivity(
                 "Not on SearchActivity after clicking on search button",
                 SearchActivity.class, true);
+    }
+    
+    /**
+     * Tests to see if clicking on the Add Lavatory action bar item goes to the
+     * {@link EditLavatoryDetailActivity}.
+     */
+    public void test_addLavatory_goToEditLavatoryActivity() {
+        solo.clickOnActionBarItem(R.id.action_add_lavatory);
+        
+        solo.assertCurrentActivity(
+                "Not on EditLavatoryDetailActivity",
+                EditLavatoryDetailActivity.class, true);
     }
 
 }
