@@ -94,8 +94,7 @@ public class TestLavatoryData extends TestCase {
     public void test_getName_usualCase_expectedValue() {
         ld = new LavatoryData(lid, type, building, floor, room,
                     latitude, longitude, reviews, avgRating);
-        final String name = "Room " + room + ", " + type + ", Floor " + floor
-                + ", " + building;
+        final String name = "Room " + room;
         assertEquals(name, ld.getName());
     }
 

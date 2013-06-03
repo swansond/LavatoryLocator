@@ -20,6 +20,7 @@ public class LavatorySearchResultsListItemView extends RelativeLayout {
     private RatingBar averageRatingBar;
     private TextView reviewCountTextView;
     private TextView floorTextView;
+    private TextView buildingTextView;
 
     /**
      * Constructs a new {@link LavatorySearchResultsListItemView} with the given
@@ -44,6 +45,10 @@ public class LavatorySearchResultsListItemView extends RelativeLayout {
         final float avgRating = (float) lavatoryData.getAvgRating();
         final int reviewCount = lavatoryData.getReviews();
         final String floor = lavatoryData.getFloor();
+        final String building = lavatoryData.getBuilding();
+        
+        final String floorTextPrefix = getContext().getString(R.string.
+                floor_prefix);
 
         lavatoryNameTextView.setText(name);
         averageRatingBar.setRating(avgRating);
@@ -52,7 +57,8 @@ public class LavatorySearchResultsListItemView extends RelativeLayout {
         // a resource id (which is an int)
         reviewCountTextView.setText(Integer.toString(reviewCount));
 
-        floorTextView.setText(floor);
+        floorTextView.setText(floorTextPrefix + floor);
+        buildingTextView.setText(building);
     }
 
     /**
@@ -73,5 +79,7 @@ public class LavatorySearchResultsListItemView extends RelativeLayout {
                 R.id.search_result_item_review_count));
         floorTextView = ((TextView) findViewById(
                 R.id.search_result_item_floor));
+        buildingTextView = ((TextView) findViewById(
+                R.id.search_result_item_building));
     }
 }
