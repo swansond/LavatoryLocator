@@ -1,5 +1,8 @@
 package edu.washington.cs.lavatorylocator.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.jayway.android.robotium.solo.Solo;
 
 import android.test.ActivityInstrumentationTestCase2;
@@ -9,7 +12,10 @@ import edu.washington.cs.lavatorylocator.activity.AddReviewActivity;
 import edu.washington.cs.lavatorylocator.activity.EditLavatoryDetailActivity;
 import edu.washington.cs.lavatorylocator.activity.LavatoryDetailActivity;
 import edu.washington.cs.lavatorylocator.activity.MainActivity;
+import edu.washington.cs.lavatorylocator.adapter.ReviewsListAdapter;
+import edu.washington.cs.lavatorylocator.model.ReviewData;
 import edu.washington.cs.lavatorylocator.test.utils.TestUtils;
+import edu.washington.cs.lavatorylocator.view.ReviewListItemView;
 
 /**
  * UI-related tests for {@link LavatoryDetailActivity}.
@@ -21,7 +27,8 @@ public class TestLavatoryDetailActivity extends
         ActivityInstrumentationTestCase2<MainActivity> {
 
     private static final int WAIT_TIME_MILLISECONDS = 5000;
-    
+    private static final float TEST_FLOAT = 4f;
+    private static final int TEST_INT = 0;
     private Solo solo;
 
     // --------------------------------------------------------------
@@ -133,5 +140,73 @@ public class TestLavatoryDetailActivity extends
         solo.clickOnActionBarItem(R.id.action_request_delete_lavatory);
         solo.assertCurrentActivity("Not still on LavatoryDetail activity",
                 LavatoryDetailActivity.class);
+    }
+    
+    /**
+     * Tests the ReviewListItemView constructor.
+     * This just needs to be in any test class with an activity, really.
+     * @black
+     */
+    public void test_ReviewListItemView_constructor_notNull() {
+        final ReviewListItemView rliv = new ReviewListItemView(getActivity());
+        assertNotNull(rliv);
+    }
+    
+    /**
+     * Tests updateView() in ReviewListItemView.
+     * @white
+     */
+    public void test_ReviewListItemView_updateView_notNull() {
+        final ReviewListItemView rliv = new ReviewListItemView(getActivity());
+        final ReviewData testReview = new ReviewData();
+        testReview.setUsername("test");
+        testReview.setRating(TEST_FLOAT);
+        testReview.setReview("this is a test");
+        testReview.setRid(-1);
+        testReview.setDatetime("today");
+        testReview.setHelpfulness(1);
+        testReview.setUservote(1);
+        rliv.updateView(testReview);
+        assertNotNull(rliv);
+    }
+    
+    /**
+     * Tests ReviewsListAdapter constructor.
+     * @black
+     */
+    public void test_ReviewsListAdapter_constructor_notNull() {
+        final ReviewData testReview = new ReviewData();
+        testReview.setUsername("test");
+        testReview.setRating(TEST_FLOAT);
+        testReview.setReview("this is a test");
+        testReview.setRid(-1);
+        testReview.setDatetime("today");
+        testReview.setHelpfulness(1);
+        testReview.setUservote(1);
+        final List<ReviewData> reviewList = new ArrayList<ReviewData>();
+        reviewList.add(testReview);
+        final ReviewsListAdapter rla = new ReviewsListAdapter(getActivity(),
+                TEST_INT, TEST_INT, reviewList);
+        assertNotNull(rla);
+    }
+    
+    /**
+     * Tests getView() in ReviewsListAdapter.
+     * @black
+     */
+    public void test_ReviewsListAdapter_getView_notNull() {
+        final ReviewData testReview = new ReviewData();
+        testReview.setUsername("test");
+        testReview.setRating(TEST_FLOAT);
+        testReview.setReview("this is a test");
+        testReview.setRid(-1);
+        testReview.setDatetime("today");
+        testReview.setHelpfulness(1);
+        testReview.setUservote(1);
+        final List<ReviewData> reviewList = new ArrayList<ReviewData>();
+        reviewList.add(testReview);
+        final ReviewsListAdapter rla = new ReviewsListAdapter(getActivity(),
+                TEST_INT, TEST_INT, reviewList);
+        assertNotNull(rla.getView(TEST_INT, null, null));
     }
 }
