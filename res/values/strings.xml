@@ -33,7 +33,7 @@
 
     <!-- EditLavatoryDetailActivity -->
     <string name="activity_edit_lavatory_detail_fields_not_filled">Uh-oh! You need to fill in everything before you submit!</string>
-    <string name="activity_edit_lavatory_detail_submission_success">Thanks for your feedback! We’ll review your suggestions about changing this lavatory’s info.</string>
+    <string name="activity_edit_lavatory_detail_submission_success">Thanks for your feedback! We’ll review your suggestions about this lavatory.</string>
     <string name="activity_edit_lavatory_detail_submission_error">Whoops! We’re having some issues sending this, but you can try again!</string>
 
     <!-- LavatoryDetailActivity -->
