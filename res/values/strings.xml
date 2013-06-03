@@ -2,44 +2,80 @@
 <resources>
 
     <string name="app_name">LavatoryLocator</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_lavatory_detail">Lavatory Detail</string>
+
+    <!-- Activity Titles -->
+    <string name="title_activity_about">About</string>
+    <string name="title_activity_add_review">Add a Review</string>
+    <string name="title_activity_add_lavatory">Add a Lavatory</string>
+    <string name="title_add_lavatory">Add Lavatory</string>
+    <string name="title_edit_lavatory_detail">Edit Lavatory Details</string>
+    <string name="title_activity_lavatory_detail">Lavatory Details</string>
+    <string name="title_activity_search">Search</string>
+
+    <!-- Action Bar Items -->
     <string name="action_search">Search</string>
     <string name="action_got2go">Got2Go</string>
-    <string name="title_activity_add_review">Add Review</string>
-    <string name="action_edit_lavatory_detail">Edit Lavatory Detail</string>
-    <string name="location">Location</string>
-    <string name="reviews">Reviews</string>
-    <string name="you">You</string>
-    <string name="review_text">Review Text</string>
-    <string name="title_activity_add_lavatory">Add Lavatory</string>
-    <string name="title_activity_list_view">ListViewActivity</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="building_name">Building Name</string>
+    <string name="action_about">About</string>
+    <string name="action_edit_lavatory_detail">Edit Lavatory Details</string>
+    <string name="action_request_delete_lavatory">Request Deletion</string>
+    <string name="action_submit">Submit</string>
+    <string name="action_sign_out">Sign Out</string>
+
+    <!-- AboutActivity -->
+    <string name="activity_about_from_huskysoft">From HuskySoft</string>
+    <string name="activity_about_legal_notices">Legal Notices</string>
+
+    <!-- AddReviewActivity -->
+    <string name="activity_add_review_you">You</string>
+    <string name="activity_add_review_your_review_here">Your review here</string>
+    <string name="activity_add_review_submission_success">Review submitted!</string>
+    <string name="activity_add_review_submission_error">Whoops! We’re having some issues submitting your review, but you can try again!</string>
+
+    <!-- EditLavatoryDetailActivity -->
+    <string name="activity_edit_lavatory_detail_fields_not_filled">Uh-oh! You need to fill in everything before you submit!</string>
+    <string name="activity_edit_lavatory_detail_submission_success">Thanks for your feedback! We’ll review your suggestions about this lavatory.</string>
+    <string name="activity_edit_lavatory_detail_submission_error">Whoops! We’re having some issues sending this, but you can try again!</string>
+
+    <!-- LavatoryDetailActivity -->
+    <string name="activity_lavatory_detail_reviews">Reviews</string>
+    <string name="activity_lavatory_detail_helpfulness_suffix">&#160;people found this helpful</string>
+    <string name="activity_lavatory_detail_get_reviews_error">Whoops! We’re having some issues getting the reviews for this lavatory, but you can try again later!</string>
+    <string name="activity_lavatory_detail_helpful_prompt">Was this review helpful?</string>
+    <string name="activity_lavatory_detail_was_helpful">Yes</string>
+    <string name="activity_lavatory_detail_was_not_helpful">No</string>
+    <string name="activity_lavatory_detail_review_helpfulness_submission_success">Thanks! Your feedback helps the LavatoryLocator community.</string>
+    <string name="activity_lavatory_detail_review_helpfulness_submission_error">Whoops! We’re having some issues marking this review, but you can try again!</string>
+    <string name="activity_lavatory_detail_delete_lavatory_success">Thanks for your feedback! We’ll review your deletion request shortly.</string>
+    <string name="activity_lavatory_detail_delete_lavatory_error">Whoops! We’re having some issues submitting your request to delete this lavatory, but you can try again!</string>
+    
+    <!-- MainActivity -->
+    <string name="activity_main_no_lavatories_found">No lavatories were found! Try a broader search.</string>
+    <string name="activity_main_search_error">Whoops! We’re having some issues finding your perfect lavatory. Try again!</string>
+    <string name="activity_main_got2go_error">Whoops! Can’t use Got2Go without location data! Better hold on!</string>
+
+    <!-- SearchActivity -->
+    <string name="activity_search_required_paramters_error">Whoops! You need to enter some search parameters!</string>
+    
+    <!-- Google+ Sign in -->
+    <string name="google_sign_in_progress_message">Signing in to Google…</string>
+    <string name="google_sign_in_required">Uh-oh! You can’t use LavatoryLocator without signing in!</string>
+
+    <!-- Location related -->
+    <string name="location_unavailable">Looks like we can’t find your location :-(. Try again later.</string>
+    
+    <!-- Miscellaneous -->
+    <string name="building">Building</string>
     <string name="floor">Floor</string>
+    <string name="room">Room</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
-    <string name="couldnt_connect">&quot;Couldn't connect to server&quot;</string>
-    <string name="retry">Retry</string>
-    <string name="dismiss">Dismiss</string>
     <string name="max_distance">Max Distance</string>
     <string name="min_rating">Min rating</string>
-    <string name="title_activity_about">About</string>
-    <string name="from_huskysoft">From HuskySoft</string>
-    <string name="legal_notices">Legal Notices</string>
-    <string name="about">About</string>
-
-    <!-- Latitude, longitude format -->
-    <string name="latitude_longitude">%1$.8f, %2$.8f</string>
-    <string name="title_activity_search">Lavatory Search</string>
-    <string name="submit">Submit</string>
-    <string name="room">Room</string>
-    <string name="title_add_lavatory">Add Lavatory</string>
-    <string name="title_edit_lavatory_detail">Edit Lavatory Detail</string>
-    <string name="helpful_prompt">Was this review helpful?</string>
-    <string name="was_helpful">Yes</string>
-    <string name="was_not_helpful">No</string>
+    <string name="floor_prefix">Floor&#160;</string>
     
+    <!-- Format Strings -->
+    <string name="latitude_longitude_format">%1$.8f, %2$.8f</string>
+    <string name="action_discard">Discard</string>
 </resources>

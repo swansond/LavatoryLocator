@@ -14,5 +14,18 @@
         android:showAsAction="never"
         android:title="@string/action_edit_lavatory_detail">
     </item>
+    <item
+        android:id="@+id/action_request_delete_lavatory"
+        android:icon="@drawable/ic_action_remove"
+        android:onClick="requestDeletion"
+        android:showAsAction="never"
+        android:title="@string/action_request_delete_lavatory">
+    </item>
+    <item
+        android:id="@+id/action_sign_out"
+        android:onClick="signOut"
+        android:title="@string/action_sign_out"
+        android:showAsAction="never">
+    </item>
 
 </menu>

@@ -21,7 +21,7 @@ public class TestGetReviewsRequest extends TestCase {
         uid = 0;
         lid = 0;
         glr = new GetLavatoryReviewsRequest(
-                "" + uid, "" + lid, "0", "head", "ascending");
+                "" + uid, "" + lid, 0, "head", "ascending");
         assertNotNull(glr);
     }
 }

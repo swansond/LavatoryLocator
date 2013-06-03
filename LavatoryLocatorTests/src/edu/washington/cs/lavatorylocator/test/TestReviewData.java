@@ -30,22 +30,36 @@ public class TestReviewData extends TestCase {
     public void test_getAuthor_idIs403_getsUser403() {
         final ReviewData uidTestReviewData = new ReviewData();
         final String expectedTestUid = "User 403";
-        uidTestReviewData.setUid(FOUROHTHREE);
+        uidTestReviewData.setUsername("User " + Integer.toString(FOUROHTHREE));
         assertEquals(expectedTestUid, uidTestReviewData.getAuthor());
     }
 
     /**
      * Tests the getDatetime method.
-     * @black
+     * @white
      */
-    public void test_getDatetime_datetimeIsToday_getsToday() {
+    public void test_getDatetime_datetimeParses() {
         final ReviewData datetimeTestReviewData = new ReviewData();
-        final String expectedTestDatetime = "Today";
-        datetimeTestReviewData.setDatetime("Today");
-        assertEquals(expectedTestDatetime,
+        final String expectedOutput = "3/30/1990 7:56 AM";
+        final String input = "1990-03-30 15:56:12.123456";
+        datetimeTestReviewData.setDatetime(input);
+        assertEquals(expectedOutput,
                 datetimeTestReviewData.getDatetime());
     }
 
+    /**
+     * Tests the error capabilities of the getDatetime method.
+     * @white
+     */
+    public void test_getDatetime_error() {
+        final ReviewData datetimeTestReviewData = new ReviewData();
+        final String expectedOutput = "Date Unavailable";
+        final String input = "today was a good day";
+        datetimeTestReviewData.setDatetime(input);
+        assertEquals(expectedOutput,
+                datetimeTestReviewData.getDatetime());
+    }
+    
     /**
      * Tests the getHelpfulness method.
      * @black

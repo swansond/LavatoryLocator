@@ -15,7 +15,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.octo.android.robospice.request.
-    springandroid.SpringAndroidSpiceRequest;
+        springandroid.SpringAndroidSpiceRequest;
 
 /**
  * Class for updating a review's helpfulness in the LavatoryLocator service.
@@ -23,16 +23,19 @@ import com.octo.android.robospice.request.
  * @author Keith Miller
  *
  */
+@SuppressWarnings("rawtypes")
 public class UpdateHelpfulnessRequest extends
         SpringAndroidSpiceRequest<ResponseEntity> {
     
     private static final String MARK_HELPFUL_SERVICE_URL = 
             "http://lavlocdb.herokuapp.com/submithelpful.php";
     private static final String USER_ID_KEY = "uid";
+    private static final String USER_NAME_SERVER_KEY = "username";
     private static final String REVIEW_ID_KEY = "reviewId";
     private static final String HELPFULNESS_KEY = "helpful";
     
-    private int uid;
+    private String uid;
+    private String username;
     private int reviewId;
     private int helpful;
 
@@ -41,6 +44,8 @@ public class UpdateHelpfulnessRequest extends
      * Constructs a new {@link UpdateHelpfulnessRequest} with the given
      * parameters.
      * 
+     * @param username
+     *            the username of hte user submitting the request
      * @param uid
      *            the user ID of the user submitting the request
      * @param reviewId
@@ -48,25 +53,29 @@ public class UpdateHelpfulnessRequest extends
      * @param helpful
      *            the helpfulness value to update
      */
-    public UpdateHelpfulnessRequest(int uid, int reviewId, int helpful) {
+    public UpdateHelpfulnessRequest(String username, String uid, 
+            int reviewId, int helpful) {
         super(ResponseEntity.class);
         
         this.uid = uid;
         this.reviewId = reviewId;
         this.helpful = helpful;
+        this.username = username;
     }
     
     @Override
     public ResponseEntity loadDataFromNetwork() throws Exception {
         final MultiValueMap<String, String> parameters = 
                 new LinkedMultiValueMap<String, String>();
-        parameters.add(USER_ID_KEY, Integer.toString(uid));
+        parameters.add(USER_ID_KEY, uid);
         parameters.add(REVIEW_ID_KEY, Integer.toString(reviewId));
         parameters.add(HELPFULNESS_KEY, Integer.toString(helpful));
+        parameters.add(USER_NAME_SERVER_KEY, username);
 
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
+        
+        // set the message converters for the request
         final HttpMessageConverter<String> stringConverter = 
                 new StringHttpMessageConverter();
         final FormHttpMessageConverter formConverter = 
