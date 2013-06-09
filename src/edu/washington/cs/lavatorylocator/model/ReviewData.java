@@ -12,7 +12,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
  * review. This includes its database ID number, the database ID number of the
  * user who wrote it, the database ID number of the bathroom it is a review of,
  * the rating it gives, and the review itself. that bathroom.
- *
+ * 
  * @author Wil Sunseri
  * @author Chris Rovillos
  * @author David Swanson
@@ -31,11 +31,12 @@ public class ReviewData {
     private String review;
     private float rating;
     private int helpfulness;
+    private int totalVotes;
     private int uservote;
     private int reviewId;
 
-    
     private static final int DATE_TIME_OFFSET = 3;
+
     // -----------------------------------------------------------
     // CONSTRUCTORS AND CREATORS
     // -----------------------------------------------------------
@@ -50,7 +51,7 @@ public class ReviewData {
     // -----------------------------------------------------------
     /**
      * Returns this review's author.
-     *
+     * 
      * @return this review's author
      */
     public String getAuthor() {
@@ -59,7 +60,7 @@ public class ReviewData {
 
     /**
      * Returns this review's date and time.
-     *
+     * 
      * @return this review's date and time, as represented in a String
      */
     public String getDatetime() {
@@ -68,7 +69,7 @@ public class ReviewData {
 
     /**
      * Returns this review's helpfulness.
-     *
+     * 
      * @return this review's helpfulness
      */
     public int getHelpfulness() {
@@ -76,9 +77,18 @@ public class ReviewData {
     }
 
     /**
+     * Returns this review's total number of helpfulness votes.
+     * 
+     * @return this reviews vote count
+     */
+    public int getTotalVotes() {
+        return totalVotes;
+    }
+
+    /**
      * Returns this review's lavatory ID, as stored in the LavatoryLocator
      * service.
-     *
+     * 
      * @return this review's lavatory ID, as stored in the LavatoryLocator
      *         service
      */
@@ -88,7 +98,7 @@ public class ReviewData {
 
     /**
      * Returns this review's rating.
-     *
+     * 
      * @return this review's rating
      */
     public float getRating() {
@@ -97,7 +107,7 @@ public class ReviewData {
 
     /**
      * Returns this review's text.
-     *
+     * 
      * @return this review's text
      */
     public String getReview() {
@@ -106,7 +116,7 @@ public class ReviewData {
 
     /**
      * Returns this review's uservote.
-     *
+     * 
      * @return this review's uservote
      */
     public int getUservote() {
@@ -115,7 +125,7 @@ public class ReviewData {
 
     /**
      * Returns this review's ID number.
-     *
+     * 
      * @return this review's ID number.
      */
     public int getRid() {
@@ -127,7 +137,7 @@ public class ReviewData {
     // --------------------------------------------------------------
     /**
      * Sets this review's date and time.
-     *
+     * 
      * @param datetime
      *            this review's date and time, as represented in a String
      */
@@ -136,11 +146,11 @@ public class ReviewData {
         // J seems to be fractions of a second
         // Out format: MM/DD/YYYY HH:MMXM without 0 padding
         try {
-            SimpleDateFormat format = 
-                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+            SimpleDateFormat format = new SimpleDateFormat(
+                    "yyyy-MM-dd HH:mm:ss.SSS");
             format.setTimeZone(TimeZone.getTimeZone("UTC"));
-            final Date time = format.parse(datetime.substring(
-                    0, datetime.length() - DATE_TIME_OFFSET));
+            final Date time = format.parse(datetime.substring(0,
+                    datetime.length() - DATE_TIME_OFFSET));
             format = new SimpleDateFormat("M/d/yyyy h:mm a");
             format.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
             this.datetime = format.format(time);
@@ -151,7 +161,7 @@ public class ReviewData {
 
     /**
      * Sets this review's helpfulness.
-     *
+     * 
      * @param helpfulness
      *            this review's helpfulness
      */
@@ -160,8 +170,18 @@ public class ReviewData {
     }
 
     /**
+     * Sets this review's totalVotes.
+     * 
+     * @param totalVotes
+     *            this review's total vote count
+     */
+    public void setTotalVotes(int totalVotes) {
+        this.totalVotes = totalVotes;
+    }
+
+    /**
      * Sets this review's lavatory ID, as stored in the LavatoryLocator service.
-     *
+     * 
      * @param lid
      *            this review's lavatory ID, as stored in the LavatoryLocator
      *            service
@@ -172,7 +192,7 @@ public class ReviewData {
 
     /**
      * Sets this review's rating.
-     *
+     * 
      * @param rating
      *            this review's rating
      */
@@ -182,7 +202,7 @@ public class ReviewData {
 
     /**
      * Sets this review's text.
-     *
+     * 
      * @param review
      *            this review's text
      */
@@ -192,7 +212,7 @@ public class ReviewData {
 
     /**
      * Sets this review's author ID, as stored in the LavatoryLocator service.
-     *
+     * 
      * @param uid
      *            this review's author ID, as stored in the LavatoryLocator
      *            service
@@ -200,21 +220,22 @@ public class ReviewData {
     public void setUid(String uid) {
         this.uid = uid;
     }
-    
+
     /**
-     * Sets this review's author displayed name, as stored in the 
-     *      LavatoryLocator service.
-     *
+     * Sets this review's author displayed name, as stored in the
+     * LavatoryLocator service.
+     * 
      * @param username
-     *            this review's author displayed name, as stored in the 
+     *            this review's author displayed name, as stored in the
      *            LavatoryLocator service
      */
     public void setUsername(String username) {
         this.username = username;
     }
+
     /**
      * Sets this review's uservote.
-     *
+     * 
      * @param uservote
      *            this review's uservote
      */
@@ -224,7 +245,7 @@ public class ReviewData {
 
     /**
      * Sets this review's ID number.
-     *
+     * 
      * @param reviewId
      *            this review's ID number, as represented in an int
      */

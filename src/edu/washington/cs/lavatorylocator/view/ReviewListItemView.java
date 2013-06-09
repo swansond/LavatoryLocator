@@ -22,8 +22,9 @@ public class ReviewListItemView extends RelativeLayout {
     private Button markNotHelpfulButton;
     private TextView reviewDateTextView;
     private TextView helpfulnessTextView;
-    
+
     private int helpfulness;
+    private int totalVotes;
 
     /**
      * Constructs a new {@link LavatorySearchResultsListItemView} with the given
@@ -49,17 +50,14 @@ public class ReviewListItemView extends RelativeLayout {
         final int reviewId = review.getRid();
         final String datetime = review.getDatetime();
         helpfulness = review.getHelpfulness();
-        
-        final String helpfulnessTextSuffix = getContext().getString(R.string.
-                activity_lavatory_detail_helpfulness_suffix);
-        final String helpfulnessString = helpfulness + helpfulnessTextSuffix;
+        totalVotes = review.getTotalVotes();
 
+        displayHelpfulness();
         reviewAuthorTextView.setText(reviewAuthor);
         ratingBar.setRating(rating);
         reviewTextView.setText(reviewText);
         reviewDateTextView.setText(datetime);
-        helpfulnessTextView.setText(helpfulnessString);
-        
+
         // Set up the call-backs for the helpfulness buttons
         markHelpfulButton.setTag(new Integer(reviewId));
         markHelpfulButton.setId(reviewId);
@@ -98,7 +96,7 @@ public class ReviewListItemView extends RelativeLayout {
         markHelpfulButton.setEnabled(false);
         markNotHelpfulButton.setEnabled(false);
     }
-    
+
     /**
      * Updates the helpfulness of the {@link ReviewData} represented by this
      * view.
@@ -107,11 +105,19 @@ public class ReviewListItemView extends RelativeLayout {
      *              the review helpfulness difference
      */
     public void updateHelpfulness(int helpfulnessDifference) {
-        helpfulness += helpfulnessDifference;
-        
+        if (helpfulnessDifference == 1) {
+            helpfulness++;
+        }
+        totalVotes++;
+
+        displayHelpfulness();
+    }
+
+    private void displayHelpfulness() {
         final String helpfulnessTextSuffix = getContext().getString(R.string.
                 activity_lavatory_detail_helpfulness_suffix);
-        final String helpfulnessString = helpfulness + helpfulnessTextSuffix;
+        final String helpfulnessString = helpfulness + "/" + totalVotes + 
+                helpfulnessTextSuffix;
         helpfulnessTextView.setText(helpfulnessString);
     }
 }
