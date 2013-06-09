@@ -378,7 +378,7 @@ public class LavatoryDetailActivity extends
         final String firstName = user.getName().getGivenName();
         final String lastName = user.getName().getFamilyName();
         // only use initial of last name
-        username = firstName + lastName.charAt(0);
+        username = firstName + " " + lastName.charAt(0);
         loadReviews(uid, Integer.toString(lavatory.getLid()),
                 REVIEW_PAGE_NUMBER,
                 "date", "descending");
