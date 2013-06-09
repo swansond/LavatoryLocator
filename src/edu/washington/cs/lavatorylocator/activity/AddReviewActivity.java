@@ -189,7 +189,7 @@ public class AddReviewActivity extends
         String firstName = user.getName().getGivenName();
         String lastName = user.getName().getFamilyName();
         // only use initial of last name
-        username = firstName + lastName.charAt(0);
+        username = firstName + " " + lastName.charAt(0);
     }
     
     /**
