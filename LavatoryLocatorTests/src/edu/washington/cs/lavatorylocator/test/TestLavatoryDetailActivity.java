@@ -222,7 +222,7 @@ public class TestLavatoryDetailActivity extends
         testReview.setRating(TEST_FLOAT);
         testReview.setReview("this is a test");
         testReview.setRid(-1);
-        testReview.setDatetime("today");
+        testReview.setDatetime(getActivity(), "today");
         testReview.setHelpfulness(1);
         testReview.setUservote(1);
         rliv.updateView(testReview);
@@ -239,7 +239,7 @@ public class TestLavatoryDetailActivity extends
         testReview.setRating(TEST_FLOAT);
         testReview.setReview("this is a test");
         testReview.setRid(-1);
-        testReview.setDatetime("today");
+        testReview.setDatetime(getActivity(), "today");
         testReview.setHelpfulness(1);
         testReview.setUservote(1);
         final List<ReviewData> reviewList = new ArrayList<ReviewData>();
@@ -259,7 +259,7 @@ public class TestLavatoryDetailActivity extends
         testReview.setRating(TEST_FLOAT);
         testReview.setReview("this is a test");
         testReview.setRid(-1);
-        testReview.setDatetime("today");
+        testReview.setDatetime(getActivity(), "today");
         testReview.setHelpfulness(1);
         testReview.setUservote(1);
         final List<ReviewData> reviewList = new ArrayList<ReviewData>();

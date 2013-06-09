@@ -1,7 +1,8 @@
 package edu.washington.cs.lavatorylocator.test;
 
+import android.test.AndroidTestCase;
+import edu.washington.cs.lavatorylocator.R;
 import edu.washington.cs.lavatorylocator.model.ReviewData;
-import junit.framework.TestCase;
 
 /**
  * TestReviewData class contains tests for the ReviewData class.
@@ -9,7 +10,7 @@ import junit.framework.TestCase;
  * @author Wil
  *
  */
-public class TestReviewData extends TestCase {
+public class TestReviewData extends AndroidTestCase {
 
     private static final int FOUROHTHREE = 403;
     private static final float FOURPOINTOHTHREE = 4.03f;
@@ -42,9 +43,9 @@ public class TestReviewData extends TestCase {
         final ReviewData datetimeTestReviewData = new ReviewData();
         final String expectedOutput = "3/30/1990 7:56 AM";
         final String input = "1990-03-30 15:56:12.123456";
-        datetimeTestReviewData.setDatetime(input);
+        datetimeTestReviewData.setDatetime(getContext(), input);
         assertEquals(expectedOutput,
-                datetimeTestReviewData.getDatetime());
+                datetimeTestReviewData.getDatetime(getContext()));
     }
 
     /**
@@ -53,11 +54,12 @@ public class TestReviewData extends TestCase {
      */
     public void test_getDatetime_error() {
         final ReviewData datetimeTestReviewData = new ReviewData();
-        final String expectedOutput = "Date Unavailable";
+        final String expectedOutput = getContext().getString(
+                R.string.date_unavailable);
         final String input = "today was a good day";
-        datetimeTestReviewData.setDatetime(input);
+        datetimeTestReviewData.setDatetime(getContext(), input);
         assertEquals(expectedOutput,
-                datetimeTestReviewData.getDatetime());
+                datetimeTestReviewData.getDatetime(getContext()));
     }
     
     /**

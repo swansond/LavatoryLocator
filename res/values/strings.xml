@@ -78,4 +78,7 @@
     <!-- Format Strings -->
     <string name="latitude_longitude_format">%1$.8f, %2$.8f</string>
     <string name="action_discard">Discard</string>
+    <string name="date_input">yyyy-MM-dd HH:mm:ss</string>
+    <string name="date_output">M/d/yyyy h:mm a</string>
+    <string name="date_unavailable">Date Unavailable</string>
 </resources>
