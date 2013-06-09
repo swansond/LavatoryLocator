@@ -11,13 +11,21 @@ import junit.framework.TestCase;
  *
  */
 public class TestUpdateHelpfulnessRequest extends TestCase {
+    
+    private static final String USERNAME = "-1";
+    private static final String UID = "-1";
+    private static final int REVIEW_ID = 1;
+    private static final int HELPFUL = -1;
+    
+    
     /**
      * Tests the constructor.
      * @black
      */
     public void test_constructor_usualCase_newRequest() {
-        final UpdateHelpfulnessRequest dlr = new UpdateHelpfulnessRequest("-1",
-                "-1", -1, -1);
+        final UpdateHelpfulnessRequest dlr = 
+                new UpdateHelpfulnessRequest(USERNAME, UID, REVIEW_ID, 
+                                             HELPFUL);
         assertNotNull(dlr);
     }
 }

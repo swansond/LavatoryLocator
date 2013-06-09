@@ -11,8 +11,11 @@ import junit.framework.TestCase;
  */
 public class TestReviewData extends TestCase {
 
-    private static final int FOUROHTHREE = 403;
-    private static final float FOURPOINTOHTHREE = 4.03f;
+    private static final int USERNUM = 403;
+    private static final float RATING = 4.03f;
+    private static final int LID = 403;
+    private static final int HELPFULNESS = 403;
+    private static final int USERVOTE = 403;
 
     /**
      * Tests the constructor.
@@ -30,7 +33,7 @@ public class TestReviewData extends TestCase {
     public void test_getAuthor_idIs403_getsUser403() {
         final ReviewData uidTestReviewData = new ReviewData();
         final String expectedTestUid = "User 403";
-        uidTestReviewData.setUsername("User " + Integer.toString(FOUROHTHREE));
+        uidTestReviewData.setUsername("User " + Integer.toString(USERNUM));
         assertEquals(expectedTestUid, uidTestReviewData.getAuthor());
     }
 
@@ -67,7 +70,7 @@ public class TestReviewData extends TestCase {
     public void test_getHelpfulness_helpfulnessIs403_gets403() {
         final ReviewData helpfulnessTestReviewData = new ReviewData();
         final int expectedTestHelpfulness = 403;
-        helpfulnessTestReviewData.setHelpfulness(FOUROHTHREE);
+        helpfulnessTestReviewData.setHelpfulness(HELPFULNESS);
         assertEquals(expectedTestHelpfulness,
                 helpfulnessTestReviewData.getHelpfulness());
     }
@@ -79,7 +82,7 @@ public class TestReviewData extends TestCase {
     public void test_getLid_lidIs403_gets403() {
         final ReviewData lidTestReviewData = new ReviewData();
         final int expectedTestLid = 403;
-        lidTestReviewData.setLid(FOUROHTHREE);
+        lidTestReviewData.setLid(LID);
         assertEquals(expectedTestLid, lidTestReviewData.getLid());
     }
 
@@ -90,7 +93,7 @@ public class TestReviewData extends TestCase {
     public void test_getRating_ratingIs4point03_gets4point03() {
         final ReviewData ratingTestReviewData = new ReviewData();
         final float expectedTestRating = 4.03f;
-        ratingTestReviewData.setRating(FOURPOINTOHTHREE);
+        ratingTestReviewData.setRating(RATING);
         assertEquals(expectedTestRating,
                 ratingTestReviewData.getRating());
     }
@@ -113,7 +116,7 @@ public class TestReviewData extends TestCase {
     public void test_getUservote_uservoteIs403_gets403() {
         final ReviewData uservoteTestReviewData = new ReviewData();
         final int expectedTestUservote = 403;
-        uservoteTestReviewData.setUservote(FOUROHTHREE);
+        uservoteTestReviewData.setUservote(USERVOTE);
         assertEquals(expectedTestUservote,
                 uservoteTestReviewData.getUservote());
     }
