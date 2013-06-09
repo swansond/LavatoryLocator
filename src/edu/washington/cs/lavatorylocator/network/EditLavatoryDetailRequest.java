@@ -17,6 +17,8 @@ import org.springframework.util.MultiValueMap;
 import com.octo.android.robospice.request.
         springandroid.SpringAndroidSpiceRequest;
 
+import edu.washington.cs.lavatorylocator.model.LavatoryType;
+
 /**
  * Class for editing a lavatory's detail in the LavatoryLocator service.
  * 
@@ -41,7 +43,7 @@ public class EditLavatoryDetailRequest extends
     private String uid;
     private String building;
     private String floor;
-    private char type;
+    private LavatoryType type;
     private double latitude;
     private double longitude;
 
@@ -67,7 +69,7 @@ public class EditLavatoryDetailRequest extends
      *            the lavatory's longitude
      */
     public EditLavatoryDetailRequest(String uid, int lid, String building,
-            String floor, String room, char type, double latitude,
+            String floor, String room, LavatoryType type, double latitude,
             double longitude) {
         super(ResponseEntity.class);
 
@@ -90,7 +92,8 @@ public class EditLavatoryDetailRequest extends
         parameters.add(FLOOR_SERVER_KEY, floor);
         parameters.add(LATITUDE_SERVER_KEY, Double.toString(latitude));
         parameters.add(LONGITUDE_SERVER_KEY, Double.toString(longitude));
-        parameters.add(TYPE_SERVER_KEY, Character.toString(type));
+        parameters.add(TYPE_SERVER_KEY,
+                AddLavatoryRequest.getLavatoryTypeChar(type));
 
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);

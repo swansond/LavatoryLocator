@@ -48,6 +48,7 @@ import edu.washington.cs.lavatorylocator.location.LocationUtils;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 import edu.washington.cs.lavatorylocator.model.LavatoryMapMarkerOptionsFactory;
 import edu.washington.cs.lavatorylocator.model.LavatorySearchResults;
+import edu.washington.cs.lavatorylocator.model.LavatoryType;
 import edu.washington.cs.lavatorylocator.network.Got2goRequest;
 import edu.washington.cs.lavatorylocator.network.LavatorySearchRequest;
 
@@ -214,8 +215,8 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
                         .getStringExtra(SearchActivity.LATITUDE_PARAMETER);
                 final String longitude = data
                         .getStringExtra(SearchActivity.LONGITUDE_PARAMETER);
-                final String type = data
-                        .getStringExtra(SearchActivity.TYPE_PARAMETER);
+                final LavatoryType type = (LavatoryType) data
+                        .getSerializableExtra(SearchActivity.TYPE_PARAMETER);
 
                 searchForLavatories(building, floor, room, minRating, type,
                         latitude, longitude, radius);
@@ -621,7 +622,7 @@ public class MainActivity extends JacksonSpringSpiceSherlockFragmentActivity
      *            search request point
      */
     private void searchForLavatories(String building, String floor,
-            String room, double minRating, String type, String latitude,
+            String room, double minRating, LavatoryType type, String latitude,
             String longitude, String radius) {
         Log.d(TAG, "searchForLavatories called");
 

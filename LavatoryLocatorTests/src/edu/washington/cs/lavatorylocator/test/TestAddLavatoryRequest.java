@@ -1,5 +1,6 @@
 package edu.washington.cs.lavatorylocator.test;
 
+import edu.washington.cs.lavatorylocator.model.LavatoryType;
 import edu.washington.cs.lavatorylocator.network.AddLavatoryRequest;
 import junit.framework.TestCase;
 
@@ -15,7 +16,7 @@ public class TestAddLavatoryRequest extends TestCase {
     private String building;
     private String floor;
     private String room;
-    private char type;
+    private LavatoryType type;
     private double latitude;
     private double longitude;
 
@@ -28,7 +29,7 @@ public class TestAddLavatoryRequest extends TestCase {
         building = "CSE";
         floor = "B";
         room = "B100";
-        type = 'M';
+        type = LavatoryType.MALE;
         latitude = 00.00;
         longitude = 00.00;
         alr = new AddLavatoryRequest(uid, building, floor, room, type,
