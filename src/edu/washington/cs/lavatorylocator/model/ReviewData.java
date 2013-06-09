@@ -8,7 +8,6 @@ import java.util.TimeZone;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import android.content.Context;
-import android.util.Log;
 import edu.washington.cs.lavatorylocator.R;
 
 /**
@@ -25,6 +24,7 @@ import edu.washington.cs.lavatorylocator.R;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReviewData {
 
+    private static final String DATE_INPUT = "yyyy-MM-dd HH:mm:ss";
     // -----------------------------------------------------------
     // INSTANCE VARIABLES
     // -----------------------------------------------------------
@@ -37,7 +37,6 @@ public class ReviewData {
     private int helpfulness;
     private int uservote;
     private int reviewId;
-    private String testString;
 
     // -----------------------------------------------------------
     // CONSTRUCTORS AND CREATORS
@@ -67,8 +66,7 @@ public class ReviewData {
      */
     public String getDatetime(Context c) {
         if (datetime == null) {
-            return testString;
-            // return c.getString(R.string.date_unavailable);
+            return c.getString(R.string.date_unavailable);
         }
         final SimpleDateFormat format = new SimpleDateFormat(c.getString(R.string.date_output));
         format.setTimeZone(TimeZone.getDefault());
@@ -140,13 +138,13 @@ public class ReviewData {
      * @param datetime
      *            this review's date and time, as represented in a String
      */
-    public void setDatetime(Context c, String datetime) {
+    public void setDatetime(String datetime) {
         // In format: YYYY-MM-DD HH:MM:SS:JJJJJJ
         // J seems to be fractions of a second
         // Out format: MM/DD/YYYY HH:MMXM without 0 padding
         try {
             SimpleDateFormat format = 
-                    new SimpleDateFormat(c.getString(R.string.date_input));
+                    new SimpleDateFormat(DATE_INPUT);
             format.setTimeZone(TimeZone.getTimeZone("UTC"));
             final int index = datetime.indexOf('.');
             if (index != -1) {
