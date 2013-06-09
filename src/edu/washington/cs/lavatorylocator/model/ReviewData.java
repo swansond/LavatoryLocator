@@ -7,6 +7,9 @@ import java.util.TimeZone;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+import android.content.Context;
+import edu.washington.cs.lavatorylocator.R;
+
 /**
  * The {@link Review} class is an representation of the data related to any one
  * review. This includes its database ID number, the database ID number of the
@@ -21,21 +24,20 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReviewData {
 
+    private static final String DATE_INPUT = "yyyy-MM-dd HH:mm:ss";
     // -----------------------------------------------------------
     // INSTANCE VARIABLES
     // -----------------------------------------------------------
     private int lid;
     private String uid;
     private String username;
-    private String datetime;
+    private Date datetime;
     private String review;
     private float rating;
     private int helpfulness;
     private int uservote;
     private int reviewId;
 
-    
-    private static final int DATE_TIME_OFFSET = 3;
     // -----------------------------------------------------------
     // CONSTRUCTORS AND CREATORS
     // -----------------------------------------------------------
@@ -62,8 +64,13 @@ public class ReviewData {
      *
      * @return this review's date and time, as represented in a String
      */
-    public String getDatetime() {
-        return datetime;
+    public String getDatetime(Context c) {
+        if (datetime == null) {
+            return c.getString(R.string.date_unavailable);
+        }
+        final SimpleDateFormat format = new SimpleDateFormat(c.getString(R.string.date_output));
+        format.setTimeZone(TimeZone.getDefault());
+        return format.format(datetime);
     }
 
     /**
@@ -137,15 +144,15 @@ public class ReviewData {
         // Out format: MM/DD/YYYY HH:MMXM without 0 padding
         try {
             SimpleDateFormat format = 
-                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+                    new SimpleDateFormat(DATE_INPUT);
             format.setTimeZone(TimeZone.getTimeZone("UTC"));
-            final Date time = format.parse(datetime.substring(
-                    0, datetime.length() - DATE_TIME_OFFSET));
-            format = new SimpleDateFormat("M/d/yyyy h:mm a");
-            format.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
-            this.datetime = format.format(time);
+            final int index = datetime.indexOf('.');
+            if (index != -1) {
+                datetime = datetime.substring(0, index);
+            }
+            this.datetime = format.parse(datetime);
         } catch (ParseException e) {
-            this.datetime = "Date Unavailable";
+            this.datetime = null;
         }
     }
 
@@ -200,7 +207,7 @@ public class ReviewData {
     public void setUid(String uid) {
         this.uid = uid;
     }
-    
+
     /**
      * Sets this review's author displayed name, as stored in the 
      *      LavatoryLocator service.
@@ -231,5 +238,4 @@ public class ReviewData {
     public void setRid(int reviewId) {
         this.reviewId = reviewId;
     }
-
 }
