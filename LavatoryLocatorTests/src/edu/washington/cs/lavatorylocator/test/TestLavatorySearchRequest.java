@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 
 /**
  * Tests LavatorySearchRequest class.
- * @author root
+ * @author Aasav Prakash
  *
  */
 public class TestLavatorySearchRequest extends TestCase {

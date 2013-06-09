@@ -44,8 +44,12 @@ public class TestLavatoryMapMarkerOptionsFactory extends TestCase {
         final String nameToUse;
         final MarkerOptions expected;
         final MarkerOptions actual;
+        final char type = 'M';
+        final String uid = "1";
+        final String lid = "1";
+        final String room = "101";
 
-        toParse = new LavatoryData(1, 'M', "1", "1", "101", 0, 0, 0, 0);
+        toParse = new LavatoryData(1, type, uid, lid, room, 0, 0, 0, 0);
         positionToUse = new LatLng(toParse.getLatitude(),
                 toParse.getLongitude());
         nameToUse = toParse.getName();
