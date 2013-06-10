@@ -159,12 +159,11 @@ public class ReviewData {
                     new SimpleDateFormat(DATE_INPUT);
             format.setTimeZone(TimeZone.getTimeZone("UTC"));
             final int index = datetime.indexOf('.');
+            String tempDatetime = datetime;
             if (index != -1) {
-                // To get around an overzealous checkstyle
-                String tempDatetime = datetime;
                 tempDatetime = datetime.substring(0, index);
             }
-            this.datetime = format.parse(datetime);
+            this.datetime = format.parse(tempDatetime);
         } catch (ParseException e) {
             this.datetime = null;
         }
