@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 import edu.washington.cs.lavatorylocator.model.LavatoryMapMarkerOptionsFactory;
+import edu.washington.cs.lavatorylocator.model.LavatoryType;
 
 /**
  * This class tests the LavatoryMapMarkerOptionsFactory class.
@@ -44,8 +45,12 @@ public class TestLavatoryMapMarkerOptionsFactory extends TestCase {
         final String nameToUse;
         final MarkerOptions expected;
         final MarkerOptions actual;
+        final LavatoryType type = LavatoryType.MALE;
+        final String uid = "1";
+        final String lid = "1";
+        final String room = "101";
 
-        toParse = new LavatoryData(1, 'M', "1", "1", "101", 0, 0, 0, 0);
+        toParse = new LavatoryData(1, type, uid, lid, room, 0, 0, 0, 0);
         positionToUse = new LatLng(toParse.getLatitude(),
                 toParse.getLongitude());
         nameToUse = toParse.getName();

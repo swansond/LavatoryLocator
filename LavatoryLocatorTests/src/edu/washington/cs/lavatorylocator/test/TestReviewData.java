@@ -1,7 +1,8 @@
 package edu.washington.cs.lavatorylocator.test;
 
+import android.test.AndroidTestCase;
+import edu.washington.cs.lavatorylocator.R;
 import edu.washington.cs.lavatorylocator.model.ReviewData;
-import junit.framework.TestCase;
 
 /**
  * TestReviewData class contains tests for the ReviewData class.
@@ -9,10 +10,13 @@ import junit.framework.TestCase;
  * @author Wil
  *
  */
-public class TestReviewData extends TestCase {
+public class TestReviewData extends AndroidTestCase {
 
-    private static final int FOUROHTHREE = 403;
-    private static final float FOURPOINTOHTHREE = 4.03f;
+    private static final int USERNUM = 403;
+    private static final float RATING = 4.03f;
+    private static final int LID = 403;
+    private static final int HELPFULNESS = 403;
+    private static final int USERVOTE = 403;
 
     /**
      * Tests the constructor.
@@ -30,7 +34,7 @@ public class TestReviewData extends TestCase {
     public void test_getAuthor_idIs403_getsUser403() {
         final ReviewData uidTestReviewData = new ReviewData();
         final String expectedTestUid = "User 403";
-        uidTestReviewData.setUsername("User " + Integer.toString(FOUROHTHREE));
+        uidTestReviewData.setUsername("User " + Integer.toString(USERNUM));
         assertEquals(expectedTestUid, uidTestReviewData.getAuthor());
     }
 
@@ -44,7 +48,7 @@ public class TestReviewData extends TestCase {
         final String input = "1990-03-30 15:56:12.123456";
         datetimeTestReviewData.setDatetime(input);
         assertEquals(expectedOutput,
-                datetimeTestReviewData.getDatetime());
+                datetimeTestReviewData.getDatetime(getContext()));
     }
 
     /**
@@ -53,11 +57,12 @@ public class TestReviewData extends TestCase {
      */
     public void test_getDatetime_error() {
         final ReviewData datetimeTestReviewData = new ReviewData();
-        final String expectedOutput = "Date Unavailable";
+        final String expectedOutput = getContext().getString(
+                R.string.date_unavailable);
         final String input = "today was a good day";
         datetimeTestReviewData.setDatetime(input);
         assertEquals(expectedOutput,
-                datetimeTestReviewData.getDatetime());
+                datetimeTestReviewData.getDatetime(getContext()));
     }
     
     /**
@@ -67,7 +72,7 @@ public class TestReviewData extends TestCase {
     public void test_getHelpfulness_helpfulnessIs403_gets403() {
         final ReviewData helpfulnessTestReviewData = new ReviewData();
         final int expectedTestHelpfulness = 403;
-        helpfulnessTestReviewData.setHelpfulness(FOUROHTHREE);
+        helpfulnessTestReviewData.setHelpfulness(HELPFULNESS);
         assertEquals(expectedTestHelpfulness,
                 helpfulnessTestReviewData.getHelpfulness());
     }
@@ -79,7 +84,7 @@ public class TestReviewData extends TestCase {
     public void test_getLid_lidIs403_gets403() {
         final ReviewData lidTestReviewData = new ReviewData();
         final int expectedTestLid = 403;
-        lidTestReviewData.setLid(FOUROHTHREE);
+        lidTestReviewData.setLid(LID);
         assertEquals(expectedTestLid, lidTestReviewData.getLid());
     }
 
@@ -90,7 +95,7 @@ public class TestReviewData extends TestCase {
     public void test_getRating_ratingIs4point03_gets4point03() {
         final ReviewData ratingTestReviewData = new ReviewData();
         final float expectedTestRating = 4.03f;
-        ratingTestReviewData.setRating(FOURPOINTOHTHREE);
+        ratingTestReviewData.setRating(RATING);
         assertEquals(expectedTestRating,
                 ratingTestReviewData.getRating());
     }
@@ -113,7 +118,7 @@ public class TestReviewData extends TestCase {
     public void test_getUservote_uservoteIs403_gets403() {
         final ReviewData uservoteTestReviewData = new ReviewData();
         final int expectedTestUservote = 403;
-        uservoteTestReviewData.setUservote(FOUROHTHREE);
+        uservoteTestReviewData.setUservote(USERVOTE);
         assertEquals(expectedTestUservote,
                 uservoteTestReviewData.getUservote());
     }

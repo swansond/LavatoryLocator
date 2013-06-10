@@ -33,6 +33,7 @@ import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment;
 import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment.
         OnSignedInListener;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
+import edu.washington.cs.lavatorylocator.model.LavatoryType;
 import edu.washington.cs.lavatorylocator.model.ReviewData;
 import edu.washington.cs.lavatorylocator.model.Reviews;
 import edu.washington.cs.lavatorylocator.network.DeleteLavatoryRequest;
@@ -123,7 +124,7 @@ public class LavatoryDetailActivity extends
             final SharedPreferences data =
                     getSharedPreferences("User", MODE_PRIVATE);
             final int id = data.getInt("ID", 0);
-            final char type = data.getString("Gender", "").charAt(0);
+            final String typeString = data.getString("Type", "");
             final String building = data.getString("Building", "");
             final String floor = data.getString("Floor", "");
             final String room = data.getString("RoomNumber", "");
@@ -131,6 +132,10 @@ public class LavatoryDetailActivity extends
             final double latitude = data.getFloat("Lat", 0);
             final int reviews = data.getInt("NumReviews", 0);
             final float avgRating = data.getFloat("Average", 0);
+            
+            // convert typeString into LavatoryType
+            final LavatoryType type = Enum.valueOf(LavatoryType.class,
+                    typeString);
 
             lavatory = new LavatoryData(id, type, building, floor, room,
                     latitude, longitude, reviews, avgRating);
@@ -155,7 +160,7 @@ public class LavatoryDetailActivity extends
 
         // save the current lavatory data
         editor.putInt("ID", lavatory.getLid());
-        editor.putString("Gender", String.valueOf(lavatory.getType()));
+        editor.putString("Type", String.valueOf(lavatory.getType()));
         editor.putString("Building", lavatory.getBuilding());
         editor.putString("Floor", lavatory.getFloor());
         editor.putString("RoomNumber", lavatory.getRoom());
@@ -378,7 +383,7 @@ public class LavatoryDetailActivity extends
         final String firstName = user.getName().getGivenName();
         final String lastName = user.getName().getFamilyName();
         // only use initial of last name
-        username = firstName + lastName.charAt(0);
+        username = firstName + " " + lastName.charAt(0);
         loadReviews(uid, Integer.toString(lavatory.getLid()),
                 REVIEW_PAGE_NUMBER,
                 "date", "descending");

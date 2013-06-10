@@ -17,6 +17,8 @@ import org.springframework.util.MultiValueMap;
 import com.octo.android.robospice.request.
         springandroid.SpringAndroidSpiceRequest;
 
+import edu.washington.cs.lavatorylocator.model.LavatoryType;
+
 /**
  * Class for adding a lavatory to the LavatoryLocator service.
  * 
@@ -39,7 +41,7 @@ public class AddLavatoryRequest extends
     private String uid;
     private String building;
     private String floor;
-    private char type;
+    private LavatoryType type;
     private double latitude;
     private double longitude;
 
@@ -62,7 +64,8 @@ public class AddLavatoryRequest extends
      *            the lavatory's longitude
      */
     public AddLavatoryRequest(String uid, String building, String floor,
-            String room, char type, double latitude, double longitude) {
+            String room, LavatoryType type, double latitude,
+            double longitude) {
         super(ResponseEntity.class);
 
         this.uid = uid;
@@ -82,7 +85,7 @@ public class AddLavatoryRequest extends
         parameters.add(FLOOR_SERVER_KEY, floor);
         parameters.add(LATITUDE_SERVER_KEY, Double.toString(latitude));
         parameters.add(LONGITUDE_SERVER_KEY, Double.toString(longitude));
-        parameters.add(TYPE_SERVER_KEY, Character.toString(type));
+        parameters.add(TYPE_SERVER_KEY, getLavatoryTypeChar(type));
 
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -103,5 +106,28 @@ public class AddLavatoryRequest extends
 
         return getRestTemplate().exchange(ADD_LAVATORY_SERVICE_URL,
                 HttpMethod.POST, httpEntity, ResponseEntity.class);
+    }
+    
+    /**
+     * Returns a character representing the lavatory type in the JSON to be
+     * sent to the server.
+     * 
+     * @param type a {@link LavatoryType}
+     * @return a character representing the lavatory type in the JSON to be
+     *         sent to the server
+     */
+    public static String getLavatoryTypeChar(LavatoryType type) {
+        switch (type) {
+        case MALE:
+            return "M";
+        case FEMALE:
+            return "F";
+        case FAMILY:
+            return "A";
+        case UNISEX:
+            return "U";
+        default:
+            return "";
+        }
     }
 }

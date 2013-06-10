@@ -21,7 +21,7 @@ public class LavatoryData implements Parcelable {
     // -------------------------------------------------------------
     private int lid;
 
-    private char type;
+    private LavatoryType type;
 
     private String building;
     private String floor;
@@ -78,7 +78,7 @@ public class LavatoryData implements Parcelable {
      * @param id
      *            the lavatory's id number in the database
      * @param type
-     *            the gender allowed to use the lavatory (M/F/U)
+     *            the type of the lavatory
      * @param building
      *            the building the lavatory is in
      * @param floor
@@ -94,9 +94,9 @@ public class LavatoryData implements Parcelable {
      * @param avgRating
      *            the average rating of the lavatory
      */
-    public LavatoryData(int id, char type, String building, String floor,
-            String room, double latitude, double longitude, int reviewCount,
-            float avgRating) {
+    public LavatoryData(int id, LavatoryType type, String building,
+            String floor, String room, double latitude, double longitude,
+            int reviewCount, float avgRating) {
         this.lid = id;
         this.type = type;
         this.building = building;
@@ -117,7 +117,7 @@ public class LavatoryData implements Parcelable {
      */
     public LavatoryData(Parcel source) {
         lid = source.readInt();
-        type = (char) source.readInt();
+        type = (LavatoryType) source.readSerializable();
         building = source.readString();
         floor = source.readString();
         room = source.readString();
@@ -216,7 +216,7 @@ public class LavatoryData implements Parcelable {
      *
      * @return the type of this lavatory
      */
-    public char getType() {
+    public LavatoryType getType() {
         return type;
     }
 
@@ -312,6 +312,29 @@ public class LavatoryData implements Parcelable {
      *            this lavatory's type
      */
     public void setType(char type) {
+        switch (type) {
+        case 'M':
+            this.type = LavatoryType.MALE;
+            break;
+        case 'F':
+            this.type = LavatoryType.FEMALE;
+            break;
+        case 'U':
+            this.type = LavatoryType.UNISEX;
+            break;
+        default:
+            this.type = LavatoryType.UNKNOWN;
+            break;
+        }
+    }
+    
+    /**
+     * Sets this lavatory's type (e.g., male, female, etc.).
+     *
+     * @param type
+     *            this lavatory's type
+     */
+    public void setTypeFromEnum(LavatoryType type) {
         this.type = type;
     }
 
@@ -331,7 +354,7 @@ public class LavatoryData implements Parcelable {
     @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeInt(lid);
-        out.writeInt(type);
+        out.writeSerializable(type);
         out.writeString(building);
         out.writeString(floor);
         out.writeString(room);

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LooLocator</string>
+
+    <!-- Activity Titles -->
+    <string name="title_activity_about">What\'s all this then?</string>
+    <string name="title_activity_add_review">Scribeth upon ye wall</string>
+    <string name="title_activity_add_lavatory">Informeth of ye olde loo</string>
+    <string name="title_add_lavatory">Informeth of ye olde loo</string>
+    <string name="title_edit_lavatory_detail">Reporteth ye falsehoods of loo</string>
+    <string name="title_activity_lavatory_detail">Gazeth upon ye loo</string>
+    <string name="title_activity_search">Quest</string>
+
+    <!-- Action Bar Items -->
+    <string name="action_search">Quest</string>
+    <string name="action_got2go">LegIt2Loo</string>
+    <string name="action_about">What\'s all this then?</string>
+    <string name="action_edit_lavatory_detail">Reporteth ye falsehoods of loo</string>
+    <string name="action_request_delete_lavatory">Purgeth ye heretic loo</string>
+    <string name="action_submit">Submitteth</string>
+    <string name="action_sign_out">Signeth Out</string>
+
+    <!-- AboutActivity -->
+    <string name="activity_about_from_huskysoft">Of ye Nobel HuskySoft</string>
+    <string name="activity_about_legal_notices">Ye note of law</string>
+
+    <!-- AddReviewActivity -->
+    <string name="activity_add_review_you">Noble review crafter</string>
+    <string name="activity_add_review_your_review_here">Ye olde review</string>
+    <string name="activity_add_review_submission_success">Review submittethed!</string>
+    <string name="activity_add_review_submission_error">Egads! Foul spirits have stolen yon review, have at the fiends and submitteth again!</string>
+
+    <!-- EditLavatoryDetailActivity -->
+    <string name="activity_edit_lavatory_detail_fields_not_filled">Verily, empty fields will not be tolerated!</string>
+    <string name="activity_edit_lavatory_detail_submission_success">Your change is submitted and your praises shall be sung upon reviewing them.</string>
+    <string name="activity_edit_lavatory_detail_submission_error">Egads! Foul spirits have stolen yon changes, have at the fiends and submitteth again!</string>
+
+    <!-- LavatoryDetailActivity -->
+    <string name="activity_lavatory_detail_reviews">Words of ye loo</string>
+    <string name="activity_lavatory_detail_helpfulness_suffix">&#160;people are guided by these words\' wisdom</string>
+    <string name="activity_lavatory_detail_get_reviews_error">Egads! Foul spirits have stolen ye words of yon loo, have at the fiends and attempt again!</string>
+    <string name="activity_lavatory_detail_helpful_prompt">Have these words great wisdom?</string>
+    <string name="activity_lavatory_detail_was_helpful">Yay</string>
+    <string name="activity_lavatory_detail_was_not_helpful">Nay</string>
+    <string name="activity_lavatory_detail_review_helpfulness_submission_success">You\'ve done ye LooLocator community a grand kindness.</string>
+    <string name="activity_lavatory_detail_review_helpfulness_submission_error">Egads! Foul spirits have stolen your markings of these words\' wisdom, have at the fiends and attempt again!</string>
+    <string name="activity_lavatory_detail_delete_lavatory_success">Grace upon you. We shall review the need to purge this heretic loo immediately.</string>
+    <string name="activity_lavatory_detail_delete_lavatory_error">Egads! Foul spirits are blocking your request to purge this heretic loo. Attempt again!</string>
+    
+    <!-- MainActivity -->
+    <string name="activity_main_no_lavatories_found">No loos meet your requirements O nobel user.</string>
+    <string name="activity_main_search_error">Egads! Foul spirits have pilfered yon loo! Quest again.</string>
+    <string name="activity_main_got2go_error">Egads! LegIt2Loo requires your phone\'s cartography magick. Enable it or quest for a loo manually.</string>
+
+    <!-- SearchActivity -->
+    <string name="activity_search_required_paramters_error">Verily, a blank quest will not be tolerated.</string>
+    
+    <!-- Google+ Sign in -->
+    <string name="google_sign_in_progress_message">Communing with Google wizards.</string>
+    <string name="google_sign_in_required">Verily, you must signeth in for such feature.</string>
+
+    <!-- Location related -->
+    <string name="location_unavailable">Dark magicks cloud your location and you cannot be found. All is lost.</string>
+    
+    <!-- Miscellaneous -->
+    <string name="building">Castle</string>
+    <string name="floor">Level</string>
+    <string name="room">Chamber</string>
+    <string name="male">Lads</string>
+    <string name="female">Lasses</string>
+    <string name="latitude">Ye olde latitude</string>
+    <string name="longitude">Ye olde longitude</string>
+    <string name="max_distance">Greatest travel length</string>
+    <string name="min_rating">Lowest quality acceptable</string>
+    <string name="floor_prefix">Level&#160;</string>
+    
+    <!-- Format Strings -->
+    <string name="latitude_longitude_format">%1$.8f, %2$.8f</string>
+    <string name="action_discard">Casteth to the pits of Tartarus</string>
+    <string name="date_output">d/M/yyyy h:mm a</string> 
+    <string name="date_unavailable">Dark magicks have shrouded your point in time: Date Unavailable</string>
+</resources>

@@ -29,6 +29,10 @@ public class TestLavatoryDetailActivity extends
     private static final int WAIT_TIME_MILLISECONDS = 5000;
     private static final float TEST_FLOAT = 4f;
     private static final int TEST_INT = 0;
+    private static final String UID = "1";
+    private static final int RID = -1;
+    private static final int HELPFULNESS = 1;
+    private static final int USERVOTE = 1;
     private Solo solo;
 
     // --------------------------------------------------------------
@@ -156,7 +160,7 @@ public class TestLavatoryDetailActivity extends
         
         solo.clickOnActionBarItem(R.id.action_edit_lavatory_detail);
         solo.waitForActivity(EditLavatoryDetailActivity.class);
-        ((EditLavatoryDetailActivity) solo.getCurrentActivity()).setUid("1");
+        ((EditLavatoryDetailActivity) solo.getCurrentActivity()).setUid(UID);
         
         solo.clickOnActionBarItem(R.id.action_submit);
         solo.assertCurrentActivity("Not still on EditLavatoryDetail activity",
@@ -194,7 +198,7 @@ public class TestLavatoryDetailActivity extends
         solo = new Solo(getInstrumentation());
         
         solo.waitForActivity(LavatoryDetailActivity.class);
-        ((LavatoryDetailActivity) solo.getCurrentActivity()).setUid("1");
+        ((LavatoryDetailActivity) solo.getCurrentActivity()).setUid(UID);
         
         solo.clickOnActionBarItem(R.id.action_request_delete_lavatory);
         solo.assertCurrentActivity("Not still on LavatoryDetail activity",
@@ -221,10 +225,10 @@ public class TestLavatoryDetailActivity extends
         testReview.setUsername("test");
         testReview.setRating(TEST_FLOAT);
         testReview.setReview("this is a test");
-        testReview.setRid(-1);
+        testReview.setRid(RID);
         testReview.setDatetime("today");
-        testReview.setHelpfulness(1);
-        testReview.setUservote(1);
+        testReview.setHelpfulness(HELPFULNESS);
+        testReview.setUservote(USERVOTE);
         rliv.updateView(testReview);
         assertNotNull(rliv);
     }
@@ -238,10 +242,10 @@ public class TestLavatoryDetailActivity extends
         testReview.setUsername("test");
         testReview.setRating(TEST_FLOAT);
         testReview.setReview("this is a test");
-        testReview.setRid(-1);
+        testReview.setRid(RID);
         testReview.setDatetime("today");
-        testReview.setHelpfulness(1);
-        testReview.setUservote(1);
+        testReview.setHelpfulness(HELPFULNESS);
+        testReview.setUservote(USERVOTE);
         final List<ReviewData> reviewList = new ArrayList<ReviewData>();
         reviewList.add(testReview);
         final ReviewsListAdapter rla = new ReviewsListAdapter(getActivity(),
@@ -258,10 +262,10 @@ public class TestLavatoryDetailActivity extends
         testReview.setUsername("test");
         testReview.setRating(TEST_FLOAT);
         testReview.setReview("this is a test");
-        testReview.setRid(-1);
+        testReview.setRid(RID);
         testReview.setDatetime("today");
-        testReview.setHelpfulness(1);
-        testReview.setUservote(1);
+        testReview.setHelpfulness(HELPFULNESS);
+        testReview.setUservote(USERVOTE);
         final List<ReviewData> reviewList = new ArrayList<ReviewData>();
         reviewList.add(testReview);
         final ReviewsListAdapter rla = new ReviewsListAdapter(getActivity(),

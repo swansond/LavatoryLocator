@@ -14,6 +14,7 @@ import com.octo.android.robospice.request.
         springandroid.SpringAndroidSpiceRequest;
 
 import edu.washington.cs.lavatorylocator.model.LavatorySearchResults;
+import edu.washington.cs.lavatorylocator.model.LavatoryType;
 
 /**
  * Class for sending search queries to the LavatoryLocator service.
@@ -39,7 +40,7 @@ public class LavatorySearchRequest extends
     private String room;
 
     private double minRating;
-    private String type;
+    private LavatoryType type;
 
     private String latitude;
     private String longitude;
@@ -79,8 +80,8 @@ public class LavatorySearchRequest extends
      *            search request point
      */
     public LavatorySearchRequest(String building, String floor, String room,
-            double minRating, String type, String latitude, String longitude,
-            String radius) {
+            double minRating, LavatoryType type, String latitude,
+            String longitude, String radius) {
         super(LavatorySearchResults.class);
 
         this.building = building;
@@ -127,7 +128,8 @@ public class LavatorySearchRequest extends
             appendQueryParameterToUriBuilderNoEmptyKeys(uriBuilder,
                     RADIUS_SERVER_KEY, radius);
             appendQueryParameterToUriBuilderNoEmptyKeys(uriBuilder,
-                    TYPE_SERVER_KEY, type);
+                    TYPE_SERVER_KEY,
+                    AddLavatoryRequest.getLavatoryTypeChar(type));
             
             final String url = uriBuilder.build().toString();
 

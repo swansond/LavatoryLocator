@@ -48,7 +48,7 @@ public class ReviewListItemView extends RelativeLayout {
         final float rating = review.getRating();
         final String reviewText = review.getReview();
         final int reviewId = review.getRid();
-        final String datetime = review.getDatetime();
+        final String datetime = review.getDatetime(getContext());
         helpfulness = review.getHelpfulness();
         totalVotes = review.getTotalVotes();
 

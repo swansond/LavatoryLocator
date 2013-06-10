@@ -53,6 +53,7 @@ import edu.washington.cs.lavatorylocator.googleplus.PlusClientFragment.
 import edu.washington.cs.lavatorylocator.location.LocationUtils;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 import edu.washington.cs.lavatorylocator.model.LavatoryMapMarkerOptionsFactory;
+import edu.washington.cs.lavatorylocator.model.LavatoryType;
 import edu.washington.cs.lavatorylocator.network.AddLavatoryRequest;
 import edu.washington.cs.lavatorylocator.network.EditLavatoryDetailRequest;
 
@@ -124,7 +125,7 @@ public class EditLavatoryDetailActivity extends
             final String building = lavatoryData.getBuilding();
             final String floor = lavatoryData.getFloor();
             final String room = lavatoryData.getRoom();
-            final char type = lavatoryData.getType();
+            final LavatoryType type = lavatoryData.getType();
 
             ((EditText) findViewById(R.id.activity_add_lavatory_building_name))
                     .setText(building);
@@ -134,10 +135,10 @@ public class EditLavatoryDetailActivity extends
             ((EditText) findViewById(R.id.activity_add_lavatory_room))
                     .setText(room);
 
-            if (type == 'M') {
+            if (type == LavatoryType.MALE) {
                 ((RadioButton) findViewById(R.id.activity_add_lavatory_male))
                         .setChecked(true);
-            } else {
+            } else if (type == LavatoryType.FEMALE) {
                 ((RadioButton) findViewById(R.id.activity_add_lavatory_female))
                         .setChecked(true);
             }
@@ -213,11 +214,11 @@ public class EditLavatoryDetailActivity extends
                     R.id.activity_add_lavatory_type))
                     .getCheckedRadioButtonId();
     
-            char type;
+            LavatoryType type;
             if (typeRadioButtonSelected == R.id.activity_add_lavatory_male) {
-                type = 'M';
+                type = LavatoryType.MALE;
             } else {
-                type = 'F';
+                type = LavatoryType.FEMALE;
             }
     
             if (!TextUtils.isEmpty(building) && !TextUtils.isEmpty(floor)

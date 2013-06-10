@@ -1,6 +1,7 @@
 package edu.washington.cs.lavatorylocator.test;
 
 import junit.framework.TestCase;
+import edu.washington.cs.lavatorylocator.model.LavatoryType;
 import edu.washington.cs.lavatorylocator.network.EditLavatoryDetailRequest;
 
 /**
@@ -11,29 +12,21 @@ import edu.washington.cs.lavatorylocator.network.EditLavatoryDetailRequest;
 public class TestEditLavatoryRequest extends TestCase {
 
     private EditLavatoryDetailRequest eldr;
-    private String uid;
-    private int lid;
-    private String building;
-    private String floor;
-    private String room;
-    private char type;
-    private double latitude;
-    private double longitude;
+    private static final String UID = "0";
+    private static final int LID = 0;
+    private static final String BUILDING = "CSE";
+    private static final String FLOOR = "B";
+    private static final String ROOM = "B100";
+    private static final LavatoryType TYPE = LavatoryType.MALE;
+    private static final double LATITUDE = 23.45;
+    private static final double LONGITUDE = 12.34;
     
     /**
      * Tests constructor.
      */
     public void testConstructor() {
-        uid = "0";
-        lid = 0;
-        building = "CSE";
-        floor = "B";
-        room = "B100";
-        type = 'M';
-        latitude = 00.00;
-        longitude = 00.00;
-        eldr = new EditLavatoryDetailRequest(uid, lid, building, floor, 
-                room, type, latitude, longitude);
+        eldr = new EditLavatoryDetailRequest(UID, LID, BUILDING, FLOOR, 
+                ROOM, TYPE, LATITUDE, LONGITUDE);
         assertNotNull(eldr);
     }
 }
