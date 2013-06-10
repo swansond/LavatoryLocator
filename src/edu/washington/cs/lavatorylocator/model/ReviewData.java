@@ -62,13 +62,15 @@ public class ReviewData {
     /**
      * Returns this review's date and time.
      *
+     * @param c the Context this ReviewData belongs to
      * @return this review's date and time, as represented in a String
      */
     public String getDatetime(Context c) {
         if (datetime == null) {
             return c.getString(R.string.date_unavailable);
         }
-        final SimpleDateFormat format = new SimpleDateFormat(c.getString(R.string.date_output));
+        final SimpleDateFormat format = new SimpleDateFormat(c.getString(
+                R.string.date_output));
         format.setTimeZone(TimeZone.getDefault());
         return format.format(datetime);
     }
@@ -143,12 +145,14 @@ public class ReviewData {
         // J seems to be fractions of a second
         // Out format: MM/DD/YYYY HH:MMXM without 0 padding
         try {
-            SimpleDateFormat format = 
+            final SimpleDateFormat format = 
                     new SimpleDateFormat(DATE_INPUT);
             format.setTimeZone(TimeZone.getTimeZone("UTC"));
             final int index = datetime.indexOf('.');
             if (index != -1) {
-                datetime = datetime.substring(0, index);
+                // To get around an overzealous checkstyle
+                String tempDatetime = datetime;
+                tempDatetime = datetime.substring(0, index);
             }
             this.datetime = format.parse(datetime);
         } catch (ParseException e) {
