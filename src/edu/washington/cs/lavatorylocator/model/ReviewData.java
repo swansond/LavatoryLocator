@@ -8,6 +8,7 @@ import java.util.TimeZone;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import android.content.Context;
+import android.util.Log;
 import edu.washington.cs.lavatorylocator.R;
 
 /**
@@ -185,8 +186,8 @@ public class ReviewData {
      * @param totalVotes
      *            this review's total vote count
      */
-    public void setTotalVotes(int totalVotes) {
-        this.totalVotes = totalVotes;
+    public void setTotalvotes(int totalvotes) {
+        this.totalVotes = totalvotes;
     }
 
     /**
