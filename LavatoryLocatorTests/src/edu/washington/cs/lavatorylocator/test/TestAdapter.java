@@ -20,11 +20,20 @@ public class TestAdapter extends AndroidTestCase {
     private LavatorySearchResultsAdapter adapter;
     private LavatorySearchResults results;
 
-    private static final double TEST_DOUBLE_ONE = 21.34;
-    private static final double TEST_DOUBLE_TWO = 12.34;
-    private static final int TEST_INT_ONE = 5;
-    private static final int TEST_INT_TWO = 2;
-
+    private static final double LATITUDE = 21.34;
+    private static final double LONGITUDE = 12.34;
+    private static final int ID = 5;
+    private static final int REVIEW_COUNT = 2;
+    private static final int LID = 0;
+    private static final char TYPE = 'f';
+    private static final String BUILDING = "rooftop";
+    private static final String FLOOR = "1";
+    private static final String ROOM = "105";
+    private static final float AVG_RATING = 2.5f;
+    private static final String ASSERT_MESSAGE = 
+            "GetView properly returns a non-null value when input is null";
+    private static final String ASSERT_MESSAGE_NEW_VIEW = 
+            "GetView retains view if valid";
     /**
      * Setup method to prepare for testing.
      */
@@ -34,12 +43,12 @@ public class TestAdapter extends AndroidTestCase {
         results = new LavatorySearchResults();
         final List<LavatoryData> list = new ArrayList<LavatoryData>();
         list.add(new LavatoryData(
-                0, 'f', "rooftop", "1", "105",
-                TEST_DOUBLE_ONE, TEST_DOUBLE_TWO,
-                TEST_INT_ONE, TEST_INT_TWO));
+                LID, TYPE, BUILDING, FLOOR, ROOM,
+                LATITUDE, LONGITUDE,
+                REVIEW_COUNT, AVG_RATING));
         results.setLavatories(list);
         adapter = new LavatorySearchResultsAdapter(
-                context, 0, TEST_INT_ONE, results);
+                context, 0, ID, results);
     }
 
     /**
@@ -47,8 +56,7 @@ public class TestAdapter extends AndroidTestCase {
      * @black
      */
     public void test_getView_inputNull_getNull() {
-        assertNotNull("GetView properly returns "
-                + "a non-null value when input is null",
+        assertNotNull(ASSERT_MESSAGE,
                 adapter.getView(0, null, null));
     }
 
@@ -59,7 +67,7 @@ public class TestAdapter extends AndroidTestCase {
     public void test_getView_usualCase_getNewView() {
         final View v = new LavatorySearchResultsListItemView(getContext());
         final View newView = adapter.getView(0, v, null);
-        assertEquals("GetView retains view if valid", v, newView);
+        assertEquals(ASSERT_MESSAGE_NEW_VIEW, v, newView);
     }
 
 }

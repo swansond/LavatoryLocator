@@ -11,17 +11,17 @@ import edu.washington.cs.lavatorylocator.network.GetLavatoryReviewsRequest;
 public class TestGetReviewsRequest extends TestCase {
 
     private GetLavatoryReviewsRequest glr;
-    private int uid;
-    private int lid;
+    private static final int UID = 0;
+    private static final int LID = 0;
+    private static final String SORTPARAM = "head";
+    private static final String SORTDIR = "ascending";
     
     /**
      * Tests constructor.
      */
     public void testConstructor() {
-        uid = 0;
-        lid = 0;
         glr = new GetLavatoryReviewsRequest(
-                "" + uid, "" + lid, 0, "head", "ascending");
+                "" + UID, "" + LID, 0, SORTPARAM, SORTDIR);
         assertNotNull(glr);
     }
 }
