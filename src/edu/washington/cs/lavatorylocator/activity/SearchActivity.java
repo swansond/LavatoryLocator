@@ -15,6 +15,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import edu.washington.cs.lavatorylocator.R;
+import edu.washington.cs.lavatorylocator.model.LavatoryType;
 
 /**
  * {@link android.app.Activity} displayed to search for lavatories. Shows a form
@@ -127,11 +128,17 @@ public class SearchActivity extends SherlockActivity {
                 R.id.activity_search_type))
                 .getCheckedRadioButtonId();
 
-        String type = "";
-        if (lavatoryTypeRadioButtonId == R.id.activity_search_male) {
-            type = "M";
-        } else if (lavatoryTypeRadioButtonId == R.id.activity_search_female) {
-            type = "F";
+        LavatoryType type;
+        switch (lavatoryTypeRadioButtonId) {
+        case R.id.activity_search_male:
+            type = LavatoryType.MALE;
+            break;
+        case R.id.activity_search_female:
+            type = LavatoryType.FEMALE;
+            break;
+        default:
+            type = LavatoryType.UNKNOWN;
+            break;
         }
 
         final boolean textParametersSpecified = (!TextUtils.isEmpty(building)

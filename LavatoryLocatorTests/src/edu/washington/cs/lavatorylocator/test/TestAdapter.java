@@ -9,6 +9,7 @@ import android.view.View;
 import edu.washington.cs.lavatorylocator.adapter.LavatorySearchResultsAdapter;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
 import edu.washington.cs.lavatorylocator.model.LavatorySearchResults;
+import edu.washington.cs.lavatorylocator.model.LavatoryType;
 import edu.washington.cs.lavatorylocator.view.LavatorySearchResultsListItemView;
 
 /**
@@ -43,7 +44,7 @@ public class TestAdapter extends AndroidTestCase {
         results = new LavatorySearchResults();
         final List<LavatoryData> list = new ArrayList<LavatoryData>();
         list.add(new LavatoryData(
-                LID, TYPE, BUILDING, FLOOR, ROOM,
+                LID, LavatoryType.FEMALE, BUILDING, FLOOR, ROOM,
                 LATITUDE, LONGITUDE,
                 REVIEW_COUNT, AVG_RATING));
         results.setLavatories(list);

@@ -14,6 +14,12 @@ import com.jayway.android.robotium.solo.Solo;
  */
 public final class TestUtils {
     /**
+     * The amount of milliseconds to wait before dismissing the Google Play
+     * services error dialog.
+     */
+    private static final int ERROR_DIALOG_DISMISS_WAIT_TIME = 2500;
+    
+    /**
      * Prevent instantiation of this class.
      */
     private TestUtils() {
@@ -29,6 +35,7 @@ public final class TestUtils {
         final Context applicationContext = solo.getCurrentActivity()
                 .getApplicationContext();
         if (!googlePlayServicesAreAvailable(applicationContext)) {
+            solo.sleep(ERROR_DIALOG_DISMISS_WAIT_TIME);
             solo.goBack();
         }
     }

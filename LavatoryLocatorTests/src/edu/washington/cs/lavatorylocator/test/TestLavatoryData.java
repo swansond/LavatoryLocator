@@ -2,6 +2,7 @@ package edu.washington.cs.lavatorylocator.test;
 
 import android.os.Bundle;
 import edu.washington.cs.lavatorylocator.model.LavatoryData;
+import edu.washington.cs.lavatorylocator.model.LavatoryType;
 import junit.framework.TestCase;
 
 /**
@@ -13,7 +14,7 @@ public class TestLavatoryData extends TestCase {
 
     private LavatoryData ld;
     private final int lid = 1;
-    private final char type = 'M';
+    private final LavatoryType type = LavatoryType.MALE;
     private final String building = "CSE";
     private final String floor = "B";
     private final String room = "B100";
@@ -68,7 +69,7 @@ public class TestLavatoryData extends TestCase {
 
         ld = new LavatoryData();
         ld.setLid(lid);
-        ld.setType(type);
+        ld.setTypeFromEnum(type);
         ld.setBuilding(building);
         ld.setFloor(floor);
         ld.setRoom(room);

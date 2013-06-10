@@ -1,6 +1,7 @@
 package edu.washington.cs.lavatorylocator.test;
 
 import junit.framework.TestCase;
+import edu.washington.cs.lavatorylocator.model.LavatoryType;
 import edu.washington.cs.lavatorylocator.network.EditLavatoryDetailRequest;
 
 /**
@@ -16,7 +17,7 @@ public class TestEditLavatoryRequest extends TestCase {
     private static final String BUILDING = "CSE";
     private static final String FLOOR = "B";
     private static final String ROOM = "B100";
-    private static final char TYPE = 'M';
+    private static final LavatoryType TYPE = LavatoryType.MALE;
     private static final double LATITUDE = 23.45;
     private static final double LONGITUDE = 12.34;
     
